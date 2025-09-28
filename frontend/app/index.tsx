@@ -3674,6 +3674,8 @@ const styles = StyleSheet.create({
   horizontalPromptContainer: {
     paddingHorizontal: 16,
     gap: 16,
+    flexDirection: 'row', // Explicitly set row direction
+    minWidth: '100%', // Ensure container width
   },
   horizontalPromptCard: {
     width: 280,
