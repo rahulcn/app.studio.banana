@@ -596,12 +596,28 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Generate Image</Text>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      {/* Modern Header */}
+      <View className="bg-white px-6 py-4 border-b border-gray-100 shadow-sm">
+        <View className="flex-row items-center justify-between">
+          <TouchableOpacity 
+            className="bg-gray-100 p-2 rounded-xl"
+            onPress={onBack}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="arrow-back" size={20} color="#374151" />
+          </TouchableOpacity>
+          
+          <Text className="text-xl font-bold text-gray-900">Generate Image</Text>
+          
+          <TouchableOpacity 
+            className="bg-blue-50 p-2 rounded-xl"
+            onPress={() => setShowProfile(true)}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView style={styles.content}>
