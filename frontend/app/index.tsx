@@ -1103,76 +1103,86 @@ const FreeGenerateScreen: React.FC<{
               </ScrollView>
             </View>
 
-            {/* Prompt Selection */}
+            {/* Horizontal Prompt Selection */}
             <View style={styles.modernCard}>
               <Text style={styles.modernCardTitle}>
                 Select Professional Style ({filteredPrompts.length} available)
               </Text>
               <Text style={styles.modernCardDescription}>
-                Choose from our curated collection of professional AI prompts designed for high-quality image generation.
+                Swipe horizontally to browse curated AI prompts with haptic feedback.
               </Text>
               
-              <ScrollView style={styles.modernPromptScrollView} showsVerticalScrollIndicator={false}>
-                <View style={styles.modernPromptContainer}>
-                  {filteredPrompts.map((prompt) => (
-                    <TouchableOpacity
-                      key={prompt.id}
-                      style={[
-                        styles.modernPromptCard,
-                        selectedPromptId === prompt.id 
-                          ? styles.modernPromptCardSelected 
-                          : styles.modernPromptCardUnselected
-                      ]}
-                      onPress={() => setSelectedPromptId(prompt.id)}
-                      activeOpacity={0.7}
-                    >
-                      <View style={styles.modernPromptHeader}>
-                        <Text style={[
-                          styles.modernPromptTitle,
-                          selectedPromptId === prompt.id 
-                            ? styles.modernPromptTitleSelected 
-                            : styles.modernPromptTitleUnselected
-                        ]}>
-                          {prompt.title}
-                        </Text>
-                        <View style={[
-                          styles.modernPromptBadge,
-                          { backgroundColor: 
-                            prompt.category === 'Professional' 
-                              ? '#dbeafe' 
-                              : prompt.category === 'Artistic' 
-                              ? '#fed7aa' 
-                              : '#dcfce7'
-                          }
-                        ]}>
-                          <Text style={[
-                            styles.modernPromptBadgeText,
-                            { color: 
-                              prompt.category === 'Professional' 
-                                ? '#2563eb' 
-                                : prompt.category === 'Artistic' 
-                                ? '#ea580c' 
-                                : '#16a34a'
-                            }
-                          ]}>
-                            {prompt.category}
-                          </Text>
-                        </View>
-                      </View>
-                      
-                      <Text style={styles.modernPromptDescription}>
-                        {prompt.description}
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                style={styles.horizontalPromptScrollView}
+                contentContainerStyle={styles.horizontalPromptContainer}
+                snapToInterval={280} // Width of each card + margin
+                decelerationRate="fast"
+                pagingEnabled={false}
+              >
+                {filteredPrompts.map((prompt, index) => (
+                  <TouchableOpacity
+                    key={prompt.id}
+                    style={[
+                      styles.horizontalPromptCard,
+                      selectedPromptId === prompt.id 
+                        ? styles.horizontalPromptCardSelected 
+                        : styles.horizontalPromptCardUnselected
+                    ]}
+                    onPress={() => {
+                      console.log(`🎯 Selected prompt: ${prompt.title}`);
+                      // Haptic feedback on selection
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      setSelectedPromptId(prompt.id);
+                    }}
+                    activeOpacity={0.8}
+                  >
+                    {/* Category Badge */}
+                    <View style={[
+                      styles.horizontalPromptBadge,
+                      { backgroundColor: 
+                        prompt.category === 'Professional' 
+                          ? '#3b82f6' 
+                          : prompt.category === 'Artistic' 
+                          ? '#f59e0b' 
+                          : '#10b981'
+                      }
+                    ]}>
+                      <Text style={styles.horizontalPromptBadgeText}>
+                        {prompt.category}
+                      </Text>
+                    </View>
+
+                    {/* Prompt Content */}
+                    <View style={styles.horizontalPromptContent}>
+                      <Text style={[
+                        styles.horizontalPromptTitle,
+                        selectedPromptId === prompt.id && styles.horizontalPromptTitleSelected
+                      ]}>
+                        {prompt.title}
                       </Text>
                       
-                      {selectedPromptId === prompt.id && (
-                        <View style={styles.modernPromptSelected}>
-                          <Ionicons name="checkmark-circle" size={16} color="#0ea5e9" />
-                          <Text style={styles.modernPromptSelectedText}>Selected</Text>
-                        </View>
-                      )}
-                    </TouchableOpacity>
-                  ))}
-                </View>
+                      <Text style={styles.horizontalPromptDescription} numberOfLines={3}>
+                        {prompt.description}
+                      </Text>
+                    </View>
+
+                    {/* Selection Indicator */}
+                    {selectedPromptId === prompt.id && (
+                      <View style={styles.horizontalPromptSelected}>
+                        <Ionicons name="checkmark-circle" size={24} color="#3b82f6" />
+                      </View>
+                    )}
+                    
+                    {/* Card Number */}
+                    <View style={styles.horizontalPromptNumber}>
+                      <Text style={styles.horizontalPromptNumberText}>
+                        {index + 1}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
               </ScrollView>
             </View>
           </>
