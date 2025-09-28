@@ -1424,9 +1424,44 @@ const FreeGenerateScreen: React.FC<{
         </View>
 
         {loadingPrompts ? (
-          <View style={styles.loadingPromptsContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.loadingPromptsText}>Loading curated prompts...</Text>
+          // Skeleton loader for prompt cards
+          <View style={styles.directSection}>
+            <Text style={[styles.directSectionTitle, { color: theme.colors.text }]}>
+              Loading styles...
+            </Text>
+            <Text style={[styles.directSectionDescription, { color: theme.colors.textSecondary }]}>
+              Please wait while we load your curated prompts.
+            </Text>
+            
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              style={styles.horizontalPromptScrollView}
+              contentContainerStyle={styles.horizontalPromptContainer}
+            >
+              {[1, 2, 3, 4].map((skeletonId) => (
+                <View key={skeletonId} style={[styles.horizontalPromptCard, { backgroundColor: theme.colors.card }]}>
+                  {/* Skeleton header */}
+                  <View style={styles.skeletonHeader}>
+                    <View style={[styles.skeletonIcon, { backgroundColor: theme.colors.border }]} />
+                    <View style={[styles.skeletonBadge, { backgroundColor: theme.colors.border }]} />
+                  </View>
+                  
+                  {/* Skeleton title */}
+                  <View style={[styles.skeletonTitle, { backgroundColor: theme.colors.border }]} />
+                  
+                  {/* Skeleton description lines */}
+                  <View style={[styles.skeletonDescription, { backgroundColor: theme.colors.border }]} />
+                  <View style={[styles.skeletonDescriptionShort, { backgroundColor: theme.colors.border }]} />
+                  
+                  {/* Skeleton footer */}
+                  <View style={styles.skeletonFooter}>
+                    <View style={[styles.skeletonFooterText, { backgroundColor: theme.colors.border }]} />
+                    <View style={[styles.skeletonFooterIcon, { backgroundColor: theme.colors.border }]} />
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
           </View>
         ) : (
           <>
