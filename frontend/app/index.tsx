@@ -1021,7 +1021,66 @@ const FreeGenerateScreen: React.FC<{
             </Text>
           </View>
         )}
-      </ScrollView>
+        </ScrollView>
+      )}
+      
+      {/* Gallery Tab */}
+      {activeTab === 'gallery' && (
+        <GalleryScreen freeTier={freeTier} />
+      )}
+      
+      {/* Profile Tab */}
+      {activeTab === 'profile' && (
+        <ProfileScreen freeTier={freeTier} />
+      )}
+      
+      {/* Bottom Tab Navigation */}
+      <View style={styles.tabBarContainer}>
+        <TouchableOpacity 
+          style={[styles.tabButton, activeTab === 'generate' && styles.tabButtonActive]}
+          onPress={() => setActiveTab('generate')}
+          activeOpacity={0.7}
+        >
+          <Ionicons 
+            name={activeTab === 'generate' ? 'sparkles' : 'sparkles-outline'} 
+            size={24} 
+            color={activeTab === 'generate' ? '#3b82f6' : '#9ca3af'} 
+          />
+          <Text style={[styles.tabLabel, activeTab === 'generate' && styles.tabLabelActive]}>
+            Generate
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={[styles.tabButton, activeTab === 'gallery' && styles.tabButtonActive]}
+          onPress={() => setActiveTab('gallery')}
+          activeOpacity={0.7}
+        >
+          <Ionicons 
+            name={activeTab === 'gallery' ? 'images' : 'images-outline'} 
+            size={24} 
+            color={activeTab === 'gallery' ? '#3b82f6' : '#9ca3af'} 
+          />
+          <Text style={[styles.tabLabel, activeTab === 'gallery' && styles.tabLabelActive]}>
+            Gallery
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={[styles.tabButton, activeTab === 'profile' && styles.tabButtonActive]}
+          onPress={() => setActiveTab('profile')}
+          activeOpacity={0.7}
+        >
+          <Ionicons 
+            name={activeTab === 'profile' ? 'person' : 'person-outline'} 
+            size={24} 
+            color={activeTab === 'profile' ? '#3b82f6' : '#9ca3af'} 
+          />
+          <Text style={[styles.tabLabel, activeTab === 'profile' && styles.tabLabelActive]}>
+            Profile
+          </Text>
+        </TouchableOpacity>
+      </View>
       
     </SafeAreaView>
   );
