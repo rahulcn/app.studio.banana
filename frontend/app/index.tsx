@@ -957,12 +957,6 @@ const FreeGenerateScreen: React.FC<{
         )}
       </ScrollView>
       
-      {/* Profile Modal */}
-      <ProfileModal
-        visible={showProfile}
-        onClose={() => setShowProfile(false)}
-        freeTier={freeTier}
-      />
     </SafeAreaView>
   );
 };
