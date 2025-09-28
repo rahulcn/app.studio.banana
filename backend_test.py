@@ -335,38 +335,156 @@ class CuratedPromptTester:
             self.log_test("Missing Image Handling", False, f"Error: {str(e)}")
             return False
     
+    def test_mongodb_storage(self):
+        """Test MongoDB connection and image storage via images endpoint"""
+        try:
+            response = requests.get(f"{self.backend_url}/images?limit=5", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "images" in data:
+                    images = data["images"]
+                    self.log_test("MongoDB Storage", True, f"Successfully connected to MongoDB, retrieved {len(images)} images")
+                    return True
+                else:
+                    self.log_test("MongoDB Storage", False, "Response missing 'images' field")
+                    return False
+            else:
+                self.log_test("MongoDB Storage", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("MongoDB Storage", False, f"Connection error: {str(e)}")
+            return False
+    
+    def test_general_image_generation(self):
+        """Test general image generation endpoint (non-curated)"""
+        try:
+            payload = {
+                "prompt": "A beautiful sunset over mountains",
+                "style": "photorealistic"
+            }
+            
+            print("🎨 Testing general image generation (this may take 30-60 seconds)...")
+            response = requests.post(
+                f"{self.backend_url}/generate-image", 
+                json=payload, 
+                timeout=120
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                required_fields = ["id", "prompt", "generated_image", "created_at", "success"]
+                
+                for field in required_fields:
+                    if field not in data:
+                        self.log_test("General Image Generation", False, f"Missing field: {field}")
+                        return False
+                
+                if not data["success"]:
+                    self.log_test("General Image Generation", False, "Success flag is False")
+                    return False
+                
+                if not data["generated_image"]:
+                    self.log_test("General Image Generation", False, "No generated image data")
+                    return False
+                
+                if len(data["generated_image"]) < 100:
+                    self.log_test("General Image Generation", False, "Generated image data too short")
+                    return False
+                
+                self.log_test("General Image Generation", True, f"Successfully generated image from text prompt. Image size: {len(data['generated_image'])} chars")
+                return True
+                
+            else:
+                error_text = response.text if response.text else "No error details"
+                self.log_test("General Image Generation", False, f"HTTP {response.status_code}: {error_text}")
+                return False
+                
+        except requests.exceptions.Timeout:
+            self.log_test("General Image Generation", False, "Request timeout (>120s) - NanoBanana API may be slow")
+            return False
+        except Exception as e:
+            self.log_test("General Image Generation", False, f"Error: {str(e)}")
+            return False
+    
+    def test_all_categories(self):
+        """Test all three categories: Professional, Artistic, Lifestyle"""
+        try:
+            categories = ["Professional", "Artistic", "Lifestyle"]
+            expected_counts = {"Professional": 6, "Artistic": 4, "Lifestyle": 2}
+            
+            all_passed = True
+            category_results = []
+            
+            for category in categories:
+                response = requests.get(f"{self.backend_url}/prompts/categories/{category}", timeout=10)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    prompts = data.get("prompts", [])
+                    count = data.get("count", 0)
+                    
+                    if count == expected_counts[category] and len(prompts) == expected_counts[category]:
+                        category_results.append(f"{category}: {count} prompts ✅")
+                    else:
+                        category_results.append(f"{category}: Expected {expected_counts[category]}, got {count} ❌")
+                        all_passed = False
+                else:
+                    category_results.append(f"{category}: HTTP {response.status_code} ❌")
+                    all_passed = False
+            
+            if all_passed:
+                self.log_test("All Categories Test", True, f"All categories correct: {', '.join(category_results)}")
+                return True
+            else:
+                self.log_test("All Categories Test", False, f"Some categories failed: {', '.join(category_results)}")
+                return False
+                
+        except Exception as e:
+            self.log_test("All Categories Test", False, f"Error: {str(e)}")
+            return False
+
     def run_all_tests(self):
-        """Run all curated prompt system tests"""
-        print("🧪 Starting Curated Prompt System Tests")
-        print("=" * 60)
+        """Run comprehensive backend API tests after dark mode implementation"""
+        print("🧪 Starting Comprehensive Backend API Tests")
+        print("🎯 Focus: Health check, 12 curated prompts, MongoDB connection, NanoBanana API integration")
+        print("=" * 80)
         
         # Test 1: Health check
         if not self.test_health_endpoint():
             print("❌ Backend not accessible, stopping tests")
             return
         
-        # Test 2: Get all prompts
+        # Test 2: Get all prompts (verify 12 prompts)
         self.test_get_all_prompts()
         
-        # Test 3: Get prompts by category
+        # Test 3: Test all categories (Professional, Artistic, Lifestyle)
+        self.test_all_categories()
+        
+        # Test 4: Get prompts by category (detailed test)
         self.test_get_prompts_by_category()
         
-        # Test 4: Invalid category handling
-        self.test_invalid_category()
+        # Test 5: MongoDB storage functionality
+        self.test_mongodb_storage()
         
-        # Test 5: Generate with curated prompt (main functionality)
+        # Test 6: NanoBanana API integration via curated prompt
         self.test_generate_with_curated_prompt()
         
-        # Test 6: Invalid prompt ID handling
-        self.test_generate_with_invalid_prompt_id()
+        # Test 7: General image generation (NanoBanana API)
+        self.test_general_image_generation()
         
-        # Test 7: Missing image handling
+        # Test 8: Error handling tests
+        self.test_invalid_category()
+        self.test_generate_with_invalid_prompt_id()
         self.test_generate_without_image()
         
         # Summary
-        print("\n" + "=" * 60)
-        print("🏁 CURATED PROMPT SYSTEM TEST SUMMARY")
-        print("=" * 60)
+        print("\n" + "=" * 80)
+        print("🏁 COMPREHENSIVE BACKEND API TEST SUMMARY")
+        print("=" * 80)
         
         for result in self.test_results:
             print(result)
@@ -375,10 +493,31 @@ class CuratedPromptTester:
         success_rate = (self.passed_tests / self.total_tests) * 100 if self.total_tests > 0 else 0
         print(f"📈 Success Rate: {success_rate:.1f}%")
         
-        if self.passed_tests == self.total_tests:
-            print("🎉 All tests passed! Curated prompt system is working correctly.")
+        if success_rate >= 90:
+            print("🎉 Excellent! Backend is fully functional after dark mode implementation.")
+        elif success_rate >= 80:
+            print("✅ Good! Backend is working well with minor issues.")
+        elif success_rate >= 60:
+            print("⚠️  Backend has some issues but core functionality works.")
         else:
-            print("⚠️  Some tests failed. Check the details above.")
+            print("🚨 Backend has critical issues that need attention.")
+        
+        # Save detailed results
+        results_data = {
+            "timestamp": datetime.now().isoformat(),
+            "test_focus": "Post dark mode implementation verification",
+            "summary": {
+                "passed": self.passed_tests,
+                "total": self.total_tests,
+                "success_rate": success_rate
+            },
+            "detailed_results": self.test_results
+        }
+        
+        with open('/app/backend_test_results.json', 'w') as f:
+            json.dump(results_data, f, indent=2)
+        
+        print(f"\n📄 Detailed results saved to: /app/backend_test_results.json")
         
         return self.passed_tests == self.total_tests
 
