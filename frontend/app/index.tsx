@@ -1191,9 +1191,12 @@ const FreeGenerateScreen: React.FC<{
                 />
                 <TouchableOpacity 
                   style={styles.modernRemoveImageButton}
-                  onPress={removeReferenceImage}
+                  onPress={() => {
+                    console.log('🚨 BUTTON PRESSED! Touch event received');
+                    removeReferenceImage();
+                  }}
                   activeOpacity={0.7}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                 >
                   <Ionicons name="close" size={18} color="white" />
                 </TouchableOpacity>
