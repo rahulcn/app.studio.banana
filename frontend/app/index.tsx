@@ -832,62 +832,70 @@ const FreeGenerateScreen: React.FC<{
             </View>
 
             {/* Prompt Selection */}
-            <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
-              <Text className="text-lg font-bold text-gray-900 mb-2">
+            <View style={styles.modernCard}>
+              <Text style={styles.modernCardTitle}>
                 Select Professional Style ({filteredPrompts.length} available)
               </Text>
-              <Text className="text-sm text-gray-600 mb-4 leading-relaxed">
+              <Text style={styles.modernCardDescription}>
                 Choose from our curated collection of professional AI prompts designed for high-quality image generation.
               </Text>
               
-              <ScrollView className="max-h-80" showsVerticalScrollIndicator={false}>
-                <View className="space-y-3">
+              <ScrollView style={styles.modernPromptScrollView} showsVerticalScrollIndicator={false}>
+                <View style={styles.modernPromptContainer}>
                   {filteredPrompts.map((prompt) => (
                     <TouchableOpacity
                       key={prompt.id}
-                      className={`rounded-xl p-4 border-2 ${
+                      style={[
+                        styles.modernPromptCard,
                         selectedPromptId === prompt.id 
-                          ? 'bg-blue-50 border-blue-500' 
-                          : 'bg-gray-50 border-gray-200'
-                      }`}
+                          ? styles.modernPromptCardSelected 
+                          : styles.modernPromptCardUnselected
+                      ]}
                       onPress={() => setSelectedPromptId(prompt.id)}
                       activeOpacity={0.7}
                     >
-                      <View className="flex-row items-start justify-between mb-2">
-                        <Text className={`flex-1 text-base font-semibold mr-2 ${
+                      <View style={styles.modernPromptHeader}>
+                        <Text style={[
+                          styles.modernPromptTitle,
                           selectedPromptId === prompt.id 
-                            ? 'text-blue-700' 
-                            : 'text-gray-900'
-                        }`}>
+                            ? styles.modernPromptTitleSelected 
+                            : styles.modernPromptTitleUnselected
+                        ]}>
                           {prompt.title}
                         </Text>
-                        <View className={`px-2 py-1 rounded-md ${
-                          prompt.category === 'Professional' 
-                            ? 'bg-blue-100' 
-                            : prompt.category === 'Artistic' 
-                            ? 'bg-orange-100' 
-                            : 'bg-green-100'
-                        }`}>
-                          <Text className={`text-xs font-bold ${
+                        <View style={[
+                          styles.modernPromptBadge,
+                          { backgroundColor: 
                             prompt.category === 'Professional' 
-                              ? 'text-blue-600' 
+                              ? '#dbeafe' 
                               : prompt.category === 'Artistic' 
-                              ? 'text-orange-600' 
-                              : 'text-green-600'
-                          }`}>
+                              ? '#fed7aa' 
+                              : '#dcfce7'
+                          }
+                        ]}>
+                          <Text style={[
+                            styles.modernPromptBadgeText,
+                            { color: 
+                              prompt.category === 'Professional' 
+                                ? '#2563eb' 
+                                : prompt.category === 'Artistic' 
+                                ? '#ea580c' 
+                                : '#16a34a'
+                            }
+                          ]}>
                             {prompt.category}
                           </Text>
                         </View>
                       </View>
                       
-                      <Text className="text-sm text-gray-600 leading-relaxed mb-2">
+                      <Text style={styles.modernPromptDescription}>
                         {prompt.description}
                       </Text>
                       
                       {selectedPromptId === prompt.id && (
-                        <View className="flex-row items-center pt-2 border-t border-gray-200">
+                        <View style={styles.modernPromptSelected}>
                           <Ionicons name="checkmark-circle" size={16} color="#0ea5e9" />
-                          <Text className="ml-2 text-xs text-blue-600 font-medium">Selected</Text>
+                          <Text style={styles.modernPromptSelectedText}>Selected</Text>
                         </View>
                       )}
                     </TouchableOpacity>
