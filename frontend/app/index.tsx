@@ -710,57 +710,83 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      <ScrollView style={styles.content}>
-        <View style={styles.freeUsageCard}>
-          <Text style={styles.freeUsageTitle}>Free Tier</Text>
-          <Text style={styles.freeUsageText}>
-            {freeTier.remainingUses} / {freeTier.FREE_LIMIT} free generations remaining
-          </Text>
-          <View style={styles.progressBar}>
-            <View 
-              style={[
-                styles.progressFill, 
-                { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
-              ]} 
-            />
+      <ScrollView className="flex-1 px-6">
+        {/* Free Tier Card */}
+        <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100 mt-4">
+          <View className="flex-row items-center mb-4">
+            <View className="bg-blue-50 p-2 rounded-xl mr-3">
+              <Ionicons name="flash" size={20} color="#0ea5e9" />
+            </View>
+            <Text className="text-lg font-bold text-gray-900">Free Tier</Text>
+          </View>
+          
+          <View className="mb-3">
+            <View className="flex-row justify-between items-center mb-2">
+              <Text className="text-sm text-gray-600">Generations remaining</Text>
+              <Text className="text-sm font-semibold text-gray-900">
+                {freeTier.remainingUses} / {freeTier.FREE_LIMIT}
+              </Text>
+            </View>
+            <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
+              <View 
+                className="bg-blue-500 h-full rounded-full"
+                style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
+              />
+            </View>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Reference Image (Optional)</Text>
+        {/* Reference Image Section */}
+        <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
+          <Text className="text-lg font-bold text-gray-900 mb-2">Reference Image</Text>
+          <Text className="text-sm text-gray-600 mb-4 leading-relaxed">
+            Upload or take a photo to use as reference for AI generation (required)
+          </Text>
           
           {referenceImage ? (
-            <View style={styles.referenceImageContainer}>
-              <Image 
-                source={{ uri: `data:image/jpeg;base64,${referenceImage}` }}
-                style={styles.referenceImage}
-                resizeMode="cover"
-              />
-              <TouchableOpacity 
-                style={styles.removeReferenceButton}
-                onPress={removeReferenceImage}
-              >
-                <Ionicons name="close-circle" size={24} color="#FF3B30" />
-              </TouchableOpacity>
+            <View className="items-center">
+              <View className="relative mb-3">
+                <Image 
+                  source={{ uri: `data:image/jpeg;base64,${referenceImage}` }}
+                  className="w-24 h-24 rounded-xl"
+                  resizeMode="cover"
+                />
+                <TouchableOpacity 
+                  className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1"
+                  onPress={removeReferenceImage}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="close" size={16} color="white" />
+                </TouchableOpacity>
+              </View>
+              <Text className="text-sm text-green-600 font-medium">
+                ✨ Perfect! Your reference image is ready
+              </Text>
             </View>
           ) : (
-            <View style={styles.referenceOptions}>
-              <TouchableOpacity style={styles.referenceButton} onPress={pickReferenceImage}>
-                <Ionicons name="images-outline" size={20} color="#007AFF" />
-                <Text style={styles.referenceButtonText}>Choose from Gallery</Text>
+            <View className="flex-row space-x-3">
+              <TouchableOpacity 
+                className="flex-1 bg-gray-50 rounded-xl p-4 items-center border-2 border-dashed border-gray-200"
+                onPress={pickReferenceImage}
+                activeOpacity={0.7}
+              >
+                <View className="bg-blue-50 p-3 rounded-xl mb-2">
+                  <Ionicons name="images" size={24} color="#0ea5e9" />
+                </View>
+                <Text className="text-sm font-medium text-gray-700">Choose from Gallery</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.referenceButton} onPress={takeReferencePhoto}>
-                <Ionicons name="camera-outline" size={20} color="#007AFF" />
-                <Text style={styles.referenceButtonText}>Take Photo</Text>
+
+              <TouchableOpacity 
+                className="flex-1 bg-gray-50 rounded-xl p-4 items-center border-2 border-dashed border-gray-200"
+                onPress={takeReferencePhoto}
+                activeOpacity={0.7}
+              >
+                <View className="bg-green-50 p-3 rounded-xl mb-2">
+                  <Ionicons name="camera" size={24} color="#10b981" />
+                </View>
+                <Text className="text-sm font-medium text-gray-700">Take Photo</Text>
               </TouchableOpacity>
             </View>
-          )}
-          
-          {referenceImage && (
-            <Text style={styles.referenceHint}>
-              The AI will use this image as inspiration for style, composition, or subject matter.
-            </Text>
           )}
         </View>
 
