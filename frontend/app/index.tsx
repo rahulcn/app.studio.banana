@@ -1012,9 +1012,9 @@ const FreeGenerateScreen: React.FC<{
         </View>
 
         {/* Reference Image Section */}
-        <View style={styles.modernCard}>
-          <Text style={styles.modernCardTitle}>Reference Image</Text>
-          <Text style={styles.modernCardDescription}>
+        <View style={styles.directSection}>
+          <Text style={styles.directSectionTitle}>Reference Image</Text>
+          <Text style={styles.directSectionDescription}>
             Upload or take a photo to use as reference for AI generation (required)
           </Text>
           
