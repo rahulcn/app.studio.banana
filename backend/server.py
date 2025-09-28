@@ -179,7 +179,7 @@ async def get_curated_prompts():
     """Get all curated prompts for user selection"""
     return {
         "prompts": CURATED_PROMPTS,
-        "categories": ["Professional", "Artistic", "Lifestyle"],
+        "categories": ["All", "Professional", "Artistic", "Lifestyle"],
         "total_count": len(CURATED_PROMPTS)
     }
 
