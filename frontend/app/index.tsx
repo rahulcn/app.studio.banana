@@ -3391,4 +3391,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 16,
   },
+  // Clean background scroll view
+  cleanScrollView: {
+    flex: 1,
+    backgroundColor: '#f8fafc', // Light gray background
+  },
 });
