@@ -584,6 +584,7 @@ const PhotoViewerModal: React.FC<{
 
 // Gallery Screen Component - iPhone Photos Style
 const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
+  const { theme } = useTheme();
   const [generatedImages, setGeneratedImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
