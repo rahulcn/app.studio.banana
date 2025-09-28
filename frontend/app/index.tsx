@@ -943,6 +943,67 @@ const FreeGenerateScreen: React.FC<{
     loadCuratedPrompts();
   }, []);
 
+  // Load prompts by category when category changes
+  useEffect(() => {
+    const loadPromptsByCategory = async () => {
+      if (selectedCategory === 'All') {
+        // For "All", we already have all prompts loaded, no need to refetch
+        return;
+      }
+
+      try {
+        console.log(`🏷️ Loading prompts for category: ${selectedCategory}`);
+        setLoadingPrompts(true);
+        
+        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/${selectedCategory}`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load prompts for category ${selectedCategory}: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log(`✅ Loaded ${data.prompts.length} prompts for ${selectedCategory} category`);
+        setCuratedPrompts(data.prompts);
+      } catch (error) {
+        console.error(`❌ Failed to load prompts for category ${selectedCategory}:`, error);
+        Alert.alert('Error', `Failed to load ${selectedCategory} prompts. Please try again.`);
+      } finally {
+        setLoadingPrompts(false);
+      }
+    };
+    
+    loadPromptsByCategory();
+  }, [selectedCategory]);
+
+  // For "All" category, we need to load all prompts when switching back to it
+  useEffect(() => {
+    if (selectedCategory === 'All') {
+      const loadAllPrompts = async () => {
+        try {
+          console.log('📋 Loading all curated prompts for "All" category...');
+          setLoadingPrompts(true);
+          
+          const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/All`);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to load all prompts: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          console.log(`✅ Loaded ${data.prompts.length} prompts for "All" category`);
+          setCuratedPrompts(data.prompts);
+        } catch (error) {
+          console.error('❌ Failed to load all prompts:', error);
+          Alert.alert('Error', 'Failed to load prompts. Please try again.');
+        } finally {
+          setLoadingPrompts(false);
+        }
+      };
+      
+      loadAllPrompts();
+    }
+  }, [selectedCategory]);
+
   // Filter prompts by category
   const filteredPrompts = selectedCategory === 'All' 
     ? curatedPrompts 
