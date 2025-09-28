@@ -2232,4 +2232,40 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginRight: 8,
   },
+  // Modern Header Styles
+  modernHeader: {
+    backgroundColor: 'white',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  modernHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  modernBackButton: {
+    backgroundColor: '#f1f5f9',
+    padding: 8,
+    borderRadius: 12,
+  },
+  modernHeaderTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  modernProfileButton: {
+    backgroundColor: '#eff6ff',
+    padding: 8,
+    borderRadius: 12,
+  },
 });
