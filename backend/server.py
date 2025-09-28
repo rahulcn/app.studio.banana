@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict
 import asyncio
 import os
 import base64
@@ -12,6 +12,9 @@ from bson import ObjectId
 
 # Import emergent integrations for NanoBanana
 from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
+
+# Import Stripe integration
+from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
 
 # Load environment variables
 load_dotenv()
