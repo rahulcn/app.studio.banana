@@ -301,20 +301,22 @@ const PhotoViewerModal: React.FC<{
       <View style={styles.photoViewerContainer}>
         {/* Header */}
         <SafeAreaView style={styles.photoViewerHeader}>
-          <TouchableOpacity style={styles.photoViewerCloseButton} onPress={onClose}>
-            <Ionicons name="close" size={28} color="white" />
-          </TouchableOpacity>
-          <View style={styles.photoViewerHeaderContent}>
-            <Text style={styles.photoViewerTitle}>
-              {images[currentIndex]?.prompt_title || 'AI Generated'}
-            </Text>
-            <Text style={styles.photoViewerCounter}>
-              {currentIndex + 1} of {images.length}
-            </Text>
+          <View style={styles.photoViewerHeaderRow}>
+            <TouchableOpacity style={styles.photoViewerCloseButton} onPress={onClose}>
+              <Ionicons name="close" size={28} color="white" />
+            </TouchableOpacity>
+            <View style={styles.photoViewerHeaderContent}>
+              <Text style={styles.photoViewerTitle}>
+                {images[currentIndex]?.prompt_title || 'AI Generated'}
+              </Text>
+              <Text style={styles.photoViewerCounter}>
+                {currentIndex + 1} of {images.length}
+              </Text>
+            </View>
+            <TouchableOpacity style={styles.photoViewerActionButton} activeOpacity={0.7}>
+              <Ionicons name="share" size={24} color="white" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.photoViewerActionButton} activeOpacity={0.7}>
-            <Ionicons name="share" size={24} color="white" />
-          </TouchableOpacity>
         </SafeAreaView>
 
         {/* Photo Carousel */}
