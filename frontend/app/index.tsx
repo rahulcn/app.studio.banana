@@ -2547,4 +2547,73 @@ const styles = StyleSheet.create({
   modernCategoryTextUnselected: {
     color: '#64748b',
   },
+  // Prompt Selection Styles
+  modernPromptScrollView: {
+    maxHeight: 320,
+  },
+  modernPromptContainer: {
+    gap: 12,
+  },
+  modernPromptCard: {
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 2,
+    marginBottom: 12,
+  },
+  modernPromptCardSelected: {
+    backgroundColor: '#eff6ff',
+    borderColor: '#3b82f6',
+  },
+  modernPromptCardUnselected: {
+    backgroundColor: '#f8fafc',
+    borderColor: '#e2e8f0',
+  },
+  modernPromptHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  modernPromptTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '600',
+    marginRight: 8,
+  },
+  modernPromptTitleSelected: {
+    color: '#1d4ed8',
+  },
+  modernPromptTitleUnselected: {
+    color: '#1e293b',
+  },
+  modernPromptBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    minWidth: 70,
+  },
+  modernPromptBadgeText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modernPromptDescription: {
+    fontSize: 14,
+    color: '#64748b',
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  modernPromptSelected: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#e2e8f0',
+  },
+  modernPromptSelectedText: {
+    marginLeft: 6,
+    fontSize: 12,
+    color: '#0ea5e9',
+    fontWeight: '500',
+  },
 });
