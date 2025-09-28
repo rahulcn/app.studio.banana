@@ -1197,6 +1197,7 @@ const FreeGenerateScreen: React.FC<{
                   }}
                   activeOpacity={0.7}
                   hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                  pointerEvents="auto"
                 >
                   <Ionicons name="close" size={18} color="white" />
                 </TouchableOpacity>
