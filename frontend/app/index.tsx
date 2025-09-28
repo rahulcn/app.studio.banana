@@ -1498,7 +1498,7 @@ const FreeGenerateScreen: React.FC<{
 
             {/* Horizontal Prompt Selection */}
             <View style={styles.directSection}>
-              <Text style={styles.directSectionTitle}>
+              <Text style={[styles.directSectionTitle, { color: theme.colors.text }]}>
                 Select {selectedCategory === 'All' ? 'Style' : selectedCategory + ' Style'} ({filteredPrompts.length} available)
               </Text>
               <Text style={styles.directSectionDescription}>
