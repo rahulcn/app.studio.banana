@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 // Simple auth state management
 const useAuth = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{email: string} | null>(null);
   const [loading, setLoading] = useState(false);
 
   const signIn = async (email: string, password: string) => {
