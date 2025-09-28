@@ -907,26 +907,27 @@ const FreeGenerateScreen: React.FC<{
         )}
 
         {/* Generate Button */}
-        <View className="px-6 pb-6">
+        <View style={styles.modernButtonContainer}>
           <TouchableOpacity
-            className={`rounded-2xl py-4 px-6 shadow-lg ${
+            style={[
+              styles.modernGenerateButton,
               (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage)
-                ? 'bg-gray-300'
-                : 'bg-blue-600'
-            }`}
+                ? styles.modernGenerateButtonDisabled
+                : styles.modernGenerateButtonEnabled
+            ]}
             onPress={handleGenerate}
             disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
             activeOpacity={0.8}
           >
             {generating ? (
-              <View className="flex-row items-center justify-center">
+              <View style={styles.modernButtonContent}>
                 <ActivityIndicator size="small" color="white" />
-                <Text className="text-white text-lg font-semibold ml-3">Generating...</Text>
+                <Text style={styles.modernButtonText}>Generating...</Text>
               </View>
             ) : (
-              <View className="flex-row items-center justify-center">
+              <View style={styles.modernButtonContent}>
                 <Ionicons name="sparkles" size={20} color="white" />
-                <Text className="text-white text-lg font-semibold ml-2">
+                <Text style={styles.modernButtonText}>
                   {!freeTier.hasUsesLeft() 
                     ? 'Limit Reached (100/100)' 
                     : !selectedPromptId
