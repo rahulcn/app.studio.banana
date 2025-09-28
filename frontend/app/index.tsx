@@ -699,15 +699,13 @@ const FreeGenerateScreen: React.FC<{
             <Ionicons name="arrow-back" size={20} color="#374151" />
           </TouchableOpacity>
           
-          <Text style={styles.modernHeaderTitle}>Generate Image</Text>
+          <Text style={styles.modernHeaderTitle}>
+            {activeTab === 'generate' ? 'Generate Image' : 
+             activeTab === 'gallery' ? 'My Gallery' : 'Profile'}
+          </Text>
           
-          <TouchableOpacity 
-            style={styles.modernProfileButton}
-            onPress={() => setShowProfile(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
-          </TouchableOpacity>
+          {/* Empty space for balance */}
+          <View style={styles.modernBackButton} />
         </View>
       </View>
 
