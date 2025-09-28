@@ -1,35 +1,44 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend API Testing for React Native Image Generation App
-Tests NanoBanana API integration, MongoDB storage, and all API endpoints
+Backend Testing Suite for Curated Prompt System
+Tests the new curated prompt selection system with NanoBanana API integration
 """
 
 import requests
 import json
 import base64
 import time
-from datetime import datetime
+from typing import Dict, Any
 import os
-from io import BytesIO
-from PIL import Image
 
-# Configuration
+# Backend URL from environment
 BACKEND_URL = "https://aicanvas-39.preview.emergentagent.com/api"
-TEST_RESULTS = []
 
-def log_test(test_name, status, details=""):
-    """Log test results"""
-    result = {
-        "test": test_name,
-        "status": status,
-        "details": details,
-        "timestamp": datetime.now().isoformat()
-    }
-    TEST_RESULTS.append(result)
-    status_icon = "✅" if status == "PASS" else "❌" if status == "FAIL" else "⚠️"
-    print(f"{status_icon} {test_name}: {status}")
-    if details:
-        print(f"   Details: {details}")
+# Sample base64 image for testing (small test image)
+SAMPLE_IMAGE_BASE64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+
+class CuratedPromptTester:
+    def __init__(self):
+        self.backend_url = BACKEND_URL
+        self.test_results = []
+        self.total_tests = 0
+        self.passed_tests = 0
+        
+    def log_test(self, test_name: str, success: bool, details: str = ""):
+        """Log test result"""
+        self.total_tests += 1
+        if success:
+            self.passed_tests += 1
+            status = "✅ PASS"
+        else:
+            status = "❌ FAIL"
+            
+        result = f"{status} - {test_name}"
+        if details:
+            result += f": {details}"
+            
+        self.test_results.append(result)
+        print(result)
 
 def create_test_image_base64():
     """Create a simple test image in base64 format"""
