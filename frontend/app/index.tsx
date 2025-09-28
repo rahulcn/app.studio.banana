@@ -1104,11 +1104,11 @@ const FreeGenerateScreen: React.FC<{
             </View>
 
             {/* Horizontal Prompt Selection */}
-            <View style={styles.modernCard}>
-              <Text style={styles.modernCardTitle}>
+            <View style={styles.directSection}>
+              <Text style={styles.directSectionTitle}>
                 Select Professional Style ({filteredPrompts.length} available)
               </Text>
-              <Text style={styles.modernCardDescription}>
+              <Text style={styles.directSectionDescription}>
                 Swipe horizontally to browse curated AI prompts with haptic feedback.
               </Text>
               
