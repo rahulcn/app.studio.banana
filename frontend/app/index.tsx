@@ -3856,4 +3856,61 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3,
   },
+  // Skeleton Loader Styles
+  skeletonHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  skeletonIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    opacity: 0.3,
+  },
+  skeletonBadge: {
+    width: 60,
+    height: 20,
+    borderRadius: 10,
+    opacity: 0.3,
+  },
+  skeletonTitle: {
+    height: 20,
+    width: '70%',
+    borderRadius: 4,
+    marginBottom: 12,
+    opacity: 0.3,
+  },
+  skeletonDescription: {
+    height: 14,
+    width: '100%',
+    borderRadius: 4,
+    marginBottom: 8,
+    opacity: 0.3,
+  },
+  skeletonDescriptionShort: {
+    height: 14,
+    width: '85%',
+    borderRadius: 4,
+    marginBottom: 16,
+    opacity: 0.3,
+  },
+  skeletonFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  skeletonFooterText: {
+    height: 14,
+    width: 50,
+    borderRadius: 4,
+    opacity: 0.3,
+  },
+  skeletonFooterIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    opacity: 0.3,
+  },
 });
