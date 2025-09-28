@@ -337,15 +337,19 @@ const PhotoViewerModal: React.FC<{
           onScroll={handleScroll}
           scrollEventThrottle={16}
           style={styles.photoViewerScrollView}
+          contentContainerStyle={{ alignItems: 'center' }}
         >
           {images.map((image, index) => (
             <View key={image.id || index} style={[styles.photoViewerImageContainer, { width: screenWidth }]}>
               <ScrollView
                 maximumZoomScale={3}
-                minimumZoomScale={0.5}
+                minimumZoomScale={1}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.photoViewerZoomContainer}
+                centerContent={true}
+                bounces={false}
+                bouncesZoom={true}
               >
                 <Image
                   source={{ uri: `data:image/png;base64,${image.generated_image}` }}
@@ -353,12 +357,27 @@ const PhotoViewerModal: React.FC<{
                     styles.photoViewerImage,
                     {
                       width: screenWidth,
-                      height: screenHeight * 0.7,
+                      height: screenHeight * 0.6,
                     }
                   ]}
                   resizeMode="contain"
                 />
               </ScrollView>
+              
+              {/* Navigation indicators */}
+              {images.length > 1 && (
+                <View style={styles.photoViewerIndicators}>
+                  {images.map((_, i) => (
+                    <View
+                      key={i}
+                      style={[
+                        styles.photoViewerDot,
+                        currentIndex === i && styles.photoViewerDotActive
+                      ]}
+                    />
+                  ))}
+                </View>
+              )}
             </View>
           ))}
         </ScrollView>
