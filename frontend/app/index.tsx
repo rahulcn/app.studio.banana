@@ -3030,4 +3030,109 @@ const styles = StyleSheet.create({
     color: '#64748b',
     marginTop: 2,
   },
+  // iPhone Photos Style Gallery
+  iPhoneGalleryContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  iPhoneGalleryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 2,
+    paddingTop: 2,
+  },
+  iPhoneGalleryThumbnail: {
+    width: '33.333%',
+    aspectRatio: 1,
+    padding: 2,
+  },
+  iPhoneGalleryImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 0,
+  },
+  // Photo Viewer Modal Styles
+  photoViewerContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  photoViewerHeader: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  photoViewerHeaderContent: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  photoViewerCloseButton: {
+    position: 'absolute',
+    left: 20,
+    top: 50,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoViewerActionButton: {
+    position: 'absolute',
+    right: 20,
+    top: 50,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoViewerTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  photoViewerCounter: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  photoViewerScrollView: {
+    flex: 1,
+  },
+  photoViewerImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photoViewerZoomContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photoViewerImage: {
+    borderRadius: 0,
+  },
+  photoViewerFooter: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  photoViewerDate: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  photoViewerCategory: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 12,
+  },
 });
