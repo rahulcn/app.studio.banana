@@ -801,26 +801,28 @@ const FreeGenerateScreen: React.FC<{
         ) : (
           <>
             {/* Category Selection */}
-            <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
-              <Text className="text-lg font-bold text-gray-900 mb-4">Choose Style Category</Text>
+            <View style={styles.modernCard}>
+              <Text style={styles.modernCardTitle}>Choose Style Category</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View className="flex-row space-x-3">
+                <View style={styles.modernCategoryContainer}>
                   {categories.map((category) => (
                     <TouchableOpacity
                       key={category}
-                      className={`px-4 py-2 rounded-full border-2 ${
+                      style={[
+                        styles.modernCategoryButton,
                         selectedCategory === category 
-                          ? 'bg-blue-50 border-blue-500' 
-                          : 'bg-gray-50 border-gray-200'
-                      }`}
+                          ? styles.modernCategoryButtonSelected 
+                          : styles.modernCategoryButtonUnselected
+                      ]}
                       onPress={() => setSelectedCategory(category)}
                       activeOpacity={0.7}
                     >
-                      <Text className={`font-medium ${
+                      <Text style={[
+                        styles.modernCategoryText,
                         selectedCategory === category 
-                          ? 'text-blue-600' 
-                          : 'text-gray-600'
-                      }`}>
+                          ? styles.modernCategoryTextSelected 
+                          : styles.modernCategoryTextUnselected
+                      ]}>
                         {category}
                       </Text>
                     </TouchableOpacity>
