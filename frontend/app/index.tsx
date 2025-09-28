@@ -638,6 +638,7 @@ const FreeGenerateScreen: React.FC<{
   const [loadingPrompts, setLoadingPrompts] = useState(true);
   const [showFullscreenPreview, setShowFullscreenPreview] = useState(false);
   const [savingImage, setSavingImage] = useState(false);
+  const horizontalScrollRef = useRef<ScrollView>(null);
   const [activeTab, setActiveTab] = useState<'generate' | 'gallery' | 'profile'>('generate');
 
   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
