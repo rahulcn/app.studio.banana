@@ -1451,7 +1451,7 @@ const FreeGenerateScreen: React.FC<{
       )}
       
       {/* Bottom Tab Navigation */}
-      <View style={styles.tabBarContainer}>
+      <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
         <TouchableOpacity 
           style={[styles.tabButton, activeTab === 'generate' && styles.tabButtonActive]}
           onPress={() => setActiveTab('generate')}
@@ -1460,9 +1460,13 @@ const FreeGenerateScreen: React.FC<{
           <Ionicons 
             name={activeTab === 'generate' ? 'sparkles' : 'sparkles-outline'} 
             size={24} 
-            color={activeTab === 'generate' ? '#3b82f6' : '#9ca3af'} 
+            color={activeTab === 'generate' ? theme.colors.primary : theme.colors.textSecondary} 
           />
-          <Text style={[styles.tabLabel, activeTab === 'generate' && styles.tabLabelActive]}>
+          <Text style={[
+            styles.tabLabel, 
+            { color: theme.colors.textSecondary },
+            activeTab === 'generate' && { color: theme.colors.primary }
+          ]}>
             Generate
           </Text>
         </TouchableOpacity>
@@ -1475,9 +1479,13 @@ const FreeGenerateScreen: React.FC<{
           <Ionicons 
             name={activeTab === 'gallery' ? 'images' : 'images-outline'} 
             size={24} 
-            color={activeTab === 'gallery' ? '#3b82f6' : '#9ca3af'} 
+            color={activeTab === 'gallery' ? theme.colors.primary : theme.colors.textSecondary} 
           />
-          <Text style={[styles.tabLabel, activeTab === 'gallery' && styles.tabLabelActive]}>
+          <Text style={[
+            styles.tabLabel, 
+            { color: theme.colors.textSecondary },
+            activeTab === 'gallery' && { color: theme.colors.primary }
+          ]}>
             Gallery
           </Text>
         </TouchableOpacity>
@@ -1490,9 +1498,13 @@ const FreeGenerateScreen: React.FC<{
           <Ionicons 
             name={activeTab === 'profile' ? 'person' : 'person-outline'} 
             size={24} 
-            color={activeTab === 'profile' ? '#3b82f6' : '#9ca3af'} 
+            color={activeTab === 'profile' ? theme.colors.primary : theme.colors.textSecondary} 
           />
-          <Text style={[styles.tabLabel, activeTab === 'profile' && styles.tabLabelActive]}>
+          <Text style={[
+            styles.tabLabel, 
+            { color: theme.colors.textSecondary },
+            activeTab === 'profile' && { color: theme.colors.primary }
+          ]}>
             Profile
           </Text>
         </TouchableOpacity>
