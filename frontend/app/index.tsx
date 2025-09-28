@@ -108,46 +108,76 @@ const useFreeTier = (): FreeTier => {
 // Welcome/Onboarding Screen
 const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.welcomeContainer}>
-        <View style={styles.welcomeHeader}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="image" size={64} color="#007AFF" />
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {/* Header Section */}
+        <View className="flex-1 justify-center items-center px-6 py-12">
+          <View className="mb-12 items-center">
+            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
+              AI Canvas Studio
+            </Text>
+            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
+              Transform your photos with professional AI artistry
+            </Text>
           </View>
-          <Text style={styles.welcomeTitle}>AI Image Generator</Text>
-          <Text style={styles.welcomeSubtitle}>
-            Transform your ideas into stunning images with AI
-          </Text>
+
+          {/* Feature Cards */}
+          <View className="w-full max-w-sm mb-8">
+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+              <View className="flex-row items-center mb-3">
+                <View className="bg-blue-50 p-2 rounded-xl mr-4">
+                  <Ionicons name="brush" size={24} color="#0ea5e9" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
+                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
+                </View>
+              </View>
+            </View>
+
+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+              <View className="flex-row items-center mb-3">
+                <View className="bg-green-50 p-2 rounded-xl mr-4">
+                  <Ionicons name="flash" size={24} color="#10b981" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
+                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
+                </View>
+              </View>
+            </View>
+
+            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
+              <View className="flex-row items-center mb-3">
+                <View className="bg-purple-50 p-2 rounded-xl mr-4">
+                  <Ionicons name="gift" size={24} color="#8b5cf6" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
+                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* CTA Section */}
+          <View className="w-full max-w-sm items-center">
+            <Text className="text-sm text-gray-500 mb-6 text-center">
+              ✨ Start with 100 free image generations
+            </Text>
+
+            <TouchableOpacity 
+              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
+              onPress={onGetStarted}
+              activeOpacity={0.9}
+            >
+              <View className="flex-row items-center justify-center">
+                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
+                <Ionicons name="arrow-forward" size={20} color="white" />
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View style={styles.benefitsSection}>
-          <View style={styles.benefit}>
-            <Ionicons name="flash" size={32} color="#007AFF" />
-            <Text style={styles.benefitTitle}>Instant Generation</Text>
-            <Text style={styles.benefitText}>Create stunning images in seconds</Text>
-          </View>
-          
-          <View style={styles.benefit}>
-            <Ionicons name="color-palette" size={32} color="#FF6B35" />
-            <Text style={styles.benefitTitle}>Multiple Styles</Text>
-            <Text style={styles.benefitText}>Artistic, photorealistic, vintage & more</Text>
-          </View>
-          
-          <View style={styles.benefit}>
-            <Ionicons name="gift" size={32} color="#34C759" />
-            <Text style={styles.benefitTitle}>Free to Start</Text>
-            <Text style={styles.benefitText}>100 free generations, no signup required</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.getStartedButton} onPress={onGetStarted}>
-          <Text style={styles.getStartedButtonText}>Get Started Free</Text>
-          <Ionicons name="arrow-forward" size={20} color="white" />
-        </TouchableOpacity>
-
-        <Text style={styles.freeTrialText}>
-          ✨ Start with 100 free image generations
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
