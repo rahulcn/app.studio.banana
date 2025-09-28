@@ -2769,4 +2769,141 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: 8,
   },
+  // Bottom Tab Navigation Styles
+  tabBarContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+    paddingTop: 8,
+    paddingBottom: 32, // Extra padding for safe area
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  tabButton: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  tabButtonActive: {
+    // No additional styling needed - color handled by icon and text
+  },
+  tabLabel: {
+    fontSize: 12,
+    color: '#9ca3af',
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  tabLabelActive: {
+    color: '#3b82f6',
+    fontWeight: '600',
+  },
+  // Gallery Screen Styles
+  modernLoadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 64,
+  },
+  modernLoadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: '#64748b',
+    textAlign: 'center',
+  },
+  modernEmptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 64,
+    paddingHorizontal: 32,
+  },
+  modernEmptyStateIcon: {
+    marginBottom: 24,
+  },
+  modernEmptyStateTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  modernEmptyStateText: {
+    fontSize: 16,
+    color: '#64748b',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  modernGalleryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    padding: 24,
+  },
+  modernGalleryItem: {
+    width: '47%',
+    aspectRatio: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#f8fafc',
+  },
+  modernGalleryImage: {
+    width: '100%',
+    height: '100%',
+  },
+  modernGalleryOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 8,
+  },
+  modernGalleryTitle: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  modernGalleryDate: {
+    color: '#d1d5db',
+    fontSize: 10,
+  },
+  // Profile Screen Styles
+  modernProgressRemainingText: {
+    fontSize: 12,
+    color: '#64748b',
+    marginTop: 8,
+  },
+  modernSettingsOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
+  },
+  modernSettingsIcon: {
+    padding: 8,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  modernSettingsContent: {
+    flex: 1,
+  },
+  modernSettingsTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  modernSettingsDescription: {
+    fontSize: 14,
+    color: '#64748b',
+    marginTop: 2,
+  },
 });
