@@ -290,6 +290,7 @@ const FreeGenerateScreen: React.FC<{
               onPress={() => {
                 setGeneratedImage(null);
                 setPrompt('');
+                setReferenceImage(null);
               }}
             >
               <Ionicons name="add" size={20} color="#007AFF" />
