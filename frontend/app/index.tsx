@@ -58,7 +58,7 @@ const useFreeTier = (): FreeTier => {
   const [usageCount, setUsageCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   
-  const FREE_LIMIT = 5;
+  const FREE_LIMIT = 100;
 
   useEffect(() => {
     // Load usage from local storage
