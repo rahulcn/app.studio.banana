@@ -3011,6 +3011,7 @@ const styles = StyleSheet.create({
   modernReferenceImageWrapper: {
     position: 'relative',
     marginBottom: 12,
+    alignSelf: 'center',
   },
   modernReferenceImage: {
     width: 96,
