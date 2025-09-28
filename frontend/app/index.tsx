@@ -686,22 +686,22 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView style={styles.modernContainer}>
       {/* Modern Header */}
-      <View className="bg-white px-6 py-4 border-b border-gray-100 shadow-sm">
-        <View className="flex-row items-center justify-between">
+      <View style={styles.modernHeader}>
+        <View style={styles.modernHeaderContent}>
           <TouchableOpacity 
-            className="bg-gray-100 p-2 rounded-xl"
+            style={styles.modernBackButton}
             onPress={onBack}
             activeOpacity={0.7}
           >
             <Ionicons name="arrow-back" size={20} color="#374151" />
           </TouchableOpacity>
           
-          <Text className="text-xl font-bold text-gray-900">Generate Image</Text>
+          <Text style={styles.modernHeaderTitle}>Generate Image</Text>
           
           <TouchableOpacity 
-            className="bg-blue-50 p-2 rounded-xl"
+            style={styles.modernProfileButton}
             onPress={() => setShowProfile(true)}
             activeOpacity={0.7}
           >
