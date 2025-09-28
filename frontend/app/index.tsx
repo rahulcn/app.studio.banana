@@ -1148,19 +1148,19 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <SafeAreaView style={styles.modernContainer}>
+    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background }]}>
       {/* Modern Header */}
-      <View style={styles.modernHeader}>
+      <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.modernHeaderContent}>
           <TouchableOpacity 
             style={styles.modernBackButton}
             onPress={onBack}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={20} color="#374151" />
+            <Ionicons name="arrow-back" size={20} color={theme.colors.text} />
           </TouchableOpacity>
           
-          <Text style={styles.modernHeaderTitle}>
+          <Text style={[styles.modernHeaderTitle, { color: theme.colors.text }]}>
             {activeTab === 'generate' ? 'Generate Image' : 
              activeTab === 'gallery' ? 'My Gallery' : 'Profile'}
           </Text>
@@ -1172,24 +1172,24 @@ const FreeGenerateScreen: React.FC<{
 
       {/* Tab Content */}
       {activeTab === 'generate' && (
-        <ScrollView style={styles.cleanScrollView}>
+        <ScrollView style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}>
           {/* Free Tier Card */}
-          <View style={styles.modernCard}>
+          <View style={[styles.modernCard, { backgroundColor: theme.colors.card }]}>
           <View style={styles.modernCardHeader}>
             <View style={styles.modernCardIcon}>
               <Ionicons name="flash" size={20} color="#0ea5e9" />
             </View>
-            <Text style={styles.modernCardTitle}>Free Tier</Text>
+            <Text style={[styles.modernCardTitle, { color: theme.colors.text }]}>Free Tier</Text>
           </View>
           
           <View style={styles.modernProgressSection}>
             <View style={styles.modernProgressHeader}>
-              <Text style={styles.modernProgressLabel}>Generations remaining</Text>
-              <Text style={styles.modernProgressValue}>
+              <Text style={[styles.modernProgressLabel, { color: theme.colors.text }]}>Generations remaining</Text>
+              <Text style={[styles.modernProgressValue, { color: theme.colors.text }]}>
                 {freeTier.remainingUses} / {freeTier.FREE_LIMIT}
               </Text>
             </View>
-            <View style={styles.modernProgressBarBackground}>
+            <View style={[styles.modernProgressBarBackground, { backgroundColor: theme.colors.border }]}>
               <View 
                 style={[
                   styles.modernProgressBarFill,
