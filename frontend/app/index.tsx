@@ -172,6 +172,8 @@ const FreeGenerateScreen: React.FC<{
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
   const [loadingPrompts, setLoadingPrompts] = useState(true);
+  const [showFullscreenPreview, setShowFullscreenPreview] = useState(false);
+  const [savingImage, setSavingImage] = useState(false);
 
   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
 
