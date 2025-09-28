@@ -685,10 +685,12 @@ const FreeGenerateScreen: React.FC<{
     const centerOffset = (screenWidth - cardWidth) / 2;
     const scrollToX = cardPosition - centerOffset;
     
-    // Scroll to center the selected card
+    // Scroll to center the selected card with more obvious animation
+    console.log(`📍 Snapping card to center: scrollToX=${scrollToX}, cardPosition=${cardPosition}`);
     horizontalScrollRef.current?.scrollTo({
       x: Math.max(0, scrollToX),
-      animated: true
+      animated: true,
+      duration: 500 // Add explicit duration for more noticeable animation
     });
   };
 
