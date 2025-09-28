@@ -628,9 +628,9 @@ class CuratedPromptTester:
             return False
 
     def run_all_tests(self):
-        """Run comprehensive backend API tests after dark mode implementation"""
+        """Run comprehensive backend API tests including new Stripe payment integration"""
         print("🧪 Starting Comprehensive Backend API Tests")
-        print("🎯 Focus: Health check, 12 curated prompts, MongoDB connection, NanoBanana API integration")
+        print("🎯 Focus: Health check, curated prompts, MongoDB connection, NanoBanana API integration, and NEW Stripe payment integration")
         print("=" * 80)
         
         # Test 1: Health check
@@ -650,13 +650,31 @@ class CuratedPromptTester:
         # Test 5: MongoDB storage functionality
         self.test_mongodb_storage()
         
-        # Test 6: NanoBanana API integration via curated prompt
+        # ===== NEW STRIPE PAYMENT INTEGRATION TESTS =====
+        print("\n💳 Testing NEW Stripe Payment Integration...")
+        
+        # Test 6: Payment packages endpoint
+        self.test_payment_packages_endpoint()
+        
+        # Test 7: Checkout session creation
+        checkout_success, session_id = self.test_checkout_session_creation()
+        
+        # Test 8: Payment status endpoint (using session_id from checkout if available)
+        self.test_payment_status_endpoint(session_id)
+        
+        # Test 9: Invalid package handling
+        self.test_invalid_package_checkout()
+        
+        # ===== EXISTING FUNCTIONALITY VERIFICATION =====
+        print("\n🔄 Verifying existing functionality still works...")
+        
+        # Test 10: NanoBanana API integration via curated prompt
         self.test_generate_with_curated_prompt()
         
-        # Test 7: General image generation (NanoBanana API)
+        # Test 11: General image generation (NanoBanana API)
         self.test_general_image_generation()
         
-        # Test 8: Error handling tests
+        # Test 12: Error handling tests
         self.test_invalid_category()
         self.test_generate_with_invalid_prompt_id()
         self.test_generate_without_image()
@@ -674,7 +692,7 @@ class CuratedPromptTester:
         print(f"📈 Success Rate: {success_rate:.1f}%")
         
         if success_rate >= 90:
-            print("🎉 Excellent! Backend is fully functional after dark mode implementation.")
+            print("🎉 Excellent! Backend including new Stripe payment integration is fully functional.")
         elif success_rate >= 80:
             print("✅ Good! Backend is working well with minor issues.")
         elif success_rate >= 60:
@@ -685,7 +703,7 @@ class CuratedPromptTester:
         # Save detailed results
         results_data = {
             "timestamp": datetime.now().isoformat(),
-            "test_focus": "Post dark mode implementation verification",
+            "test_focus": "Stripe payment integration testing + existing functionality verification",
             "summary": {
                 "passed": self.passed_tests,
                 "total": self.total_tests,
