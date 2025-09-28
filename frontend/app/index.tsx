@@ -173,6 +173,36 @@ const FreeGenerateScreen: React.FC<{
 
   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
 
+  // Load curated prompts on component mount
+  useEffect(() => {
+    const loadCuratedPrompts = async () => {
+      try {
+        console.log('📋 Loading curated prompts from backend...');
+        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load prompts: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log(`✅ Loaded ${data.prompts.length} curated prompts`);
+        setCuratedPrompts(data.prompts);
+      } catch (error) {
+        console.error('❌ Failed to load curated prompts:', error);
+        Alert.alert('Error', 'Failed to load prompts. Please try again.');
+      } finally {
+        setLoadingPrompts(false);
+      }
+    };
+    
+    loadCuratedPrompts();
+  }, []);
+
+  // Filter prompts by category
+  const filteredPrompts = selectedCategory === 'All' 
+    ? curatedPrompts 
+    : curatedPrompts.filter(prompt => prompt.category === selectedCategory);
+
   const pickReferenceImage = async () => {
     try {
       // Request permission to access media library
