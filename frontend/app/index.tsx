@@ -35,7 +35,7 @@ const useAuth = () => {
 };
 
 // Auth Screen Component
-const AuthScreen = ({ onSignIn, onBack }) => {
+const AuthScreen = ({ onSignIn, onBack }: {onSignIn: (email: string, password: string) => void, onBack: () => void}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
