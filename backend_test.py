@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Backend Testing Suite for Curated Prompt System
-Tests the new curated prompt selection system with NanoBanana API integration
+Backend API Testing Suite for AI Image Generator
+Tests all backend endpoints after dark mode implementation
+Focus: Health check, 12 curated prompts, MongoDB connection, NanoBanana API integration
 """
 
 import requests
@@ -10,9 +11,23 @@ import base64
 import time
 from typing import Dict, Any
 import os
+from datetime import datetime
 
-# Backend URL from environment
-BACKEND_URL = "https://promptgen-7.preview.emergentagent.com/api"
+# Get backend URL from frontend .env file
+def get_backend_url():
+    try:
+        with open('/app/frontend/.env', 'r') as f:
+            for line in f:
+                if line.startswith('EXPO_PUBLIC_BACKEND_URL='):
+                    return line.split('=', 1)[1].strip()
+    except:
+        pass
+    return "https://promptgen-7.preview.emergentagent.com"
+
+BASE_URL = get_backend_url()
+BACKEND_URL = f"{BASE_URL}/api"
+
+print(f"🔗 Testing backend at: {BACKEND_URL}")
 
 # Sample base64 image for testing (small test image)
 SAMPLE_IMAGE_BASE64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
