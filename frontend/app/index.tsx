@@ -844,7 +844,12 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
         <TouchableOpacity 
           style={styles.modernSettingsOption} 
           activeOpacity={0.7}
-          onPress={showUpgradeOptions}
+          onPress={() => {
+            console.log('🚨 UPGRADE BUTTON PRESSED! Touch event received');
+            console.log('🔍 isUpgrading:', isUpgrading);
+            console.log('🔍 paymentPackages:', paymentPackages);
+            showUpgradeOptions();
+          }}
           disabled={isUpgrading}
         >
           <View style={[styles.modernSettingsIcon, { backgroundColor: '#dcfce7' }]}>
