@@ -161,6 +161,74 @@ interface CuratedPrompt {
   category: string;
 }
 
+// Full-screen Image Preview Component
+const FullscreenImagePreview: React.FC<{
+  visible: boolean;
+  imageUri: string;
+  onClose: () => void;
+  onSave: () => void;
+  saving: boolean;
+}> = ({ visible, imageUri, onClose, onSave, saving }) => {
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
+  return (
+    <Modal visible={visible} transparent={true} animationType="fade">
+      <View style={styles.fullscreenModalContainer}>
+        {/* Header with close and save buttons */}
+        <SafeAreaView style={styles.fullscreenHeader}>
+          <TouchableOpacity style={styles.fullscreenCloseButton} onPress={onClose}>
+            <Ionicons name="close" size={28} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.fullscreenSaveButton, saving && styles.fullscreenSaveButtonDisabled]} 
+            onPress={onSave}
+            disabled={saving}
+          >
+            {saving ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Ionicons name="download" size={24} color="white" />
+            )}
+            <Text style={styles.fullscreenSaveButtonText}>
+              {saving ? 'Saving...' : 'Save'}
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+
+        {/* Image container with zoom and pan capabilities */}
+        <View style={styles.fullscreenImageContainer}>
+          <ScrollView
+            maximumZoomScale={3}
+            minimumZoomScale={0.5}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.fullscreenScrollContent}
+          >
+            <Image
+              source={{ uri: imageUri }}
+              style={[
+                styles.fullscreenImage,
+                {
+                  width: screenWidth,
+                  height: screenHeight * 0.8, // Leave space for header
+                }
+              ]}
+              resizeMode="contain"
+            />
+          </ScrollView>
+        </View>
+
+        {/* Bottom instructions */}
+        <View style={styles.fullscreenFooter}>
+          <Text style={styles.fullscreenInstructions}>
+            📱 Pinch to zoom • Drag to pan • Tap close to exit
+          </Text>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 // Free Tier Generate Screen with Curated Prompts
 const FreeGenerateScreen: React.FC<{
   onBack: () => void;
