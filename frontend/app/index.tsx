@@ -472,51 +472,86 @@ const FreeGenerateScreen: React.FC<{
           )}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {referenceImage ? 'Describe the Changes' : 'Describe Your Image'}
-          </Text>
-          <TextInput
-            style={styles.promptInput}
-            placeholder={
-              referenceImage 
-                ? "Transform this into a watercolor painting, make it more dramatic, change the style to vintage..."
-                : "A beautiful sunset over mountains, a cute cat playing, abstract art..."
-            }
-            value={prompt}
-            onChangeText={setPrompt}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Choose Style</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.stylesContainer}>
-              {styles_list.map((style) => (
-                <TouchableOpacity
-                  key={style}
-                  style={[
-                    styles.styleCard,
-                    selectedStyle === style && styles.selectedStyleCard,
-                  ]}
-                  onPress={() => setSelectedStyle(style)}
-                >
-                  <Text
-                    style={[
-                      styles.styleName,
-                      selectedStyle === style && styles.selectedStyleName,
-                    ]}
-                  >
-                    {style}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+        {loadingPrompts ? (
+          <View style={styles.loadingPromptsContainer}>
+            <ActivityIndicator size="large" color="#007AFF" />
+            <Text style={styles.loadingPromptsText}>Loading curated prompts...</Text>
+          </View>
+        ) : (
+          <>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Choose Style Category</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.stylesContainer}>
+                  {categories.map((category) => (
+                    <TouchableOpacity
+                      key={category}
+                      style={[
+                        styles.styleCard,
+                        selectedCategory === category && styles.selectedStyleCard,
+                      ]}
+                      onPress={() => setSelectedCategory(category)}
+                    >
+                      <Text
+                        style={[
+                          styles.styleName,
+                          selectedCategory === category && styles.selectedStyleName,
+                        ]}
+                      >
+                        {category}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
             </View>
-          </ScrollView>
-        </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>
+                Select Professional Style ({filteredPrompts.length} available)
+              </Text>
+              <Text style={styles.promptHint}>
+                Choose from our curated collection of professional AI prompts designed for high-quality image generation.
+              </Text>
+              
+              <ScrollView style={styles.promptsScrollView} showsVerticalScrollIndicator={false}>
+                {filteredPrompts.map((prompt) => (
+                  <TouchableOpacity
+                    key={prompt.id}
+                    style={[
+                      styles.promptCard,
+                      selectedPromptId === prompt.id && styles.selectedPromptCard,
+                    ]}
+                    onPress={() => setSelectedPromptId(prompt.id)}
+                  >
+                    <View style={styles.promptCardHeader}>
+                      <Text style={[
+                        styles.promptTitle,
+                        selectedPromptId === prompt.id && styles.selectedPromptTitle
+                      ]}>
+                        {prompt.title}
+                      </Text>
+                      <View style={[
+                        styles.categoryBadge,
+                        { backgroundColor: prompt.category === 'Professional' ? '#007AFF' : 
+                                         prompt.category === 'Artistic' ? '#FF6B35' : '#34C759' }
+                      ]}>
+                        <Text style={styles.categoryBadgeText}>{prompt.category}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.promptDescription}>{prompt.description}</Text>
+                    {selectedPromptId === prompt.id && (
+                      <View style={styles.selectedIndicator}>
+                        <Ionicons name="checkmark-circle" size={20} color="#007AFF" />
+                        <Text style={styles.selectedText}>Selected</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </>
+        )}
 
         <TouchableOpacity
           style={[
