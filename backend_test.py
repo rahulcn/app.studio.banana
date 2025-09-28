@@ -39,7 +39,7 @@ class CuratedPromptTester:
             
         self.test_results.append(result)
         print(result)
-
+        
     def test_health_endpoint(self):
         """Test basic health endpoint"""
         try:
@@ -58,288 +58,303 @@ class CuratedPromptTester:
         except Exception as e:
             self.log_test("Health Check", False, f"Connection error: {str(e)}")
             return False
-
-def test_get_prompts():
-    """Test fetching predefined prompt categories"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/prompts", timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            prompts = data.get("prompts", [])
-            
-            if len(prompts) > 0:
-                # Check if expected categories exist
-                expected_categories = ["artistic", "fantasy", "vintage", "creative"]
-                found_categories = [p.get("id") for p in prompts]
+    
+    def test_get_all_prompts(self):
+        """Test /api/prompts endpoint - should return all 12 curated prompts"""
+        try:
+            response = requests.get(f"{self.backend_url}/prompts", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
                 
-                missing_categories = [cat for cat in expected_categories if cat not in found_categories]
+                # Check structure
+                if "prompts" not in data:
+                    self.log_test("Get All Prompts", False, "Missing 'prompts' field")
+                    return False
+                    
+                if "categories" not in data:
+                    self.log_test("Get All Prompts", False, "Missing 'categories' field")
+                    return False
+                    
+                if "total_count" not in data:
+                    self.log_test("Get All Prompts", False, "Missing 'total_count' field")
+                    return False
                 
-                if not missing_categories:
-                    log_test("Get Prompts", "PASS", f"Found {len(prompts)} categories: {found_categories}")
-                    return prompts
-                else:
-                    log_test("Get Prompts", "FAIL", f"Missing categories: {missing_categories}")
-                    return None
+                # Check count
+                prompts = data["prompts"]
+                if len(prompts) != 12:
+                    self.log_test("Get All Prompts", False, f"Expected 12 prompts, got {len(prompts)}")
+                    return False
+                
+                if data["total_count"] != 12:
+                    self.log_test("Get All Prompts", False, f"total_count should be 12, got {data['total_count']}")
+                    return False
+                
+                # Check categories
+                expected_categories = ["Professional", "Artistic", "Lifestyle"]
+                if set(data["categories"]) != set(expected_categories):
+                    self.log_test("Get All Prompts", False, f"Categories mismatch. Expected {expected_categories}, got {data['categories']}")
+                    return False
+                
+                # Check prompt structure
+                for i, prompt in enumerate(prompts):
+                    required_fields = ["id", "title", "description", "prompt", "category"]
+                    for field in required_fields:
+                        if field not in prompt:
+                            self.log_test("Get All Prompts", False, f"Prompt {i+1} missing field: {field}")
+                            return False
+                
+                # Check specific prompts exist
+                prompt_ids = [p["id"] for p in prompts]
+                expected_ids = list(range(1, 13))  # 1 to 12
+                if set(prompt_ids) != set(expected_ids):
+                    self.log_test("Get All Prompts", False, f"Prompt IDs mismatch. Expected {expected_ids}, got {prompt_ids}")
+                    return False
+                
+                self.log_test("Get All Prompts", True, f"All 12 prompts returned with correct structure")
+                return True
+                
             else:
-                log_test("Get Prompts", "FAIL", "No prompts returned")
-                return None
-        else:
-            log_test("Get Prompts", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except Exception as e:
-        log_test("Get Prompts", "FAIL", f"Exception: {str(e)}")
-        return None
-
-def test_image_generation():
-    """Test text-to-image generation without uploaded image"""
-    try:
-        payload = {
-            "prompt": "A beautiful sunset over mountains with vibrant colors",
-            "prompt_category": "artistic"
-        }
-        
-        response = requests.post(
-            f"{BACKEND_URL}/generate-image", 
-            json=payload, 
-            timeout=60  # Longer timeout for AI generation
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            
-            # Check required fields
-            required_fields = ["id", "prompt", "generated_image", "created_at"]
-            missing_fields = [field for field in required_fields if field not in data]
-            
-            if not missing_fields:
-                # Verify base64 image data
-                if data["generated_image"] and len(data["generated_image"]) > 100:
-                    log_test("Image Generation", "PASS", f"Generated image ID: {data['id']}")
-                    return data
-                else:
-                    log_test("Image Generation", "FAIL", "Generated image data is invalid or empty")
-                    return None
+                self.log_test("Get All Prompts", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Get All Prompts", False, f"Error: {str(e)}")
+            return False
+    
+    def test_get_prompts_by_category(self):
+        """Test /api/prompts/categories/Professional endpoint"""
+        try:
+            response = requests.get(f"{self.backend_url}/prompts/categories/Professional", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check structure
+                if "prompts" not in data:
+                    self.log_test("Get Prompts by Category", False, "Missing 'prompts' field")
+                    return False
+                    
+                if "category" not in data:
+                    self.log_test("Get Prompts by Category", False, "Missing 'category' field")
+                    return False
+                    
+                if "count" not in data:
+                    self.log_test("Get Prompts by Category", False, "Missing 'count' field")
+                    return False
+                
+                # Check category
+                if data["category"] != "Professional":
+                    self.log_test("Get Prompts by Category", False, f"Expected category 'Professional', got '{data['category']}'")
+                    return False
+                
+                # Check all returned prompts are Professional
+                prompts = data["prompts"]
+                for prompt in prompts:
+                    if prompt["category"] != "Professional":
+                        self.log_test("Get Prompts by Category", False, f"Found non-Professional prompt: {prompt['title']}")
+                        return False
+                
+                # Check count matches
+                if len(prompts) != data["count"]:
+                    self.log_test("Get Prompts by Category", False, f"Count mismatch: {len(prompts)} vs {data['count']}")
+                    return False
+                
+                # Should have multiple Professional prompts based on the code
+                if len(prompts) < 3:
+                    self.log_test("Get Prompts by Category", False, f"Expected multiple Professional prompts, got {len(prompts)}")
+                    return False
+                
+                self.log_test("Get Prompts by Category", True, f"Found {len(prompts)} Professional prompts")
+                return True
+                
             else:
-                log_test("Image Generation", "FAIL", f"Missing fields: {missing_fields}")
-                return None
-        else:
-            log_test("Image Generation", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except Exception as e:
-        log_test("Image Generation", "FAIL", f"Exception: {str(e)}")
-        return None
-
-def test_image_editing():
-    """Test image transformation with uploaded base64 image + prompt"""
-    try:
-        # Create test image
-        test_image_b64 = create_test_image_base64()
-        if not test_image_b64:
-            log_test("Image Editing", "FAIL", "Could not create test image")
-            return None
-        
-        payload = {
-            "prompt": "Transform this into a beautiful watercolor painting with soft brushstrokes",
-            "image_data": test_image_b64,
-            "prompt_category": "artistic"
-        }
-        
-        response = requests.post(
-            f"{BACKEND_URL}/generate-image", 
-            json=payload, 
-            timeout=60
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            
-            # Check required fields
-            required_fields = ["id", "prompt", "generated_image", "original_image", "created_at"]
-            missing_fields = [field for field in required_fields if field not in data]
-            
-            if not missing_fields:
-                # Verify both original and generated images
-                if (data["generated_image"] and len(data["generated_image"]) > 100 and
-                    data["original_image"] and len(data["original_image"]) > 100):
-                    log_test("Image Editing", "PASS", f"Edited image ID: {data['id']}")
-                    return data
-                else:
-                    log_test("Image Editing", "FAIL", "Image data is invalid or empty")
-                    return None
-            else:
-                log_test("Image Editing", "FAIL", f"Missing fields: {missing_fields}")
-                return None
-        else:
-            log_test("Image Editing", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except Exception as e:
-        log_test("Image Editing", "FAIL", f"Exception: {str(e)}")
-        return None
-
-def test_get_images():
-    """Test fetching user's image gallery"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/images", timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            images = data.get("images", [])
-            
-            log_test("Get Images Gallery", "PASS", f"Retrieved {len(images)} images")
-            return images
-        else:
-            log_test("Get Images Gallery", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except Exception as e:
-        log_test("Get Images Gallery", "FAIL", f"Exception: {str(e)}")
-        return None
-
-def test_get_specific_image(image_id):
-    """Test fetching specific image by ID"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/images/{image_id}", timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            
-            # Check required fields
-            required_fields = ["id", "prompt", "generated_image", "created_at"]
-            missing_fields = [field for field in required_fields if field not in data]
-            
-            if not missing_fields:
-                log_test("Get Specific Image", "PASS", f"Retrieved image: {image_id}")
-                return data
-            else:
-                log_test("Get Specific Image", "FAIL", f"Missing fields: {missing_fields}")
-                return None
-        elif response.status_code == 404:
-            log_test("Get Specific Image", "FAIL", f"Image not found: {image_id}")
-            return None
-        else:
-            log_test("Get Specific Image", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except Exception as e:
-        log_test("Get Specific Image", "FAIL", f"Exception: {str(e)}")
-        return None
-
-def test_delete_image(image_id):
-    """Test deleting specific image"""
-    try:
-        response = requests.delete(f"{BACKEND_URL}/images/{image_id}", timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if "message" in data and "deleted" in data["message"].lower():
-                log_test("Delete Image", "PASS", f"Deleted image: {image_id}")
+                self.log_test("Get Prompts by Category", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Get Prompts by Category", False, f"Error: {str(e)}")
+            return False
+    
+    def test_invalid_category(self):
+        """Test /api/prompts/categories with invalid category"""
+        try:
+            response = requests.get(f"{self.backend_url}/prompts/categories/InvalidCategory", timeout=10)
+            if response.status_code == 404:
+                self.log_test("Invalid Category Handling", True, "Correctly returns 404 for invalid category")
                 return True
             else:
-                log_test("Delete Image", "FAIL", f"Unexpected response: {data}")
+                self.log_test("Invalid Category Handling", False, f"Expected 404, got {response.status_code}")
                 return False
-        elif response.status_code == 404:
-            log_test("Delete Image", "FAIL", f"Image not found: {image_id}")
+                
+        except Exception as e:
+            self.log_test("Invalid Category Handling", False, f"Error: {str(e)}")
             return False
-        else:
-            log_test("Delete Image", "FAIL", f"Status code: {response.status_code}, Response: {response.text}")
+    
+    def test_generate_with_curated_prompt(self):
+        """Test /api/generate-with-prompt endpoint with valid prompt_id and image"""
+        try:
+            # Test with prompt ID 1 (Black & White Artistic Portrait)
+            payload = {
+                "prompt_id": 1,
+                "image_data": SAMPLE_IMAGE_BASE64
+            }
+            
+            print("🎨 Testing curated prompt generation (this may take 30-60 seconds)...")
+            response = requests.post(
+                f"{self.backend_url}/generate-with-prompt", 
+                json=payload, 
+                timeout=120  # Longer timeout for image generation
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                required_fields = [
+                    "id", "prompt_id", "prompt_title", "prompt_description", 
+                    "prompt_category", "generated_image", "original_image", 
+                    "created_at", "success"
+                ]
+                
+                for field in required_fields:
+                    if field not in data:
+                        self.log_test("Generate with Curated Prompt", False, f"Missing field: {field}")
+                        return False
+                
+                # Check specific values
+                if data["prompt_id"] != 1:
+                    self.log_test("Generate with Curated Prompt", False, f"Wrong prompt_id: {data['prompt_id']}")
+                    return False
+                
+                if data["prompt_title"] != "Black & White Artistic Portrait":
+                    self.log_test("Generate with Curated Prompt", False, f"Wrong prompt_title: {data['prompt_title']}")
+                    return False
+                
+                if data["prompt_category"] != "Professional":
+                    self.log_test("Generate with Curated Prompt", False, f"Wrong category: {data['prompt_category']}")
+                    return False
+                
+                if not data["success"]:
+                    self.log_test("Generate with Curated Prompt", False, "Success flag is False")
+                    return False
+                
+                # Check generated image exists and is base64
+                if not data["generated_image"]:
+                    self.log_test("Generate with Curated Prompt", False, "No generated image data")
+                    return False
+                
+                if len(data["generated_image"]) < 100:
+                    self.log_test("Generate with Curated Prompt", False, "Generated image data too short")
+                    return False
+                
+                # Check original image matches
+                if data["original_image"] != SAMPLE_IMAGE_BASE64:
+                    self.log_test("Generate with Curated Prompt", False, "Original image data mismatch")
+                    return False
+                
+                self.log_test("Generate with Curated Prompt", True, f"Successfully generated image with curated prompt. Image size: {len(data['generated_image'])} chars")
+                return True
+                
+            else:
+                error_text = response.text if response.text else "No error details"
+                self.log_test("Generate with Curated Prompt", False, f"HTTP {response.status_code}: {error_text}")
+                return False
+                
+        except requests.exceptions.Timeout:
+            self.log_test("Generate with Curated Prompt", False, "Request timeout (>120s) - NanoBanana API may be slow")
             return False
-    except Exception as e:
-        log_test("Delete Image", "FAIL", f"Exception: {str(e)}")
-        return False
-
-def test_error_handling():
-    """Test error handling for invalid requests"""
-    print("\n🧪 Testing Error Handling...")
+        except Exception as e:
+            self.log_test("Generate with Curated Prompt", False, f"Error: {str(e)}")
+            return False
     
-    # Test invalid image generation request
-    try:
-        payload = {}  # Empty payload
-        response = requests.post(f"{BACKEND_URL}/generate-image", json=payload, timeout=10)
-        if response.status_code == 422:  # Validation error
-            log_test("Error Handling - Empty Payload", "PASS", "Correctly rejected empty payload")
+    def test_generate_with_invalid_prompt_id(self):
+        """Test /api/generate-with-prompt with invalid prompt_id"""
+        try:
+            payload = {
+                "prompt_id": 999,  # Invalid ID
+                "image_data": SAMPLE_IMAGE_BASE64
+            }
+            
+            response = requests.post(f"{self.backend_url}/generate-with-prompt", json=payload, timeout=10)
+            
+            if response.status_code == 404:
+                self.log_test("Invalid Prompt ID Handling", True, "Correctly returns 404 for invalid prompt_id")
+                return True
+            else:
+                self.log_test("Invalid Prompt ID Handling", False, f"Expected 404, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Invalid Prompt ID Handling", False, f"Error: {str(e)}")
+            return False
+    
+    def test_generate_without_image(self):
+        """Test /api/generate-with-prompt without required image"""
+        try:
+            payload = {
+                "prompt_id": 1
+                # Missing image_data
+            }
+            
+            response = requests.post(f"{self.backend_url}/generate-with-prompt", json=payload, timeout=10)
+            
+            if response.status_code == 400:
+                self.log_test("Missing Image Handling", True, "Correctly returns 400 when image is missing")
+                return True
+            else:
+                self.log_test("Missing Image Handling", False, f"Expected 400, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Missing Image Handling", False, f"Error: {str(e)}")
+            return False
+    
+    def run_all_tests(self):
+        """Run all curated prompt system tests"""
+        print("🧪 Starting Curated Prompt System Tests")
+        print("=" * 60)
+        
+        # Test 1: Health check
+        if not self.test_health_endpoint():
+            print("❌ Backend not accessible, stopping tests")
+            return
+        
+        # Test 2: Get all prompts
+        self.test_get_all_prompts()
+        
+        # Test 3: Get prompts by category
+        self.test_get_prompts_by_category()
+        
+        # Test 4: Invalid category handling
+        self.test_invalid_category()
+        
+        # Test 5: Generate with curated prompt (main functionality)
+        self.test_generate_with_curated_prompt()
+        
+        # Test 6: Invalid prompt ID handling
+        self.test_generate_with_invalid_prompt_id()
+        
+        # Test 7: Missing image handling
+        self.test_generate_without_image()
+        
+        # Summary
+        print("\n" + "=" * 60)
+        print("🏁 CURATED PROMPT SYSTEM TEST SUMMARY")
+        print("=" * 60)
+        
+        for result in self.test_results:
+            print(result)
+        
+        print(f"\n📊 Results: {self.passed_tests}/{self.total_tests} tests passed")
+        success_rate = (self.passed_tests / self.total_tests) * 100 if self.total_tests > 0 else 0
+        print(f"📈 Success Rate: {success_rate:.1f}%")
+        
+        if self.passed_tests == self.total_tests:
+            print("🎉 All tests passed! Curated prompt system is working correctly.")
         else:
-            log_test("Error Handling - Empty Payload", "FAIL", f"Unexpected status: {response.status_code}")
-    except Exception as e:
-        log_test("Error Handling - Empty Payload", "FAIL", f"Exception: {str(e)}")
-    
-    # Test invalid image ID
-    try:
-        response = requests.get(f"{BACKEND_URL}/images/invalid_id", timeout=10)
-        if response.status_code == 400:  # Bad request
-            log_test("Error Handling - Invalid ID", "PASS", "Correctly rejected invalid image ID")
-        else:
-            log_test("Error Handling - Invalid ID", "FAIL", f"Unexpected status: {response.status_code}")
-    except Exception as e:
-        log_test("Error Handling - Invalid ID", "FAIL", f"Exception: {str(e)}")
-
-def run_comprehensive_tests():
-    """Run all backend API tests"""
-    print("🚀 Starting Comprehensive Backend API Testing...")
-    print(f"Backend URL: {BACKEND_URL}")
-    print("=" * 60)
-    
-    # Test 1: Health Check
-    print("\n🏥 Testing Health Check...")
-    health_ok = test_health_check()
-    
-    if not health_ok:
-        print("❌ Health check failed. Stopping tests.")
-        return
-    
-    # Test 2: Get Prompts
-    print("\n📝 Testing Prompt Categories...")
-    prompts = test_get_prompts()
-    
-    # Test 3: Image Generation (text-to-image)
-    print("\n🎨 Testing Image Generation...")
-    generated_image = test_image_generation()
-    
-    # Test 4: Image Editing (with uploaded image)
-    print("\n✏️ Testing Image Editing...")
-    edited_image = test_image_editing()
-    
-    # Test 5: Get Images Gallery
-    print("\n🖼️ Testing Image Gallery...")
-    images = test_get_images()
-    
-    # Test 6: Get Specific Image (if we have images)
-    if images and len(images) > 0:
-        print("\n🔍 Testing Get Specific Image...")
-        test_image_id = images[0].get("id")
-        if test_image_id:
-            test_get_specific_image(test_image_id)
-    
-    # Test 7: Delete Image (if we generated one)
-    test_image_to_delete = None
-    if generated_image:
-        test_image_to_delete = generated_image.get("id")
-    elif edited_image:
-        test_image_to_delete = edited_image.get("id")
-    
-    if test_image_to_delete:
-        print("\n🗑️ Testing Image Deletion...")
-        test_delete_image(test_image_to_delete)
-    
-    # Test 8: Error Handling
-    test_error_handling()
-    
-    # Summary
-    print("\n" + "=" * 60)
-    print("📊 TEST SUMMARY")
-    print("=" * 60)
-    
-    passed = len([r for r in TEST_RESULTS if r["status"] == "PASS"])
-    failed = len([r for r in TEST_RESULTS if r["status"] == "FAIL"])
-    
-    print(f"✅ Passed: {passed}")
-    print(f"❌ Failed: {failed}")
-    print(f"📈 Success Rate: {(passed/(passed+failed)*100):.1f}%")
-    
-    if failed > 0:
-        print("\n❌ FAILED TESTS:")
-        for result in TEST_RESULTS:
-            if result["status"] == "FAIL":
-                print(f"   • {result['test']}: {result['details']}")
-    
-    return TEST_RESULTS
+            print("⚠️  Some tests failed. Check the details above.")
+        
+        return self.passed_tests == self.total_tests
 
 if __name__ == "__main__":
-    results = run_comprehensive_tests()
+    tester = CuratedPromptTester()
+    tester.run_all_tests()
