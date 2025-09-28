@@ -303,11 +303,17 @@ class CuratedPromptTester:
             
             response = requests.post(f"{self.backend_url}/generate-with-prompt", json=payload, timeout=10)
             
-            if response.status_code == 400:
-                self.log_test("Missing Image Handling", True, "Correctly returns 400 when image is missing")
-                return True
+            # FastAPI/Pydantic returns 422 for validation errors, which is correct
+            if response.status_code == 422:
+                error_detail = response.json().get("detail", [])
+                if any("image_data" in str(err) and "required" in str(err).lower() for err in error_detail):
+                    self.log_test("Missing Image Handling", True, "Correctly returns 422 for missing required image_data")
+                    return True
+                else:
+                    self.log_test("Missing Image Handling", False, f"Wrong validation error: {error_detail}")
+                    return False
             else:
-                self.log_test("Missing Image Handling", False, f"Expected 400, got {response.status_code}")
+                self.log_test("Missing Image Handling", False, f"Expected 422, got {response.status_code}")
                 return False
                 
         except Exception as e:
