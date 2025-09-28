@@ -157,8 +157,70 @@ const FreeGenerateScreen: React.FC<{
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [generating, setGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [referenceImage, setReferenceImage] = useState<string | null>(null);
 
   const styles_list = ['photorealistic', 'artistic', 'cartoon', 'vintage', 'abstract'];
+
+  const pickReferenceImage = async () => {
+    try {
+      // Request permission to access media library
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'We need access to your photos to select reference images.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setReferenceImage(result.assets[0].base64);
+      }
+    } catch (error) {
+      console.error('Error picking reference image:', error);
+      Alert.alert('Error', 'Failed to select image');
+    }
+  };
+
+  const takeReferencePhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'We need camera permissions to take photos.');
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setReferenceImage(result.assets[0].base64);
+      }
+    } catch (error) {
+      console.error('Error taking photo:', error);
+      Alert.alert('Error', 'Failed to take photo');
+    }
+  };
+
+  const removeReferenceImage = () => {
+    Alert.alert(
+      'Remove Reference Image',
+      'Are you sure you want to remove the reference image?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Remove', onPress: () => setReferenceImage(null) },
+      ]
+    );
+  };
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
