@@ -37,12 +37,104 @@ client = pymongo.MongoClient(MONGO_URL)
 db = client.image_generator
 images_collection = db.images
 
+# Predefined prompts as requested by user
+CURATED_PROMPTS = [
+    {
+        "id": 1,
+        "title": "Black & White Artistic Portrait",
+        "description": "Sophisticated suit portrait with editorial tone",
+        "prompt": "Black and white artistic portrait of a man, with a fashionable model dressed in a sophisticated suit, black socks and shoes. He is sitting with a slightly hunched posture, looking down as if lost in thought. His facial features are the same as the original photo, like her hairstyle. It features minimalist accessories that highlight the elegant and editorial tone. The studio's clean lighting enhances textures and depth, creating an elegant, couture feel. Use the uploaded picture as reference for the face. Aspect ration: 4:5 vertical.",
+        "category": "Professional"
+    },
+    {
+        "id": 2,
+        "title": "Studio Portrait with Glass Panel",
+        "description": "Reflective studio portrait with fashion depth",
+        "prompt": "Stylized studio portrait of me (use the uploaded picture as reference for the face) leaning slightly on a large reflective glass panel. Outfit: tailored all black suit, black loafers. Pose: hand in pocket, soft confident smirk. Reflection captures double perspective. Warm rim lighting adds fashion depth. Aspect ration: 4:5 vertical.",
+        "category": "Professional"
+    },
+    {
+        "id": 3,
+        "title": "Cinematic Editorial Portrait",
+        "description": "Luxury armchair portrait with red wine mood",
+        "prompt": "A cinematic fashion editorial portrait of a stylish man (use the uploaded picture as reference for the face) sitting confidently in a modern white leather armchair with wooden accents. He wears a sharp, tailored all-white suit with matching white shoes and a plain white shirt underneath, exuding sophistication. He wears round eyeglasses that enhance his intellectual and elegant look. One hand rests casually while the other holds a glass of red wine balanced gracefully between his fingers. The background is a warm gradient of reddish-orange tones with subtle mist or fog at floor level, creating a dramatic and moody atmosphere. Lighting is soft yet directional, highlighting his sharp features and the textures of the suit. Ultra-detailed, high-fashion, editorial photography style with a refined, luxurious mood. Aspect ration: 4:5 vertical.",
+        "category": "Artistic"
+    },
+    {
+        "id": 4,
+        "title": "Vogue Fashion Cover",
+        "description": "Clean white background fashion editorial",
+        "prompt": "A white background Vogue fashion editorial cover of the portrait of a young man (use the uploaded picture as reference for the face). He wears a loose white shirt with rolled sleeves, arm partly covering his face, metallic wristwatch visible. Aspect ratio: 4:5 vertical.",
+        "category": "Professional"
+    },
+    {
+        "id": 5,
+        "title": "Modern Advertisement Blue Chair",
+        "description": "Vibrant modern advertisement with geometric patterns",
+        "prompt": "A striking, modern advertisement featuring a handsome stylish man (use the uploaded picture as reference for the face) with glasses sits confidently on a bold, modern royal blue armchair. He wears a bright cobalt blue outfit with orange geometric patterns, paired with chunky white sneakers and white socks. The background is a lue gradient with a large graph se your initial) shape. Minimalist, playiu, and modern aesthetic. Ultra-clean, vibrant, editorial look. Aspect ratio: 4:5 vertical.",
+        "category": "Artistic"
+    },
+    {
+        "id": 6,
+        "title": "Mysterious Black & White",
+        "description": "Hyper-realistic minimalist portrait with dramatic shadows",
+        "prompt": "A hyper-realistic and minimalist black-and-white portrait of a man (based on the uploaded reference), partially covering his face with his hand. The expression is intense and mysterious. Dramatic lighting creates strong shadows with Photorealistic cinematic vertical portrait (9:16).",
+        "category": "Artistic"
+    },
+    {
+        "id": 7,
+        "title": "Hands in Pockets - Studio",
+        "description": "Cinematic editorial with smoke and dramatic lighting",
+        "prompt": "Hands in Pockets - relaxed authority. A hyper-realistic cinematic editorial portrait of the uploaded person (preserve face 100%). He stands tall in a dark moody studio, facing the camera, surrounded by soft drifting smoke under a dramatic spotlight. Outfit: slate-blue luxury suit, paired with a slightly unbuttoned white silk shirt. Both hands tucked casually in pockets, shoulders relaxed, confident expression, head tilted slightly upward.",
+        "category": "Professional"
+    },
+    {
+        "id": 8,
+        "title": "Lamborghini Lifestyle",
+        "description": "High-end lifestyle portrait with luxury car",
+        "prompt": "Make my photo overhead high angle 3:4 full-body shot of a man (preserve face 100%) standing relaxed on the hood of a white Lamborghini Urus in a dim basement garage. Wearing a crisp white open collar shirt, brown trousers, polished shoes, and a leather strap watch. Soft sunbeam lighting with natural reflections on car, cinematic warm color grading, shallow depth of field, creamy bokeh, hyper-realistic 8K detail, billionaire vibe.",
+        "category": "Lifestyle"
+    },
+    {
+        "id": 9,
+        "title": "European Street Portrait",
+        "description": "Cinematic street photography in European city",
+        "prompt": "Ultra-realistic cinematic street portrait in a narrow European city street, tall stone buildings, blurred storefronts, pedestrians as soft silhouettes. Subject standing in middle of street, slightly angled, confident gaze. Wearing black overcoat + black scarf, minimal stylish vibe. Lighting: overcast daylight, smooth shadows, balanced contrast. Color grading: cinematic teal-orange, soft desaturated background, natural skin tones. Camera: DSLR 85mm lens, f/1.8, medium waist-up shot, vertical 4:5. Style: cinematic editorial, modern, confident, timeless magazine look.",
+        "category": "Lifestyle"
+    },
+    {
+        "id": 10,
+        "title": "Relaxed Authority - Wide Suit",
+        "description": "Editorial portrait with oversized luxury suit",
+        "prompt": "Prompt: Hands in Pockets - Relaxed Authority A hyper-realistic cinematic editorial portrait of the uploaded person (preserve face 100%). He stands tall in a dark moody studio,surrounded by soft drifting smoke under a dramatic spotlight.Outfit:Oversized slate-blue luxurysuit with wide-leg trousers, paired with a slightly unbuttoned white silk shirt. Both hands tucked casually in pockets, shoulders relaxed, confident expression, head tilted slightly upward.",
+        "category": "Professional"
+    },
+    {
+        "id": 11,
+        "title": "High-End Fashion LV",
+        "description": "Luxury fashion portrait with orange background",
+        "prompt": "A hyper realistic Portrait of uploaded person( preserve face 100%) wearing high-end fashion LV OUTFIT, the background is orange, the clothing is minimal, hyper realistic scene, the guy is just slightly visible due to dark shadows, and he is wearing modern fashion frames.",
+        "category": "Artistic"
+    },
+    {
+        "id": 12,
+        "title": "Modern Charcoal Suit",
+        "description": "Minimalist studio portrait with crossed arms",
+        "prompt": "A hyper-realistic portrait of a uploaded man face 100 percent reserved sitting on a tall black stool in a minimalist studio. He wears a modern charcoal-gray tailored suit with cropped trousers and a structured blazer with a high collar, paired with white sneakers. He sits with arms crossed, leaning slightly forward, looking off-camera with a serious, confident expression. Neutral-toned background enhances focus on the subject. Ultra-detailed fabric textures, realistic lighting, fashion editorial quality.",
+        "category": "Professional"
+    }
+]
+
 # Models
 class ImageGenerationRequest(BaseModel):
     prompt: str
     image_data: Optional[str] = None  # base64 encoded reference image
     prompt_category: Optional[str] = None
     style: Optional[str] = "photorealistic"
+
+class PromptSelectionRequest(BaseModel):
+    prompt_id: int
+    image_data: str  # base64 encoded reference image (required for curated prompts)
 
 @app.get("/api/health")
 async def health_check():
