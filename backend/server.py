@@ -39,6 +39,26 @@ MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 client = pymongo.MongoClient(MONGO_URL)
 db = client.image_generator
 images_collection = db.images
+payment_transactions_collection = db.payment_transactions
+
+# Payment packages configuration
+PAYMENT_PACKAGES = {
+    "pro_monthly": {
+        "name": "Pro Monthly",
+        "amount": 9.99,
+        "currency": "usd",
+        "description": "Monthly Pro subscription with unlimited generations"
+    },
+    "pro_yearly": {
+        "name": "Pro Yearly", 
+        "amount": 99.99,
+        "currency": "usd",
+        "description": "Yearly Pro subscription with unlimited generations (2 months free)"
+    }
+}
+
+# Get Stripe API key
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 # Predefined prompts as requested by user
 CURATED_PROMPTS = [
