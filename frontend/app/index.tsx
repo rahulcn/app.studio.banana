@@ -13,7 +13,6 @@ import {
   Modal,
   Dimensions,
 } from 'react-native';
-import '../global.css';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
