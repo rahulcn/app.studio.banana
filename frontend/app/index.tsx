@@ -260,6 +260,96 @@ const FullscreenImagePreview: React.FC<{
   );
 };
 
+// Simple Profile Modal Component
+const ProfileModal: React.FC<{
+  visible: boolean;
+  onClose: () => void;
+  freeTier: FreeTier;
+}> = ({ visible, onClose, freeTier }) => {
+  return (
+    <Modal visible={visible} transparent={true} animationType="slide">
+      <View className="flex-1 bg-black/50 justify-end">
+        <View className="bg-white rounded-t-3xl p-6 pb-8">
+          {/* Header */}
+          <View className="flex-row items-center justify-between mb-6">
+            <Text className="text-xl font-bold text-gray-900">Profile</Text>
+            <TouchableOpacity 
+              className="bg-gray-100 p-2 rounded-xl"
+              onPress={onClose}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="close" size={20} color="#374151" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Usage Stats */}
+          <View className="bg-blue-50 rounded-2xl p-4 mb-6">
+            <View className="flex-row items-center mb-3">
+              <View className="bg-blue-100 p-2 rounded-xl mr-3">
+                <Ionicons name="flash" size={20} color="#0ea5e9" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-lg font-semibold text-gray-900">Free Tier</Text>
+                <Text className="text-sm text-gray-600">Anonymous user</Text>
+              </View>
+            </View>
+            
+            <View className="mb-3">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="text-sm text-gray-600">Generations used</Text>
+                <Text className="text-sm font-semibold text-gray-900">
+                  {freeTier.usageCount} / {freeTier.FREE_LIMIT}
+                </Text>
+              </View>
+              <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                <View 
+                  className="bg-blue-500 h-full rounded-full"
+                  style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
+                />
+              </View>
+            </View>
+            
+            <Text className="text-xs text-gray-500">
+              {freeTier.remainingUses} generations remaining
+            </Text>
+          </View>
+
+          {/* Quick Actions */}
+          <View className="space-y-3">
+            <TouchableOpacity 
+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+              activeOpacity={0.7}
+            >
+              <View className="bg-green-100 p-2 rounded-xl mr-3">
+                <Ionicons name="star" size={20} color="#10b981" />
+              </View>
+              <View className="flex-1">
+                <Text className="font-semibold text-gray-900">Upgrade to Pro</Text>
+                <Text className="text-sm text-gray-600">Unlimited generations</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+              activeOpacity={0.7}
+            >
+              <View className="bg-purple-100 p-2 rounded-xl mr-3">
+                <Ionicons name="help-circle" size={20} color="#8b5cf6" />
+              </View>
+              <View className="flex-1">
+                <Text className="font-semibold text-gray-900">Help & Support</Text>
+                <Text className="text-sm text-gray-600">Get assistance</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 // Free Tier Generate Screen with Curated Prompts
 const FreeGenerateScreen: React.FC<{
   onBack: () => void;
