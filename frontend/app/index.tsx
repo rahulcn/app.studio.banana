@@ -626,23 +626,23 @@ const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
 
   if (loading) {
     return (
-      <View style={styles.modernLoadingContainer}>
-        <ActivityIndicator size="large" color="#3b82f6" />
-        <Text style={styles.modernLoadingText}>Loading your gallery...</Text>
+      <View style={[styles.modernLoadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.modernLoadingText, { color: theme.colors.textSecondary }]}>Loading your gallery...</Text>
       </View>
     );
   }
 
   return (
     <>
-      <ScrollView style={styles.iPhoneGalleryContainer}>
+      <ScrollView style={[styles.iPhoneGalleryContainer, { backgroundColor: theme.colors.background }]}>
         {generatedImages.length === 0 ? (
-          <View style={styles.modernEmptyStateContainer}>
+          <View style={[styles.modernEmptyStateContainer, { backgroundColor: theme.colors.background }]}>
             <View style={styles.modernEmptyStateIcon}>
-              <Ionicons name="images-outline" size={64} color="#9ca3af" />
+              <Ionicons name="images-outline" size={64} color={theme.colors.textSecondary} />
             </View>
-            <Text style={styles.modernEmptyStateTitle}>No Images Yet</Text>
-            <Text style={styles.modernEmptyStateText}>
+            <Text style={[styles.modernEmptyStateTitle, { color: theme.colors.text }]}>No Images Yet</Text>
+            <Text style={[styles.modernEmptyStateText, { color: theme.colors.textSecondary }]}>
               Your generated images will appear here. Start creating to build your gallery!
             </Text>
           </View>
