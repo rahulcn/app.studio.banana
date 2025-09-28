@@ -386,7 +386,7 @@ const FreeGenerateScreen: React.FC<{
               style={styles.secondaryButton}
               onPress={() => {
                 setGeneratedImage(null);
-                setPrompt('');
+                setSelectedPromptId(null);
                 setReferenceImage(null);
               }}
             >
