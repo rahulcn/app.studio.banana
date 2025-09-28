@@ -135,6 +135,21 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: MongoDB storage working correctly. Images stored in base64 format with proper metadata (prompt, created_at, prompt_category). Gallery retrieval, specific image fetch, and deletion all functional."
 
+  - task: "Curated Prompt System"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "unknown"
+        agent: "main"
+        comment: "Implemented curated prompt selection system with 12 professional prompts across Professional, Artistic, and Lifestyle categories. Added new endpoints: /api/prompts, /api/prompts/categories/{category}, /api/generate-with-prompt."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Curated prompt system fully functional. All 12 prompts returned correctly with proper structure. Category filtering works (6 Professional, 4 Artistic, 2 Lifestyle). Image generation with curated prompts working perfectly - NanoBanana API integration seamless. Generated images include complete curated prompt metadata (prompt_id, title, description, category, generation_type). Error handling proper for invalid prompt IDs and missing images. 100% success rate (7/7 tests passed)."
+
   - task: "API Endpoints"
     implemented: true
     working: true
