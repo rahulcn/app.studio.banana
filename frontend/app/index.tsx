@@ -259,10 +259,119 @@ const FullscreenImagePreview: React.FC<{
   );
 };
 
-// Gallery Screen Component
+// Full-Screen Photo Viewer Component  
+const PhotoViewerModal: React.FC<{
+  visible: boolean;
+  images: any[];
+  initialIndex: number;
+  onClose: () => void;
+}> = ({ visible, images, initialIndex, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
+  useEffect(() => {
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+
+  const goToNext = () => {
+    if (currentIndex < images.length - 1) {
+      const newIndex = currentIndex + 1;
+      setCurrentIndex(newIndex);
+      scrollViewRef.current?.scrollTo({ x: newIndex * screenWidth, animated: true });
+    }
+  };
+
+  const goToPrevious = () => {
+    if (currentIndex > 0) {
+      const newIndex = currentIndex - 1;
+      setCurrentIndex(newIndex);
+      scrollViewRef.current?.scrollTo({ x: newIndex * screenWidth, animated: true });
+    }
+  };
+
+  const handleScroll = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const newIndex = Math.round(offsetX / screenWidth);
+    setCurrentIndex(newIndex);
+  };
+
+  return (
+    <Modal visible={visible} transparent={true} animationType="fade">
+      <View style={styles.photoViewerContainer}>
+        {/* Header */}
+        <SafeAreaView style={styles.photoViewerHeader}>
+          <TouchableOpacity style={styles.photoViewerCloseButton} onPress={onClose}>
+            <Ionicons name="close" size={28} color="white" />
+          </TouchableOpacity>
+          <View style={styles.photoViewerHeaderContent}>
+            <Text style={styles.photoViewerTitle}>
+              {images[currentIndex]?.prompt_title || 'AI Generated'}
+            </Text>
+            <Text style={styles.photoViewerCounter}>
+              {currentIndex + 1} of {images.length}
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.photoViewerActionButton} activeOpacity={0.7}>
+            <Ionicons name="share" size={24} color="white" />
+          </TouchableOpacity>
+        </SafeAreaView>
+
+        {/* Photo Carousel */}
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          style={styles.photoViewerScrollView}
+        >
+          {images.map((image, index) => (
+            <View key={image.id || index} style={[styles.photoViewerImageContainer, { width: screenWidth }]}>
+              <ScrollView
+                maximumZoomScale={3}
+                minimumZoomScale={0.5}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.photoViewerZoomContainer}
+              >
+                <Image
+                  source={{ uri: `data:image/png;base64,${image.generated_image}` }}
+                  style={[
+                    styles.photoViewerImage,
+                    {
+                      width: screenWidth,
+                      height: screenHeight * 0.7,
+                    }
+                  ]}
+                  resizeMode="contain"
+                />
+              </ScrollView>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* Footer with metadata */}
+        <View style={styles.photoViewerFooter}>
+          <Text style={styles.photoViewerDate}>
+            Created: {new Date(images[currentIndex]?.created_at).toLocaleDateString()}
+          </Text>
+          <Text style={styles.photoViewerCategory}>
+            {images[currentIndex]?.prompt_category || 'AI Generated'}
+          </Text>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+// Gallery Screen Component - iPhone Photos Style
 const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
   const [generatedImages, setGeneratedImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [showPhotoViewer, setShowPhotoViewer] = useState(false);
 
   useEffect(() => {
     const loadGeneratedImages = async () => {
@@ -288,6 +397,16 @@ const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
     loadGeneratedImages();
   }, []);
 
+  const openPhotoViewer = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowPhotoViewer(true);
+  };
+
+  const closePhotoViewer = () => {
+    setShowPhotoViewer(false);
+    setSelectedImageIndex(null);
+  };
+
   if (loading) {
     return (
       <View style={styles.modernLoadingContainer}>
@@ -298,43 +417,48 @@ const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
   }
 
   return (
-    <ScrollView style={styles.modernScrollView}>
-      {generatedImages.length === 0 ? (
-        <View style={styles.modernEmptyStateContainer}>
-          <View style={styles.modernEmptyStateIcon}>
-            <Ionicons name="images-outline" size={64} color="#9ca3af" />
+    <>
+      <ScrollView style={styles.iPhoneGalleryContainer}>
+        {generatedImages.length === 0 ? (
+          <View style={styles.modernEmptyStateContainer}>
+            <View style={styles.modernEmptyStateIcon}>
+              <Ionicons name="images-outline" size={64} color="#9ca3af" />
+            </View>
+            <Text style={styles.modernEmptyStateTitle}>No Images Yet</Text>
+            <Text style={styles.modernEmptyStateText}>
+              Your generated images will appear here. Start creating to build your gallery!
+            </Text>
           </View>
-          <Text style={styles.modernEmptyStateTitle}>No Images Yet</Text>
-          <Text style={styles.modernEmptyStateText}>
-            Your generated images will appear here. Start creating to build your gallery!
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.modernGalleryGrid}>
-          {generatedImages.map((image, index) => (
-            <TouchableOpacity 
-              key={image.id || index} 
-              style={styles.modernGalleryItem}
-              activeOpacity={0.8}
-            >
-              <Image 
-                source={{ uri: `data:image/png;base64,${image.generated_image}` }}
-                style={styles.modernGalleryImage}
-                resizeMode="cover"
-              />
-              <View style={styles.modernGalleryOverlay}>
-                <Text style={styles.modernGalleryTitle} numberOfLines={1}>
-                  {image.prompt_title || 'AI Generated'}
-                </Text>
-                <Text style={styles.modernGalleryDate}>
-                  {new Date(image.created_at).toLocaleDateString()}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        ) : (
+          <View style={styles.iPhoneGalleryGrid}>
+            {generatedImages.map((image, index) => (
+              <TouchableOpacity 
+                key={image.id || index} 
+                style={styles.iPhoneGalleryThumbnail}
+                activeOpacity={0.8}
+                onPress={() => openPhotoViewer(index)}
+              >
+                <Image 
+                  source={{ uri: `data:image/png;base64,${image.generated_image}` }}
+                  style={styles.iPhoneGalleryImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </ScrollView>
+      
+      {/* Photo Viewer Modal */}
+      {showPhotoViewer && selectedImageIndex !== null && (
+        <PhotoViewerModal
+          visible={showPhotoViewer}
+          images={generatedImages}
+          initialIndex={selectedImageIndex}
+          onClose={closePhotoViewer}
+        />
       )}
-    </ScrollView>
+    </>
   );
 };
 
