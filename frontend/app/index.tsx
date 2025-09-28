@@ -3070,6 +3070,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 24,
     marginTop: 16,
+    marginHorizontal: 24,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
