@@ -1198,8 +1198,9 @@ const FreeGenerateScreen: React.FC<{
                   style={styles.modernRemoveImageButton}
                   onPress={removeReferenceImage}
                   activeOpacity={0.7}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Ionicons name="close" size={16} color="white" />
+                  <Ionicons name="close" size={18} color="white" />
                 </TouchableOpacity>
               </View>
               <Text style={[styles.modernSuccessText, { color: theme.colors.success }]}>
