@@ -2617,4 +2617,39 @@ const styles = StyleSheet.create({
     color: '#0ea5e9',
     fontWeight: '500',
   },
+  // Generate Button Styles
+  modernButtonContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+  },
+  modernGenerateButton: {
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    shadowColor: '#3b82f6',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  modernGenerateButtonEnabled: {
+    backgroundColor: '#3b82f6',
+  },
+  modernGenerateButtonDisabled: {
+    backgroundColor: '#9ca3af',
+  },
+  modernButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modernButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600',
+    marginLeft: 8,
+  },
 });
