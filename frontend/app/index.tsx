@@ -2511,4 +2511,32 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#374151',
   },
+  // Category Selection Styles
+  modernCategoryContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  modernCategoryButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 2,
+  },
+  modernCategoryButtonSelected: {
+    backgroundColor: '#eff6ff',
+    borderColor: '#3b82f6',
+  },
+  modernCategoryButtonUnselected: {
+    backgroundColor: '#f8fafc',
+    borderColor: '#e2e8f0',
+  },
+  modernCategoryText: {
+    fontWeight: '500',
+  },
+  modernCategoryTextSelected: {
+    color: '#2563eb',
+  },
+  modernCategoryTextUnselected: {
+    color: '#64748b',
+  },
 });
