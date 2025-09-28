@@ -302,7 +302,12 @@ const PhotoViewerModal: React.FC<{
         {/* Header */}
         <SafeAreaView style={styles.photoViewerHeader}>
           <View style={styles.photoViewerHeaderRow}>
-            <TouchableOpacity style={styles.photoViewerCloseButton} onPress={onClose}>
+            <TouchableOpacity 
+              style={styles.photoViewerCloseButton} 
+              onPress={onClose}
+              activeOpacity={0.7}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Ionicons name="close" size={28} color="white" />
             </TouchableOpacity>
             <View style={styles.photoViewerHeaderContent}>
@@ -313,7 +318,11 @@ const PhotoViewerModal: React.FC<{
                 {currentIndex + 1} of {images.length}
               </Text>
             </View>
-            <TouchableOpacity style={styles.photoViewerActionButton} activeOpacity={0.7}>
+            <TouchableOpacity 
+              style={styles.photoViewerActionButton} 
+              activeOpacity={0.7}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Ionicons name="share" size={24} color="white" />
             </TouchableOpacity>
           </View>
