@@ -358,8 +358,19 @@ const FreeGenerateScreen: React.FC<{
           />
           
           <View style={styles.resultInfo}>
-            <Text style={styles.promptText}>"{prompt}"</Text>
-            <Text style={styles.styleText}>Style: {selectedStyle}</Text>
+            {selectedPromptId && (
+              <>
+                <Text style={styles.promptTitle}>
+                  {curatedPrompts.find(p => p.id === selectedPromptId)?.title}
+                </Text>
+                <Text style={styles.promptDescription}>
+                  {curatedPrompts.find(p => p.id === selectedPromptId)?.description}
+                </Text>
+                <Text style={styles.categoryText}>
+                  Category: {curatedPrompts.find(p => p.id === selectedPromptId)?.category}
+                </Text>
+              </>
+            )}
           </View>
 
           <View style={styles.usageInfo}>
