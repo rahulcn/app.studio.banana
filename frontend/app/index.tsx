@@ -1570,4 +1570,89 @@ const styles = StyleSheet.create({
     marginTop: 8,
     lineHeight: 16,
   },
+  // New Curated Prompts Styles
+  loadingPromptsContainer: {
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  loadingPromptsText: {
+    marginTop: 16,
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+  },
+  promptHint: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  promptsScrollView: {
+    maxHeight: 300,
+  },
+  promptCard: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#e1e5e9',
+  },
+  selectedPromptCard: {
+    borderColor: '#007AFF',
+    backgroundColor: '#f0f8ff',
+  },
+  promptCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+  },
+  promptTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    marginRight: 8,
+  },
+  selectedPromptTitle: {
+    color: '#007AFF',
+  },
+  promptDescription: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  categoryBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    minWidth: 70,
+  },
+  categoryBadgeText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  selectedIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#e1e5e9',
+  },
+  selectedText: {
+    marginLeft: 6,
+    fontSize: 12,
+    color: '#007AFF',
+    fontWeight: '500',
+  },
+  categoryText: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
+  },
 });
