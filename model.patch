@@ -1,1184 +1,1189 @@
 diff --git a/model.patch b/model.patch
-index d705d12..e69de29 100644
+index 8306916..e69de29 100644
 --- a/model.patch
 +++ b/model.patch
-@@ -1,1141 +0,0 @@
+@@ -1,1184 +0,0 @@
 -diff --git a/model.patch b/model.patch
--index 7688db8..e69de29 100644
+-index d705d12..e69de29 100644
 ---- a/model.patch
 -+++ b/model.patch
--@@ -1,1122 +0,0 @@
---diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
---index b8a7538..5f1652f 100644
------ a/frontend/app/index.tsx
---+++ b/frontend/app/index.tsx
---@@ -317,30 +317,6 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
---   );
--- };
--- 
----// Dark Mode Context
----interface DarkModeContextType {
----  isDarkMode: boolean;
----  toggleDarkMode: () => void;
----  colors: {
----    background: string;
----    surface: string;
----    text: string;
----    textSecondary: string;
----    border: string;
----    primary: string;
----  };
----}
----
----const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
----
----const useDarkMode = () => {
----  const context = useContext(DarkModeContext);
----  if (!context) {
----    throw new Error('useDarkMode must be used within a DarkModeProvider');
----  }
----  return context;
----};
----
--- // Curated prompt interface
--- interface CuratedPrompt {
---   id: number;
+-@@ -1,1141 +0,0 @@
 --diff --git a/model.patch b/model.patch
---index a2f0dbd..e69de29 100644
+--index 7688db8..e69de29 100644
 ----- a/model.patch
 --+++ b/model.patch
---@@ -1,1082 +0,0 @@
+--@@ -1,1122 +0,0 @@
 ---diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
----index 7b30074..d4e4142 100644
+---index b8a7538..5f1652f 100644
 ------ a/frontend/app/index.tsx
 ---+++ b/frontend/app/index.tsx
----@@ -699,15 +699,13 @@ const FreeGenerateScreen: React.FC<{
----             <Ionicons name="arrow-back" size={20} color="#374151" />
----           </TouchableOpacity>
----           
-----          <Text style={styles.modernHeaderTitle}>Generate Image</Text>
----+          <Text style={styles.modernHeaderTitle}>
----+            {activeTab === 'generate' ? 'Generate Image' : 
----+             activeTab === 'gallery' ? 'My Gallery' : 'Profile'}
----+          </Text>
----           
-----          <TouchableOpacity 
-----            style={styles.modernProfileButton}
-----            onPress={() => setShowProfile(true)}
-----            activeOpacity={0.7}
-----          >
-----            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
-----          </TouchableOpacity>
----+          {/* Empty space for balance */}
----+          <View style={styles.modernBackButton} />
----         </View>
----       </View>
---- 
----@@ -959,12 +957,6 @@ const FreeGenerateScreen: React.FC<{
----         )}
----       </ScrollView>
----       
-----      {/* Profile Modal */}
-----      <ProfileModal
-----        visible={showProfile}
-----        onClose={() => setShowProfile(false)}
-----        freeTier={freeTier}
-----      />
----     </SafeAreaView>
+---@@ -317,30 +317,6 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
 ---   );
 --- };
+--- 
+----// Dark Mode Context
+----interface DarkModeContextType {
+----  isDarkMode: boolean;
+----  toggleDarkMode: () => void;
+----  colors: {
+----    background: string;
+----    surface: string;
+----    text: string;
+----    textSecondary: string;
+----    border: string;
+----    primary: string;
+----  };
+----}
+----
+----const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
+----
+----const useDarkMode = () => {
+----  const context = useContext(DarkModeContext);
+----  if (!context) {
+----    throw new Error('useDarkMode must be used within a DarkModeProvider');
+----  }
+----  return context;
+----};
+----
+--- // Curated prompt interface
+--- interface CuratedPrompt {
+---   id: number;
 ---diff --git a/model.patch b/model.patch
----index ad6abad..e69de29 100644
+---index a2f0dbd..e69de29 100644
 ------ a/model.patch
 ---+++ b/model.patch
----@@ -1,1038 +0,0 @@
+---@@ -1,1082 +0,0 @@
+----diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
+----index 7b30074..d4e4142 100644
+------- a/frontend/app/index.tsx
+----+++ b/frontend/app/index.tsx
+----@@ -699,15 +699,13 @@ const FreeGenerateScreen: React.FC<{
+----             <Ionicons name="arrow-back" size={20} color="#374151" />
+----           </TouchableOpacity>
+----           
+-----          <Text style={styles.modernHeaderTitle}>Generate Image</Text>
+----+          <Text style={styles.modernHeaderTitle}>
+----+            {activeTab === 'generate' ? 'Generate Image' : 
+----+             activeTab === 'gallery' ? 'My Gallery' : 'Profile'}
+----+          </Text>
+----           
+-----          <TouchableOpacity 
+-----            style={styles.modernProfileButton}
+-----            onPress={() => setShowProfile(true)}
+-----            activeOpacity={0.7}
+-----          >
+-----            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
+-----          </TouchableOpacity>
+----+          {/* Empty space for balance */}
+----+          <View style={styles.modernBackButton} />
+----         </View>
+----       </View>
+---- 
+----@@ -959,12 +957,6 @@ const FreeGenerateScreen: React.FC<{
+----         )}
+----       </ScrollView>
+----       
+-----      {/* Profile Modal */}
+-----      <ProfileModal
+-----        visible={showProfile}
+-----        onClose={() => setShowProfile(false)}
+-----        freeTier={freeTier}
+-----      />
+----     </SafeAreaView>
+----   );
+---- };
 ----diff --git a/model.patch b/model.patch
-----index fe8c7ba..e69de29 100644
+----index ad6abad..e69de29 100644
 ------- a/model.patch
 ----+++ b/model.patch
-----@@ -1,1033 +0,0 @@
------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
------index f4b3e76..c7e1207 100644
--------- a/frontend/app/index.tsx
------+++ b/frontend/app/index.tsx
------@@ -13,7 +13,6 @@ import {
------   Modal,
------   Dimensions,
------ } from 'react-native';
-------import '../global.css';
------ import { StatusBar } from 'expo-status-bar';
------ import { Ionicons } from '@expo/vector-icons';
------ import * as ImagePicker from 'expo-image-picker';
+----@@ -1,1038 +0,0 @@
 -----diff --git a/model.patch b/model.patch
------index 5f6a45b..e69de29 100644
+-----index fe8c7ba..e69de29 100644
 -------- a/model.patch
 -----+++ b/model.patch
------@@ -1,1016 +0,0 @@
+-----@@ -1,1033 +0,0 @@
 ------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
-------index 9427bb6..b5d83d5 100644
+------index f4b3e76..c7e1207 100644
 --------- a/frontend/app/index.tsx
 ------+++ b/frontend/app/index.tsx
-------@@ -108,71 +108,71 @@ const useFreeTier = (): FreeTier => {
------- // Welcome/Onboarding Screen
------- const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
-------   return (
--------    <SafeAreaView className="flex-1 bg-gray-50">
--------      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-------+    <SafeAreaView style={styles.modernContainer}>
-------+      <ScrollView contentContainerStyle={styles.modernWelcomeContainer}>
-------         {/* Header Section */}
--------        <View className="flex-1 justify-center items-center px-6 py-12">
--------          <View className="mb-12 items-center">
--------            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
-------+        <View style={styles.modernHeaderSection}>
-------+          <View style={styles.modernTitleContainer}>
-------+            <Text style={styles.modernTitle}>
-------               AI Canvas Studio
-------             </Text>
--------            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
-------+            <Text style={styles.modernSubtitle}>
-------               Transform your photos with professional AI artistry
-------             </Text>
-------           </View>
------- 
-------           {/* Feature Cards */}
--------          <View className="w-full max-w-sm mb-8">
--------            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
--------              <View className="flex-row items-center mb-3">
--------                <View className="bg-blue-50 p-2 rounded-xl mr-4">
-------+          <View style={styles.modernFeatureContainer}>
-------+            <View style={styles.modernFeatureCard}>
-------+              <View style={styles.modernFeatureRow}>
-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#eff6ff' }]}>
-------                   <Ionicons name="brush" size={24} color="#0ea5e9" />
-------                 </View>
--------                <View className="flex-1">
--------                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
--------                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
-------+                <View style={styles.modernFeatureContent}>
-------+                  <Text style={styles.modernFeatureTitle}>AI-Powered</Text>
-------+                  <Text style={styles.modernFeatureText}>Advanced Gemini 2.5 Flash technology</Text>
-------                 </View>
-------               </View>
-------             </View>
------- 
--------            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
--------              <View className="flex-row items-center mb-3">
--------                <View className="bg-green-50 p-2 rounded-xl mr-4">
-------+            <View style={styles.modernFeatureCard}>
-------+              <View style={styles.modernFeatureRow}>
-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#f0fdf4' }]}>
-------                   <Ionicons name="flash" size={24} color="#10b981" />
-------                 </View>
--------                <View className="flex-1">
--------                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
--------                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
-------+                <View style={styles.modernFeatureContent}>
-------+                  <Text style={styles.modernFeatureTitle}>Instant Results</Text>
-------+                  <Text style={styles.modernFeatureText}>Professional quality in seconds</Text>
-------                 </View>
-------               </View>
-------             </View>
------- 
--------            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
--------              <View className="flex-row items-center mb-3">
--------                <View className="bg-purple-50 p-2 rounded-xl mr-4">
-------+            <View style={styles.modernFeatureCard}>
-------+              <View style={styles.modernFeatureRow}>
-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#faf5ff' }]}>
-------                   <Ionicons name="gift" size={24} color="#8b5cf6" />
-------                 </View>
--------                <View className="flex-1">
--------                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
--------                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
-------+                <View style={styles.modernFeatureContent}>
-------+                  <Text style={styles.modernFeatureTitle}>Free to Start</Text>
-------+                  <Text style={styles.modernFeatureText}>100 free generations, no signup required</Text>
-------                 </View>
-------               </View>
-------             </View>
-------           </View>
------- 
-------           {/* CTA Section */}
--------          <View className="w-full max-w-sm items-center">
--------            <Text className="text-sm text-gray-500 mb-6 text-center">
-------+          <View style={styles.modernCtaContainer}>
-------+            <Text style={styles.modernCtaText}>
-------               ✨ Start with 100 free image generations
-------             </Text>
------- 
-------             <TouchableOpacity 
--------              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
-------+              style={styles.modernCtaButton}
-------               onPress={onGetStarted}
-------               activeOpacity={0.9}
-------             >
--------              <View className="flex-row items-center justify-center">
--------                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
-------+              <View style={styles.modernCtaButtonContent}>
-------+                <Text style={styles.modernCtaButtonText}>Get Started Free</Text>
-------                 <Ionicons name="arrow-forward" size={20} color="white" />
-------               </View>
-------             </TouchableOpacity>
-------@@ -2115,4 +2115,121 @@ const styles = StyleSheet.create({
-------     textAlign: 'center',
-------     fontStyle: 'italic',
-------   },
-------+  // Modern Welcome Screen Styles
-------+  modernContainer: {
-------+    flex: 1,
-------+    backgroundColor: '#f8fafc',
-------+  },
-------+  modernWelcomeContainer: {
-------+    flexGrow: 1,
-------+    justifyContent: 'center',
-------+    paddingHorizontal: 24,
-------+    paddingVertical: 48,
-------+  },
-------+  modernHeaderSection: {
-------+    flex: 1,
-------+    justifyContent: 'center',
-------+    alignItems: 'center',
-------+  },
-------+  modernTitleContainer: {
-------+    marginBottom: 48,
-------+    alignItems: 'center',
-------+  },
-------+  modernTitle: {
-------+    fontSize: 36,
-------+    fontWeight: 'bold',
-------+    color: '#1e293b',
-------+    marginBottom: 16,
-------+    textAlign: 'center',
-------+    letterSpacing: -0.5,
-------+  },
-------+  modernSubtitle: {
-------+    fontSize: 18,
-------+    color: '#64748b',
-------+    textAlign: 'center',
-------+    lineHeight: 26,
-------+    maxWidth: 320,
-------+  },
-------+  modernFeatureContainer: {
-------+    width: '100%',
-------+    maxWidth: 400,
-------+    marginBottom: 32,
-------+  },
-------+  modernFeatureCard: {
-------+    backgroundColor: 'white',
-------+    borderRadius: 16,
-------+    padding: 24,
-------+    marginBottom: 16,
-------+    shadowColor: '#000',
-------+    shadowOffset: {
-------+      width: 0,
-------+      height: 2,
-------+    },
-------+    shadowOpacity: 0.05,
-------+    shadowRadius: 8,
-------+    elevation: 2,
-------+    borderWidth: 1,
-------+    borderColor: '#f1f5f9',
-------+  },
-------+  modernFeatureRow: {
-------+    flexDirection: 'row',
-------+    alignItems: 'center',
-------+  },
-------+  modernIconContainer: {
-------+    padding: 12,
-------+    borderRadius: 12,
-------+    marginRight: 16,
-------+  },
-------+  modernFeatureContent: {
-------+    flex: 1,
-------+  },
-------+  modernFeatureTitle: {
-------+    fontSize: 18,
-------+    fontWeight: '600',
-------+    color: '#1e293b',
-------+    marginBottom: 4,
-------+  },
-------+  modernFeatureText: {
-------+    fontSize: 14,
-------+    color: '#64748b',
-------+    lineHeight: 20,
-------+  },
-------+  modernCtaContainer: {
-------+    width: '100%',
-------+    maxWidth: 400,
-------+    alignItems: 'center',
-------+  },
-------+  modernCtaText: {
-------+    fontSize: 14,
-------+    color: '#64748b',
-------+    marginBottom: 24,
-------+    textAlign: 'center',
-------+    fontWeight: '500',
-------+  },
-------+  modernCtaButton: {
-------+    backgroundColor: '#3b82f6',
-------+    width: '100%',
-------+    borderRadius: 16,
-------+    paddingVertical: 16,
-------+    paddingHorizontal: 24,
-------+    shadowColor: '#3b82f6',
-------+    shadowOffset: {
-------+      width: 0,
-------+      height: 4,
-------+    },
-------+    shadowOpacity: 0.2,
-------+    shadowRadius: 12,
-------+    elevation: 4,
-------+  },
-------+  modernCtaButtonContent: {
-------+    flexDirection: 'row',
-------+    alignItems: 'center',
-------+    justifyContent: 'center',
-------+  },
-------+  modernCtaButtonText: {
-------+    color: 'white',
-------+    fontSize: 18,
-------+    fontWeight: '600',
-------+    marginRight: 8,
-------+  },
------- });
-------\ No newline at end of file
+------@@ -13,7 +13,6 @@ import {
+------   Modal,
+------   Dimensions,
+------ } from 'react-native';
+-------import '../global.css';
+------ import { StatusBar } from 'expo-status-bar';
+------ import { Ionicons } from '@expo/vector-icons';
+------ import * as ImagePicker from 'expo-image-picker';
 ------diff --git a/model.patch b/model.patch
-------index b163f6a..b257960 100644
+------index 5f6a45b..e69de29 100644
 --------- a/model.patch
 ------+++ b/model.patch
-------@@ -1,782 +0,0 @@
+------@@ -1,1016 +0,0 @@
 -------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
--------index e4e05c7..9427bb6 100644
+-------index 9427bb6..b5d83d5 100644
 ---------- a/frontend/app/index.tsx
 -------+++ b/frontend/app/index.tsx
--------@@ -893,31 +893,39 @@ const FreeGenerateScreen: React.FC<{
--------           </>
--------         )}
+-------@@ -108,71 +108,71 @@ const useFreeTier = (): FreeTier => {
+------- // Welcome/Onboarding Screen
+------- const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
+-------   return (
+--------    <SafeAreaView className="flex-1 bg-gray-50">
+--------      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+-------+    <SafeAreaView style={styles.modernContainer}>
+-------+      <ScrollView contentContainerStyle={styles.modernWelcomeContainer}>
+-------         {/* Header Section */}
+--------        <View className="flex-1 justify-center items-center px-6 py-12">
+--------          <View className="mb-12 items-center">
+--------            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
+-------+        <View style={styles.modernHeaderSection}>
+-------+          <View style={styles.modernTitleContainer}>
+-------+            <Text style={styles.modernTitle}>
+-------               AI Canvas Studio
+-------             </Text>
+--------            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
+-------+            <Text style={styles.modernSubtitle}>
+-------               Transform your photos with professional AI artistry
+-------             </Text>
+-------           </View>
 ------- 
---------        <TouchableOpacity
---------          style={[
---------            styles.generateButton,
---------            (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage) && styles.generateButtonDisabled,
---------          ]}
---------          onPress={handleGenerate}
---------          disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
---------        >
---------          {generating ? (
---------            <ActivityIndicator color="white" />
---------          ) : (
---------            <>
---------              <Ionicons name="flash" size={20} color="white" />
---------              <Text style={styles.generateButtonText}>
---------                {!freeTier.hasUsesLeft() 
---------                  ? 'Limit Reached (100/100)' 
---------                  : !selectedPromptId
---------                  ? 'Select a Style First'
---------                  : !referenceImage
---------                  ? 'Add Reference Photo'
---------                  : 'Generate Image'}
---------              </Text>
---------            </>
---------          )}
---------        </TouchableOpacity>
--------+        {/* Generate Button */}
--------+        <View className="px-6 pb-6">
--------+          <TouchableOpacity
--------+            className={`rounded-2xl py-4 px-6 shadow-lg ${
--------+              (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage)
--------+                ? 'bg-gray-300'
--------+                : 'bg-blue-600'
--------+            }`}
--------+            onPress={handleGenerate}
--------+            disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
--------+            activeOpacity={0.8}
--------+          >
--------+            {generating ? (
--------+              <View className="flex-row items-center justify-center">
--------+                <ActivityIndicator size="small" color="white" />
--------+                <Text className="text-white text-lg font-semibold ml-3">Generating...</Text>
--------+              </View>
--------+            ) : (
--------+              <View className="flex-row items-center justify-center">
--------+                <Ionicons name="sparkles" size={20} color="white" />
--------+                <Text className="text-white text-lg font-semibold ml-2">
--------+                  {!freeTier.hasUsesLeft() 
--------+                    ? 'Limit Reached (100/100)' 
--------+                    : !selectedPromptId
--------+                    ? 'Select a Style First'
--------+                    : !referenceImage
--------+                    ? 'Add Reference Photo'
--------+                    : 'Generate Image'}
--------+                </Text>
--------+              </View>
--------+            )}
--------+          </TouchableOpacity>
--------+        </View>
+-------           {/* Feature Cards */}
+--------          <View className="w-full max-w-sm mb-8">
+--------            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+--------              <View className="flex-row items-center mb-3">
+--------                <View className="bg-blue-50 p-2 rounded-xl mr-4">
+-------+          <View style={styles.modernFeatureContainer}>
+-------+            <View style={styles.modernFeatureCard}>
+-------+              <View style={styles.modernFeatureRow}>
+-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#eff6ff' }]}>
+-------                   <Ionicons name="brush" size={24} color="#0ea5e9" />
+-------                 </View>
+--------                <View className="flex-1">
+--------                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
+--------                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
+-------+                <View style={styles.modernFeatureContent}>
+-------+                  <Text style={styles.modernFeatureTitle}>AI-Powered</Text>
+-------+                  <Text style={styles.modernFeatureText}>Advanced Gemini 2.5 Flash technology</Text>
+-------                 </View>
+-------               </View>
+-------             </View>
 ------- 
--------         {generating && (
--------           <View style={styles.generatingInfo}>
+--------            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+--------              <View className="flex-row items-center mb-3">
+--------                <View className="bg-green-50 p-2 rounded-xl mr-4">
+-------+            <View style={styles.modernFeatureCard}>
+-------+              <View style={styles.modernFeatureRow}>
+-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#f0fdf4' }]}>
+-------                   <Ionicons name="flash" size={24} color="#10b981" />
+-------                 </View>
+--------                <View className="flex-1">
+--------                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
+--------                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
+-------+                <View style={styles.modernFeatureContent}>
+-------+                  <Text style={styles.modernFeatureTitle}>Instant Results</Text>
+-------+                  <Text style={styles.modernFeatureText}>Professional quality in seconds</Text>
+-------                 </View>
+-------               </View>
+-------             </View>
+------- 
+--------            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
+--------              <View className="flex-row items-center mb-3">
+--------                <View className="bg-purple-50 p-2 rounded-xl mr-4">
+-------+            <View style={styles.modernFeatureCard}>
+-------+              <View style={styles.modernFeatureRow}>
+-------+                <View style={[styles.modernIconContainer, { backgroundColor: '#faf5ff' }]}>
+-------                   <Ionicons name="gift" size={24} color="#8b5cf6" />
+-------                 </View>
+--------                <View className="flex-1">
+--------                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
+--------                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
+-------+                <View style={styles.modernFeatureContent}>
+-------+                  <Text style={styles.modernFeatureTitle}>Free to Start</Text>
+-------+                  <Text style={styles.modernFeatureText}>100 free generations, no signup required</Text>
+-------                 </View>
+-------               </View>
+-------             </View>
+-------           </View>
+------- 
+-------           {/* CTA Section */}
+--------          <View className="w-full max-w-sm items-center">
+--------            <Text className="text-sm text-gray-500 mb-6 text-center">
+-------+          <View style={styles.modernCtaContainer}>
+-------+            <Text style={styles.modernCtaText}>
+-------               ✨ Start with 100 free image generations
+-------             </Text>
+------- 
+-------             <TouchableOpacity 
+--------              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
+-------+              style={styles.modernCtaButton}
+-------               onPress={onGetStarted}
+-------               activeOpacity={0.9}
+-------             >
+--------              <View className="flex-row items-center justify-center">
+--------                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
+-------+              <View style={styles.modernCtaButtonContent}>
+-------+                <Text style={styles.modernCtaButtonText}>Get Started Free</Text>
+-------                 <Ionicons name="arrow-forward" size={20} color="white" />
+-------               </View>
+-------             </TouchableOpacity>
+-------@@ -2115,4 +2115,121 @@ const styles = StyleSheet.create({
+-------     textAlign: 'center',
+-------     fontStyle: 'italic',
+-------   },
+-------+  // Modern Welcome Screen Styles
+-------+  modernContainer: {
+-------+    flex: 1,
+-------+    backgroundColor: '#f8fafc',
+-------+  },
+-------+  modernWelcomeContainer: {
+-------+    flexGrow: 1,
+-------+    justifyContent: 'center',
+-------+    paddingHorizontal: 24,
+-------+    paddingVertical: 48,
+-------+  },
+-------+  modernHeaderSection: {
+-------+    flex: 1,
+-------+    justifyContent: 'center',
+-------+    alignItems: 'center',
+-------+  },
+-------+  modernTitleContainer: {
+-------+    marginBottom: 48,
+-------+    alignItems: 'center',
+-------+  },
+-------+  modernTitle: {
+-------+    fontSize: 36,
+-------+    fontWeight: 'bold',
+-------+    color: '#1e293b',
+-------+    marginBottom: 16,
+-------+    textAlign: 'center',
+-------+    letterSpacing: -0.5,
+-------+  },
+-------+  modernSubtitle: {
+-------+    fontSize: 18,
+-------+    color: '#64748b',
+-------+    textAlign: 'center',
+-------+    lineHeight: 26,
+-------+    maxWidth: 320,
+-------+  },
+-------+  modernFeatureContainer: {
+-------+    width: '100%',
+-------+    maxWidth: 400,
+-------+    marginBottom: 32,
+-------+  },
+-------+  modernFeatureCard: {
+-------+    backgroundColor: 'white',
+-------+    borderRadius: 16,
+-------+    padding: 24,
+-------+    marginBottom: 16,
+-------+    shadowColor: '#000',
+-------+    shadowOffset: {
+-------+      width: 0,
+-------+      height: 2,
+-------+    },
+-------+    shadowOpacity: 0.05,
+-------+    shadowRadius: 8,
+-------+    elevation: 2,
+-------+    borderWidth: 1,
+-------+    borderColor: '#f1f5f9',
+-------+  },
+-------+  modernFeatureRow: {
+-------+    flexDirection: 'row',
+-------+    alignItems: 'center',
+-------+  },
+-------+  modernIconContainer: {
+-------+    padding: 12,
+-------+    borderRadius: 12,
+-------+    marginRight: 16,
+-------+  },
+-------+  modernFeatureContent: {
+-------+    flex: 1,
+-------+  },
+-------+  modernFeatureTitle: {
+-------+    fontSize: 18,
+-------+    fontWeight: '600',
+-------+    color: '#1e293b',
+-------+    marginBottom: 4,
+-------+  },
+-------+  modernFeatureText: {
+-------+    fontSize: 14,
+-------+    color: '#64748b',
+-------+    lineHeight: 20,
+-------+  },
+-------+  modernCtaContainer: {
+-------+    width: '100%',
+-------+    maxWidth: 400,
+-------+    alignItems: 'center',
+-------+  },
+-------+  modernCtaText: {
+-------+    fontSize: 14,
+-------+    color: '#64748b',
+-------+    marginBottom: 24,
+-------+    textAlign: 'center',
+-------+    fontWeight: '500',
+-------+  },
+-------+  modernCtaButton: {
+-------+    backgroundColor: '#3b82f6',
+-------+    width: '100%',
+-------+    borderRadius: 16,
+-------+    paddingVertical: 16,
+-------+    paddingHorizontal: 24,
+-------+    shadowColor: '#3b82f6',
+-------+    shadowOffset: {
+-------+      width: 0,
+-------+      height: 4,
+-------+    },
+-------+    shadowOpacity: 0.2,
+-------+    shadowRadius: 12,
+-------+    elevation: 4,
+-------+  },
+-------+  modernCtaButtonContent: {
+-------+    flexDirection: 'row',
+-------+    alignItems: 'center',
+-------+    justifyContent: 'center',
+-------+  },
+-------+  modernCtaButtonText: {
+-------+    color: 'white',
+-------+    fontSize: 18,
+-------+    fontWeight: '600',
+-------+    marginRight: 8,
+-------+  },
+------- });
+-------\ No newline at end of file
 -------diff --git a/model.patch b/model.patch
--------index 1e07fe6..e69de29 100644
+-------index b163f6a..b257960 100644
 ---------- a/model.patch
 -------+++ b/model.patch
--------@@ -1,708 +0,0 @@
+-------@@ -1,782 +0,0 @@
+--------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
+--------index e4e05c7..9427bb6 100644
+----------- a/frontend/app/index.tsx
+--------+++ b/frontend/app/index.tsx
+--------@@ -893,31 +893,39 @@ const FreeGenerateScreen: React.FC<{
+--------           </>
+--------         )}
+-------- 
+---------        <TouchableOpacity
+---------          style={[
+---------            styles.generateButton,
+---------            (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage) && styles.generateButtonDisabled,
+---------          ]}
+---------          onPress={handleGenerate}
+---------          disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
+---------        >
+---------          {generating ? (
+---------            <ActivityIndicator color="white" />
+---------          ) : (
+---------            <>
+---------              <Ionicons name="flash" size={20} color="white" />
+---------              <Text style={styles.generateButtonText}>
+---------                {!freeTier.hasUsesLeft() 
+---------                  ? 'Limit Reached (100/100)' 
+---------                  : !selectedPromptId
+---------                  ? 'Select a Style First'
+---------                  : !referenceImage
+---------                  ? 'Add Reference Photo'
+---------                  : 'Generate Image'}
+---------              </Text>
+---------            </>
+---------          )}
+---------        </TouchableOpacity>
+--------+        {/* Generate Button */}
+--------+        <View className="px-6 pb-6">
+--------+          <TouchableOpacity
+--------+            className={`rounded-2xl py-4 px-6 shadow-lg ${
+--------+              (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage)
+--------+                ? 'bg-gray-300'
+--------+                : 'bg-blue-600'
+--------+            }`}
+--------+            onPress={handleGenerate}
+--------+            disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
+--------+            activeOpacity={0.8}
+--------+          >
+--------+            {generating ? (
+--------+              <View className="flex-row items-center justify-center">
+--------+                <ActivityIndicator size="small" color="white" />
+--------+                <Text className="text-white text-lg font-semibold ml-3">Generating...</Text>
+--------+              </View>
+--------+            ) : (
+--------+              <View className="flex-row items-center justify-center">
+--------+                <Ionicons name="sparkles" size={20} color="white" />
+--------+                <Text className="text-white text-lg font-semibold ml-2">
+--------+                  {!freeTier.hasUsesLeft() 
+--------+                    ? 'Limit Reached (100/100)' 
+--------+                    : !selectedPromptId
+--------+                    ? 'Select a Style First'
+--------+                    : !referenceImage
+--------+                    ? 'Add Reference Photo'
+--------+                    : 'Generate Image'}
+--------+                </Text>
+--------+              </View>
+--------+            )}
+--------+          </TouchableOpacity>
+--------+        </View>
+-------- 
+--------         {generating && (
+--------           <View style={styles.generatingInfo}>
 --------diff --git a/model.patch b/model.patch
---------index 4d198f2..e69de29 100644
+--------index 1e07fe6..e69de29 100644
 ----------- a/model.patch
 --------+++ b/model.patch
---------@@ -1,703 +0,0 @@
----------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
----------index 9388dd0..3ce2f87 100644
------------- a/frontend/app/index.tsx
----------+++ b/frontend/app/index.tsx
----------@@ -260,6 +260,96 @@ const FullscreenImagePreview: React.FC<{
----------   );
---------- };
---------- 
----------+// Simple Profile Modal Component
----------+const ProfileModal: React.FC<{
----------+  visible: boolean;
----------+  onClose: () => void;
----------+  freeTier: FreeTier;
----------+}> = ({ visible, onClose, freeTier }) => {
----------+  return (
----------+    <Modal visible={visible} transparent={true} animationType="slide">
----------+      <View className="flex-1 bg-black/50 justify-end">
----------+        <View className="bg-white rounded-t-3xl p-6 pb-8">
----------+          {/* Header */}
----------+          <View className="flex-row items-center justify-between mb-6">
----------+            <Text className="text-xl font-bold text-gray-900">Profile</Text>
----------+            <TouchableOpacity 
----------+              className="bg-gray-100 p-2 rounded-xl"
----------+              onPress={onClose}
----------+              activeOpacity={0.7}
----------+            >
----------+              <Ionicons name="close" size={20} color="#374151" />
----------+            </TouchableOpacity>
----------+          </View>
----------+
----------+          {/* Usage Stats */}
----------+          <View className="bg-blue-50 rounded-2xl p-4 mb-6">
----------+            <View className="flex-row items-center mb-3">
----------+              <View className="bg-blue-100 p-2 rounded-xl mr-3">
----------+                <Ionicons name="flash" size={20} color="#0ea5e9" />
----------+              </View>
----------+              <View className="flex-1">
----------+                <Text className="text-lg font-semibold text-gray-900">Free Tier</Text>
----------+                <Text className="text-sm text-gray-600">Anonymous user</Text>
----------+              </View>
----------+            </View>
----------+            
----------+            <View className="mb-3">
----------+              <View className="flex-row justify-between items-center mb-2">
----------+                <Text className="text-sm text-gray-600">Generations used</Text>
----------+                <Text className="text-sm font-semibold text-gray-900">
----------+                  {freeTier.usageCount} / {freeTier.FREE_LIMIT}
----------+                </Text>
----------+              </View>
----------+              <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
----------+                <View 
----------+                  className="bg-blue-500 h-full rounded-full"
----------+                  style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
----------+                />
----------+              </View>
----------+            </View>
----------+            
----------+            <Text className="text-xs text-gray-500">
----------+              {freeTier.remainingUses} generations remaining
----------+            </Text>
----------+          </View>
----------+
----------+          {/* Quick Actions */}
----------+          <View className="space-y-3">
----------+            <TouchableOpacity 
----------+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
----------+              activeOpacity={0.7}
----------+            >
----------+              <View className="bg-green-100 p-2 rounded-xl mr-3">
----------+                <Ionicons name="star" size={20} color="#10b981" />
----------+              </View>
----------+              <View className="flex-1">
----------+                <Text className="font-semibold text-gray-900">Upgrade to Pro</Text>
----------+                <Text className="text-sm text-gray-600">Unlimited generations</Text>
----------+              </View>
----------+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
----------+            </TouchableOpacity>
----------+
----------+            <TouchableOpacity 
----------+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
----------+              activeOpacity={0.7}
----------+            >
----------+              <View className="bg-purple-100 p-2 rounded-xl mr-3">
----------+                <Ionicons name="help-circle" size={20} color="#8b5cf6" />
----------+              </View>
----------+              <View className="flex-1">
----------+                <Text className="font-semibold text-gray-900">Help & Support</Text>
----------+                <Text className="text-sm text-gray-600">Get assistance</Text>
----------+              </View>
----------+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
----------+            </TouchableOpacity>
----------+          </View>
----------+        </View>
----------+      </View>
----------+    </Modal>
----------+  );
----------+};
----------+
---------- // Free Tier Generate Screen with Curated Prompts
---------- const FreeGenerateScreen: React.FC<{
----------   onBack: () => void;
----------@@ -275,6 +365,7 @@ const FreeGenerateScreen: React.FC<{
----------   const [loadingPrompts, setLoadingPrompts] = useState(true);
----------   const [showFullscreenPreview, setShowFullscreenPreview] = useState(false);
----------   const [savingImage, setSavingImage] = useState(false);
----------+  const [showProfile, setShowProfile] = useState(false);
---------- 
----------   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
---------- 
----------@@ -595,12 +686,28 @@ const FreeGenerateScreen: React.FC<{
----------   }
---------- 
----------   return (
-----------    <SafeAreaView style={styles.container}>
-----------      <View style={styles.header}>
-----------        <TouchableOpacity onPress={onBack}>
-----------          <Ionicons name="arrow-back" size={24} color="#007AFF" />
-----------        </TouchableOpacity>
-----------        <Text style={styles.headerTitle}>Generate Image</Text>
----------+    <SafeAreaView className="flex-1 bg-gray-50">
----------+      {/* Modern Header */}
----------+      <View className="bg-white px-6 py-4 border-b border-gray-100 shadow-sm">
----------+        <View className="flex-row items-center justify-between">
----------+          <TouchableOpacity 
----------+            className="bg-gray-100 p-2 rounded-xl"
----------+            onPress={onBack}
----------+            activeOpacity={0.7}
----------+          >
----------+            <Ionicons name="arrow-back" size={20} color="#374151" />
----------+          </TouchableOpacity>
----------+          
----------+          <Text className="text-xl font-bold text-gray-900">Generate Image</Text>
----------+          
----------+          <TouchableOpacity 
----------+            className="bg-blue-50 p-2 rounded-xl"
----------+            onPress={() => setShowProfile(true)}
----------+            activeOpacity={0.7}
----------+          >
----------+            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
----------+          </TouchableOpacity>
----------+        </View>
----------       </View>
---------- 
----------       <ScrollView style={styles.content}>
----------@@ -781,6 +888,13 @@ const FreeGenerateScreen: React.FC<{
----------           </View>
----------         )}
----------       </ScrollView>
----------+      
----------+      {/* Profile Modal */}
----------+      <ProfileModal
----------+        visible={showProfile}
----------+        onClose={() => setShowProfile(false)}
----------+        freeTier={freeTier}
----------+      />
----------     </SafeAreaView>
----------   );
---------- };
+--------@@ -1,708 +0,0 @@
 ---------diff --git a/model.patch b/model.patch
----------index 316990c..0393543 100644
+---------index 4d198f2..e69de29 100644
 ------------ a/model.patch
 ---------+++ b/model.patch
----------@@ -1,540 +0,0 @@
+---------@@ -1,703 +0,0 @@
 ----------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
-----------index 20d0b94..9388dd0 100644
+----------index 9388dd0..3ce2f87 100644
 ------------- a/frontend/app/index.tsx
 ----------+++ b/frontend/app/index.tsx
-----------@@ -108,46 +108,76 @@ const useFreeTier = (): FreeTier => {
----------- // Welcome/Onboarding Screen
----------- const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
-----------   return (
------------    <SafeAreaView style={styles.container}>
------------      <ScrollView contentContainerStyle={styles.welcomeContainer}>
------------        <View style={styles.welcomeHeader}>
------------          <View style={styles.iconContainer}>
------------            <Ionicons name="image" size={64} color="#007AFF" />
-----------+    <SafeAreaView className="flex-1 bg-gray-50">
-----------+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-----------+        {/* Header Section */}
-----------+        <View className="flex-1 justify-center items-center px-6 py-12">
-----------+          <View className="mb-12 items-center">
-----------+            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
-----------+              AI Canvas Studio
-----------+            </Text>
-----------+            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
-----------+              Transform your photos with professional AI artistry
-----------+            </Text>
-----------           </View>
------------          <Text style={styles.welcomeTitle}>AI Image Generator</Text>
------------          <Text style={styles.welcomeSubtitle}>
------------            Transform your ideas into stunning images with AI
------------          </Text>
------------        </View>
+----------@@ -260,6 +260,96 @@ const FullscreenImagePreview: React.FC<{
+----------   );
+---------- };
 ---------- 
------------        <View style={styles.benefitsSection}>
------------          <View style={styles.benefit}>
------------            <Ionicons name="flash" size={32} color="#007AFF" />
------------            <Text style={styles.benefitTitle}>Instant Generation</Text>
------------            <Text style={styles.benefitText}>Create stunning images in seconds</Text>
------------          </View>
------------          
------------          <View style={styles.benefit}>
------------            <Ionicons name="color-palette" size={32} color="#FF6B35" />
------------            <Text style={styles.benefitTitle}>Multiple Styles</Text>
------------            <Text style={styles.benefitText}>Artistic, photorealistic, vintage & more</Text>
------------          </View>
------------          
------------          <View style={styles.benefit}>
------------            <Ionicons name="gift" size={32} color="#34C759" />
------------            <Text style={styles.benefitTitle}>Free to Start</Text>
------------            <Text style={styles.benefitText}>100 free generations, no signup required</Text>
-----------+          {/* Feature Cards */}
-----------+          <View className="w-full max-w-sm mb-8">
-----------+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
-----------+              <View className="flex-row items-center mb-3">
-----------+                <View className="bg-blue-50 p-2 rounded-xl mr-4">
-----------+                  <Ionicons name="brush" size={24} color="#0ea5e9" />
-----------+                </View>
-----------+                <View className="flex-1">
-----------+                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
-----------+                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
-----------+                </View>
-----------+              </View>
-----------+            </View>
-----------+
-----------+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
-----------+              <View className="flex-row items-center mb-3">
-----------+                <View className="bg-green-50 p-2 rounded-xl mr-4">
-----------+                  <Ionicons name="flash" size={24} color="#10b981" />
-----------+                </View>
-----------+                <View className="flex-1">
-----------+                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
-----------+                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
-----------+                </View>
-----------+              </View>
-----------+            </View>
-----------+
-----------+            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
-----------+              <View className="flex-row items-center mb-3">
-----------+                <View className="bg-purple-50 p-2 rounded-xl mr-4">
-----------+                  <Ionicons name="gift" size={24} color="#8b5cf6" />
-----------+                </View>
-----------+                <View className="flex-1">
-----------+                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
-----------+                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
-----------+                </View>
-----------+              </View>
-----------+            </View>
-----------           </View>
------------        </View>
----------- 
------------        <TouchableOpacity style={styles.getStartedButton} onPress={onGetStarted}>
------------          <Text style={styles.getStartedButtonText}>Get Started Free</Text>
------------          <Ionicons name="arrow-forward" size={20} color="white" />
------------        </TouchableOpacity>
-----------+          {/* CTA Section */}
-----------+          <View className="w-full max-w-sm items-center">
-----------+            <Text className="text-sm text-gray-500 mb-6 text-center">
-----------+              ✨ Start with 100 free image generations
-----------+            </Text>
----------- 
------------        <Text style={styles.freeTrialText}>
------------          ✨ Start with 100 free image generations
------------        </Text>
+----------+// Simple Profile Modal Component
+----------+const ProfileModal: React.FC<{
+----------+  visible: boolean;
+----------+  onClose: () => void;
+----------+  freeTier: FreeTier;
+----------+}> = ({ visible, onClose, freeTier }) => {
+----------+  return (
+----------+    <Modal visible={visible} transparent={true} animationType="slide">
+----------+      <View className="flex-1 bg-black/50 justify-end">
+----------+        <View className="bg-white rounded-t-3xl p-6 pb-8">
+----------+          {/* Header */}
+----------+          <View className="flex-row items-center justify-between mb-6">
+----------+            <Text className="text-xl font-bold text-gray-900">Profile</Text>
 ----------+            <TouchableOpacity 
-----------+              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
-----------+              onPress={onGetStarted}
-----------+              activeOpacity={0.9}
+----------+              className="bg-gray-100 p-2 rounded-xl"
+----------+              onPress={onClose}
+----------+              activeOpacity={0.7}
 ----------+            >
-----------+              <View className="flex-row items-center justify-center">
-----------+                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
-----------+                <Ionicons name="arrow-forward" size={20} color="white" />
+----------+              <Ionicons name="close" size={20} color="#374151" />
+----------+            </TouchableOpacity>
+----------+          </View>
+----------+
+----------+          {/* Usage Stats */}
+----------+          <View className="bg-blue-50 rounded-2xl p-4 mb-6">
+----------+            <View className="flex-row items-center mb-3">
+----------+              <View className="bg-blue-100 p-2 rounded-xl mr-3">
+----------+                <Ionicons name="flash" size={20} color="#0ea5e9" />
 ----------+              </View>
+----------+              <View className="flex-1">
+----------+                <Text className="text-lg font-semibold text-gray-900">Free Tier</Text>
+----------+                <Text className="text-sm text-gray-600">Anonymous user</Text>
+----------+              </View>
+----------+            </View>
+----------+            
+----------+            <View className="mb-3">
+----------+              <View className="flex-row justify-between items-center mb-2">
+----------+                <Text className="text-sm text-gray-600">Generations used</Text>
+----------+                <Text className="text-sm font-semibold text-gray-900">
+----------+                  {freeTier.usageCount} / {freeTier.FREE_LIMIT}
+----------+                </Text>
+----------+              </View>
+----------+              <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
+----------+                <View 
+----------+                  className="bg-blue-500 h-full rounded-full"
+----------+                  style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
+----------+                />
+----------+              </View>
+----------+            </View>
+----------+            
+----------+            <Text className="text-xs text-gray-500">
+----------+              {freeTier.remainingUses} generations remaining
+----------+            </Text>
+----------+          </View>
+----------+
+----------+          {/* Quick Actions */}
+----------+          <View className="space-y-3">
+----------+            <TouchableOpacity 
+----------+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+----------+              activeOpacity={0.7}
+----------+            >
+----------+              <View className="bg-green-100 p-2 rounded-xl mr-3">
+----------+                <Ionicons name="star" size={20} color="#10b981" />
+----------+              </View>
+----------+              <View className="flex-1">
+----------+                <Text className="font-semibold text-gray-900">Upgrade to Pro</Text>
+----------+                <Text className="text-sm text-gray-600">Unlimited generations</Text>
+----------+              </View>
+----------+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+----------+            </TouchableOpacity>
+----------+
+----------+            <TouchableOpacity 
+----------+              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+----------+              activeOpacity={0.7}
+----------+            >
+----------+              <View className="bg-purple-100 p-2 rounded-xl mr-3">
+----------+                <Ionicons name="help-circle" size={20} color="#8b5cf6" />
+----------+              </View>
+----------+              <View className="flex-1">
+----------+                <Text className="font-semibold text-gray-900">Help & Support</Text>
+----------+                <Text className="text-sm text-gray-600">Get assistance</Text>
+----------+              </View>
+----------+              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
 ----------+            </TouchableOpacity>
 ----------+          </View>
 ----------+        </View>
+----------+      </View>
+----------+    </Modal>
+----------+  );
+----------+};
+----------+
+---------- // Free Tier Generate Screen with Curated Prompts
+---------- const FreeGenerateScreen: React.FC<{
+----------   onBack: () => void;
+----------@@ -275,6 +365,7 @@ const FreeGenerateScreen: React.FC<{
+----------   const [loadingPrompts, setLoadingPrompts] = useState(true);
+----------   const [showFullscreenPreview, setShowFullscreenPreview] = useState(false);
+----------   const [savingImage, setSavingImage] = useState(false);
+----------+  const [showProfile, setShowProfile] = useState(false);
+---------- 
+----------   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
+---------- 
+----------@@ -595,12 +686,28 @@ const FreeGenerateScreen: React.FC<{
+----------   }
+---------- 
+----------   return (
+-----------    <SafeAreaView style={styles.container}>
+-----------      <View style={styles.header}>
+-----------        <TouchableOpacity onPress={onBack}>
+-----------          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+-----------        </TouchableOpacity>
+-----------        <Text style={styles.headerTitle}>Generate Image</Text>
+----------+    <SafeAreaView className="flex-1 bg-gray-50">
+----------+      {/* Modern Header */}
+----------+      <View className="bg-white px-6 py-4 border-b border-gray-100 shadow-sm">
+----------+        <View className="flex-row items-center justify-between">
+----------+          <TouchableOpacity 
+----------+            className="bg-gray-100 p-2 rounded-xl"
+----------+            onPress={onBack}
+----------+            activeOpacity={0.7}
+----------+          >
+----------+            <Ionicons name="arrow-back" size={20} color="#374151" />
+----------+          </TouchableOpacity>
+----------+          
+----------+          <Text className="text-xl font-bold text-gray-900">Generate Image</Text>
+----------+          
+----------+          <TouchableOpacity 
+----------+            className="bg-blue-50 p-2 rounded-xl"
+----------+            onPress={() => setShowProfile(true)}
+----------+            activeOpacity={0.7}
+----------+          >
+----------+            <Ionicons name="person-circle" size={24} color="#0ea5e9" />
+----------+          </TouchableOpacity>
+----------+        </View>
+----------       </View>
+---------- 
+----------       <ScrollView style={styles.content}>
+----------@@ -781,6 +888,13 @@ const FreeGenerateScreen: React.FC<{
+----------           </View>
+----------         )}
 ----------       </ScrollView>
+----------+      
+----------+      {/* Profile Modal */}
+----------+      <ProfileModal
+----------+        visible={showProfile}
+----------+        onClose={() => setShowProfile(false)}
+----------+        freeTier={freeTier}
+----------+      />
 ----------     </SafeAreaView>
 ----------   );
+---------- };
 ----------diff --git a/model.patch b/model.patch
-----------index ce7a426..f0ab020 100644
+----------index 316990c..0393543 100644
 ------------- a/model.patch
 ----------+++ b/model.patch
-----------@@ -1,419 +0,0 @@
+----------@@ -1,540 +0,0 @@
+-----------diff --git a/frontend/app/index.tsx b/frontend/app/index.tsx
+-----------index 20d0b94..9388dd0 100644
+-------------- a/frontend/app/index.tsx
+-----------+++ b/frontend/app/index.tsx
+-----------@@ -108,46 +108,76 @@ const useFreeTier = (): FreeTier => {
+----------- // Welcome/Onboarding Screen
+----------- const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
+-----------   return (
+------------    <SafeAreaView style={styles.container}>
+------------      <ScrollView contentContainerStyle={styles.welcomeContainer}>
+------------        <View style={styles.welcomeHeader}>
+------------          <View style={styles.iconContainer}>
+------------            <Ionicons name="image" size={64} color="#007AFF" />
+-----------+    <SafeAreaView className="flex-1 bg-gray-50">
+-----------+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+-----------+        {/* Header Section */}
+-----------+        <View className="flex-1 justify-center items-center px-6 py-12">
+-----------+          <View className="mb-12 items-center">
+-----------+            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
+-----------+              AI Canvas Studio
+-----------+            </Text>
+-----------+            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
+-----------+              Transform your photos with professional AI artistry
+-----------+            </Text>
+-----------           </View>
+------------          <Text style={styles.welcomeTitle}>AI Image Generator</Text>
+------------          <Text style={styles.welcomeSubtitle}>
+------------            Transform your ideas into stunning images with AI
+------------          </Text>
+------------        </View>
+----------- 
+------------        <View style={styles.benefitsSection}>
+------------          <View style={styles.benefit}>
+------------            <Ionicons name="flash" size={32} color="#007AFF" />
+------------            <Text style={styles.benefitTitle}>Instant Generation</Text>
+------------            <Text style={styles.benefitText}>Create stunning images in seconds</Text>
+------------          </View>
+------------          
+------------          <View style={styles.benefit}>
+------------            <Ionicons name="color-palette" size={32} color="#FF6B35" />
+------------            <Text style={styles.benefitTitle}>Multiple Styles</Text>
+------------            <Text style={styles.benefitText}>Artistic, photorealistic, vintage & more</Text>
+------------          </View>
+------------          
+------------          <View style={styles.benefit}>
+------------            <Ionicons name="gift" size={32} color="#34C759" />
+------------            <Text style={styles.benefitTitle}>Free to Start</Text>
+------------            <Text style={styles.benefitText}>100 free generations, no signup required</Text>
+-----------+          {/* Feature Cards */}
+-----------+          <View className="w-full max-w-sm mb-8">
+-----------+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+-----------+              <View className="flex-row items-center mb-3">
+-----------+                <View className="bg-blue-50 p-2 rounded-xl mr-4">
+-----------+                  <Ionicons name="brush" size={24} color="#0ea5e9" />
+-----------+                </View>
+-----------+                <View className="flex-1">
+-----------+                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
+-----------+                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
+-----------+                </View>
+-----------+              </View>
+-----------+            </View>
+-----------+
+-----------+            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
+-----------+              <View className="flex-row items-center mb-3">
+-----------+                <View className="bg-green-50 p-2 rounded-xl mr-4">
+-----------+                  <Ionicons name="flash" size={24} color="#10b981" />
+-----------+                </View>
+-----------+                <View className="flex-1">
+-----------+                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
+-----------+                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
+-----------+                </View>
+-----------+              </View>
+-----------+            </View>
+-----------+
+-----------+            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
+-----------+              <View className="flex-row items-center mb-3">
+-----------+                <View className="bg-purple-50 p-2 rounded-xl mr-4">
+-----------+                  <Ionicons name="gift" size={24} color="#8b5cf6" />
+-----------+                </View>
+-----------+                <View className="flex-1">
+-----------+                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
+-----------+                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
+-----------+                </View>
+-----------+              </View>
+-----------+            </View>
+-----------           </View>
+------------        </View>
+----------- 
+------------        <TouchableOpacity style={styles.getStartedButton} onPress={onGetStarted}>
+------------          <Text style={styles.getStartedButtonText}>Get Started Free</Text>
+------------          <Ionicons name="arrow-forward" size={20} color="white" />
+------------        </TouchableOpacity>
+-----------+          {/* CTA Section */}
+-----------+          <View className="w-full max-w-sm items-center">
+-----------+            <Text className="text-sm text-gray-500 mb-6 text-center">
+-----------+              ✨ Start with 100 free image generations
+-----------+            </Text>
+----------- 
+------------        <Text style={styles.freeTrialText}>
+------------          ✨ Start with 100 free image generations
+------------        </Text>
+-----------+            <TouchableOpacity 
+-----------+              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
+-----------+              onPress={onGetStarted}
+-----------+              activeOpacity={0.9}
+-----------+            >
+-----------+              <View className="flex-row items-center justify-center">
+-----------+                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
+-----------+                <Ionicons name="arrow-forward" size={20} color="white" />
+-----------+              </View>
+-----------+            </TouchableOpacity>
+-----------+          </View>
+-----------+        </View>
+-----------       </ScrollView>
+-----------     </SafeAreaView>
+-----------   );
 -----------diff --git a/model.patch b/model.patch
------------index e10b0df..e69de29 100644
+-----------index ce7a426..f0ab020 100644
 -------------- a/model.patch
 -----------+++ b/model.patch
------------@@ -1,376 +0,0 @@
-------------diff --git a/focused_test.py b/focused_test.py
-------------new file mode 100644
-------------index 0000000..450d00f
---------------- /dev/null
-------------+++ b/focused_test.py
-------------@@ -0,0 +1,260 @@
-------------+#!/usr/bin/env python3
-------------+"""
-------------+Focused NanoBanana API Integration Test
-------------+Tests the specific functionality requested in the review.
-------------+"""
-------------+
-------------+import requests
-------------+import json
-------------+import base64
-------------+from datetime import datetime
-------------+
-------------+# Backend URL from frontend env
-------------+BACKEND_URL = "https://promptgen-7.preview.emergentagent.com/api"
-------------+
-------------+def test_1_health_endpoint():
-------------+    """Test 1: Health endpoint to confirm backend is running"""
-------------+    print("🔍 Test 1: Testing health endpoint...")
-------------+    try:
-------------+        response = requests.get(f"{BACKEND_URL}/health", timeout=10)
-------------+        print(f"   Status Code: {response.status_code}")
-------------+        
-------------+        if response.status_code == 200:
-------------+            data = response.json()
-------------+            print(f"   Response: {data}")
-------------+            if data.get("status") == "healthy":
-------------+                print("   ✅ PASS: Backend is running and healthy")
-------------+                return True
-------------+            else:
-------------+                print("   ❌ FAIL: Unexpected health response")
-------------+                return False
-------------+        else:
-------------+            print(f"   ❌ FAIL: Health check returned status {response.status_code}")
-------------+            return False
-------------+    except Exception as e:
-------------+        print(f"   ❌ FAIL: Health check failed with error: {str(e)}")
-------------+        return False
-------------+
-------------+def test_2_generate_image():
-------------+    """Test 2: Generate image endpoint with simple text prompt"""
-------------+    print("\n🎨 Test 2: Testing generate-image endpoint...")
-------------+    try:
-------------+        test_prompt = "A beautiful sunset over mountains with vibrant colors"
-------------+        payload = {
-------------+            "prompt": test_prompt,
-------------+            "style": "photorealistic"
-------------+        }
-------------+        
-------------+        print(f"   Sending request with prompt: '{test_prompt}'")
-------------+        print("   ⏳ Generating image... (this may take 10-30 seconds)")
-------------+        
-------------+        response = requests.post(
-------------+            f"{BACKEND_URL}/generate-image", 
-------------+            json=payload, 
-------------+            timeout=60
-------------+        )
-------------+        
-------------+        print(f"   Status Code: {response.status_code}")
-------------+        
-------------+        if response.status_code == 200:
-------------+            data = response.json()
-------------+            print(f"   Response keys: {list(data.keys())}")
-------------+            
-------------+            # Check required fields
-------------+            required_fields = ["id", "prompt", "generated_image", "created_at", "success"]
-------------+            missing_fields = [field for field in required_fields if field not in data]
-------------+            
-------------+            if missing_fields:
-------------+                print(f"   ❌ FAIL: Missing required fields: {missing_fields}")
-------------+                return False, None
-------------+            
-------------+            # Validate image data
-------------+            if data.get("generated_image"):
-------------+                image_data = data["generated_image"]
-------------+                print(f"   Generated image size: {len(image_data)} characters")
-------------+                
-------------+                # Basic base64 validation
-------------+                try:
-------------+                    base64.b64decode(image_data)
-------------+                    print("   ✅ PASS: NanoBanana API generated valid base64 image")
-------------+                    return True, data["id"]
-------------+                except:
-------------+                    print("   ❌ FAIL: Generated image is not valid base64")
-------------+                    return False, None
-------------+            else:
-------------+                print("   ❌ FAIL: No generated image data in response")
-------------+                return False, None
-------------+        else:
-------------+            print(f"   ❌ FAIL: Image generation failed with status {response.status_code}")
-------------+            try:
-------------+                error_data = response.json()
-------------+                print(f"   Error details: {error_data}")
-------------+            except:
-------------+                print(f"   Error response: {response.text}")
-------------+            return False, None
-------------+            
-------------+    except Exception as e:
-------------+        print(f"   ❌ FAIL: Image generation failed with error: {str(e)}")
-------------+        return False, None
-------------+
-------------+def test_3_mongodb_storage(image_id):
-------------+    """Test 3: Verify generated images are stored in MongoDB properly"""
-------------+    print(f"\n💾 Test 3: Testing MongoDB storage...")
-------------+    
-------------+    if not image_id:
-------------+        print("   ❌ FAIL: No image ID provided for MongoDB test")
-------------+        return False
-------------+    
-------------+    try:
-------------+        print(f"   Retrieving image with ID: {image_id}")
-------------+        response = requests.get(f"{BACKEND_URL}/images/{image_id}", timeout=10)
-------------+        print(f"   Status Code: {response.status_code}")
-------------+        
-------------+        if response.status_code == 200:
-------------+            data = response.json()
-------------+            print(f"   Retrieved image keys: {list(data.keys())}")
-------------+            
-------------+            # Check required MongoDB fields
-------------+            required_fields = ["id", "prompt", "generated_image", "created_at"]
-------------+            missing_fields = [field for field in required_fields if field not in data]
-------------+            
-------------+            if missing_fields:
-------------+                print(f"   ❌ FAIL: Missing required fields in stored image: {missing_fields}")
-------------+                return False
-------------+            
-------------+            # Validate stored data
-------------+            if data.get("generated_image"):
-------------+                stored_image_size = len(data['generated_image'])
-------------+                print(f"   Stored image size: {stored_image_size} characters")
-------------+                
-------------+                # Verify it's valid base64
-------------+                try:
-------------+                    base64.b64decode(data['generated_image'])
-------------+                    print("   ✅ PASS: Image properly stored in MongoDB with valid base64 format")
-------------+                except:
-------------+                    print("   ❌ FAIL: Stored image is not valid base64")
-------------+                    return False
-------------+            else:
-------------+                print("   ❌ FAIL: No image data in stored record")
-------------+                return False
-------------+            
-------------+            # Check metadata
-------------+            if data.get("created_at"):
-------------+                print(f"   Created at: {data['created_at']}")
-------------+                print("   ✅ PASS: Metadata properly stored")
-------------+            
-------------+            return True
-------------+        else:
-------------+            print(f"   ❌ FAIL: Failed to retrieve image from MongoDB - status {response.status_code}")
-------------+            return False
-------------+            
-------------+    except Exception as e:
-------------+        print(f"   ❌ FAIL: MongoDB storage test failed with error: {str(e)}")
-------------+        return False
-------------+
-------------+def test_4_image_retrieval():
-------------+    """Test 4: Test image retrieval from database"""
-------------+    print("\n📋 Test 4: Testing image retrieval from database...")
-------------+    try:
-------------+        response = requests.get(f"{BACKEND_URL}/images?limit=5", timeout=10)
-------------+        print(f"   Status Code: {response.status_code}")
-------------+        
-------------+        if response.status_code == 200:
-------------+            data = response.json()
-------------+            print(f"   Response keys: {list(data.keys())}")
-------------+            
-------------+            if "images" in data:
-------------+                images = data["images"]
-------------+                print(f"   Retrieved {len(images)} images from database")
-------------+                
-------------+                if len(images) > 0:
-------------+                    # Check first image structure
-------------+                    first_image = images[0]
-------------+                    print(f"   First image keys: {list(first_image.keys())}")
-------------+                    
-------------+                    required_fields = ["id", "prompt", "generated_image", "created_at"]
-------------+                    missing_fields = [field for field in required_fields if field not in first_image]
-------------+                    
-------------+                    if missing_fields:
-------------+                        print(f"   ❌ FAIL: Missing required fields in retrieved image: {missing_fields}")
-------------+                        return False
-------------+                    
-------------+                    print("   ✅ PASS: Image retrieval working properly")
-------------+                    return True
-------------+                else:
-------------+                    print("   ⚠️  No images found in database (this might be expected for a fresh install)")
-------------+                    print("   ✅ PASS: Endpoint working, no data yet")
-------------+                    return True
-------------+            else:
-------------+                print("   ❌ FAIL: No 'images' key in response")
-------------+                return False
-------------+        else:
-------------+            print(f"   ❌ FAIL: Image retrieval failed - status {response.status_code}")
-------------+            return False
-------------+            
-------------+    except Exception as e:
-------------+        print(f"   ❌ FAIL: Image retrieval test failed with error: {str(e)}")
-------------+        return False
-------------+
-------------+def main():
-------------+    """Run the focused tests as requested in the review"""
-------------+    print("🚀 NanoBanana API Integration Test")
-------------+    print("Testing core functionality as requested in review")
-------------+    print("=" * 60)
-------------+    
-------------+    test_results = {}
-------------+    
-------------+    # Test 1: Health Check
-------------+    test_results["health"] = test_1_health_endpoint()
-------------+    
-------------+    # Test 2: Image Generation (only if health check passes)
-------------+    if test_results["health"]:
-------------+        success, image_id = test_2_generate_image()
-------------+        test_results["generation"] = success
-------------+        
-------------+        # Test 3: MongoDB Storage (only if generation succeeded)
-------------+        if success and image_id:
-------------+            test_results["mongodb"] = test_3_mongodb_storage(image_id)
-------------+        else:
-------------+            test_results["mongodb"] = False
-------------+            print("\n💾 Skipping MongoDB test - no image generated")
-------------+    else:
-------------+        test_results["generation"] = False
-------------+        test_results["mongodb"] = False
-------------+        print("\n🎨 Skipping image generation test - backend not healthy")
-------------+        print("\n💾 Skipping MongoDB test - backend not healthy")
-------------+    
-------------+    # Test 4: Image Retrieval (only if health check passes)
-------------+    if test_results["health"]:
-------------+        test_results["retrieval"] = test_4_image_retrieval()
-------------+    else:
-------------+        test_results["retrieval"] = False
-------------+        print("\n📋 Skipping image retrieval test - backend not healthy")
-------------+    
-------------+    # Summary
-------------+    print("\n" + "=" * 60)
-------------+    print("📊 FOCUSED TEST SUMMARY")
-------------+    print("=" * 60)
-------------+    
-------------+    total_tests = len(test_results)
-------------+    passed_tests = sum(1 for result in test_results.values() if result)
-------------+    
-------------+    for test_name, result in test_results.items():
-------------+        status = "✅ PASS" if result else "❌ FAIL"
-------------+        print(f"{test_name.upper()}: {status}")
-------------+    
-------------+    print(f"\nOverall: {passed_tests}/{total_tests} tests passed ({(passed_tests/total_tests)*100:.1f}%)")
-------------+    
-------------+    if passed_tests == total_tests:
-------------+        print("\n🎉 SUCCESS: All core NanoBanana API integration tests passed!")
-------------+        print("✅ Backend is running properly")
-------------+        print("✅ NanoBanana API is working and generating images")
-------------+        print("✅ MongoDB storage is working with base64 format")
-------------+        print("✅ Image retrieval from database is functional")
-------------+    else:
-------------+        print(f"\n⚠️  {total_tests - passed_tests} test(s) failed. Check details above.")
-------------+    
-------------+    return test_results
-------------+
-------------+if __name__ == "__main__":
-------------+    main()
-------------\ No newline at end of file
+-----------@@ -1,419 +0,0 @@
 ------------diff --git a/model.patch b/model.patch
-------------index 8e0c289..ab60a0e 100644
+------------index e10b0df..e69de29 100644
 --------------- a/model.patch
 ------------+++ b/model.patch
-------------@@ -1,90 +0,0 @@
+------------@@ -1,376 +0,0 @@
+-------------diff --git a/focused_test.py b/focused_test.py
+-------------new file mode 100644
+-------------index 0000000..450d00f
+---------------- /dev/null
+-------------+++ b/focused_test.py
+-------------@@ -0,0 +1,260 @@
+-------------+#!/usr/bin/env python3
+-------------+"""
+-------------+Focused NanoBanana API Integration Test
+-------------+Tests the specific functionality requested in the review.
+-------------+"""
+-------------+
+-------------+import requests
+-------------+import json
+-------------+import base64
+-------------+from datetime import datetime
+-------------+
+-------------+# Backend URL from frontend env
+-------------+BACKEND_URL = "https://promptgen-7.preview.emergentagent.com/api"
+-------------+
+-------------+def test_1_health_endpoint():
+-------------+    """Test 1: Health endpoint to confirm backend is running"""
+-------------+    print("🔍 Test 1: Testing health endpoint...")
+-------------+    try:
+-------------+        response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+-------------+        print(f"   Status Code: {response.status_code}")
+-------------+        
+-------------+        if response.status_code == 200:
+-------------+            data = response.json()
+-------------+            print(f"   Response: {data}")
+-------------+            if data.get("status") == "healthy":
+-------------+                print("   ✅ PASS: Backend is running and healthy")
+-------------+                return True
+-------------+            else:
+-------------+                print("   ❌ FAIL: Unexpected health response")
+-------------+                return False
+-------------+        else:
+-------------+            print(f"   ❌ FAIL: Health check returned status {response.status_code}")
+-------------+            return False
+-------------+    except Exception as e:
+-------------+        print(f"   ❌ FAIL: Health check failed with error: {str(e)}")
+-------------+        return False
+-------------+
+-------------+def test_2_generate_image():
+-------------+    """Test 2: Generate image endpoint with simple text prompt"""
+-------------+    print("\n🎨 Test 2: Testing generate-image endpoint...")
+-------------+    try:
+-------------+        test_prompt = "A beautiful sunset over mountains with vibrant colors"
+-------------+        payload = {
+-------------+            "prompt": test_prompt,
+-------------+            "style": "photorealistic"
+-------------+        }
+-------------+        
+-------------+        print(f"   Sending request with prompt: '{test_prompt}'")
+-------------+        print("   ⏳ Generating image... (this may take 10-30 seconds)")
+-------------+        
+-------------+        response = requests.post(
+-------------+            f"{BACKEND_URL}/generate-image", 
+-------------+            json=payload, 
+-------------+            timeout=60
+-------------+        )
+-------------+        
+-------------+        print(f"   Status Code: {response.status_code}")
+-------------+        
+-------------+        if response.status_code == 200:
+-------------+            data = response.json()
+-------------+            print(f"   Response keys: {list(data.keys())}")
+-------------+            
+-------------+            # Check required fields
+-------------+            required_fields = ["id", "prompt", "generated_image", "created_at", "success"]
+-------------+            missing_fields = [field for field in required_fields if field not in data]
+-------------+            
+-------------+            if missing_fields:
+-------------+                print(f"   ❌ FAIL: Missing required fields: {missing_fields}")
+-------------+                return False, None
+-------------+            
+-------------+            # Validate image data
+-------------+            if data.get("generated_image"):
+-------------+                image_data = data["generated_image"]
+-------------+                print(f"   Generated image size: {len(image_data)} characters")
+-------------+                
+-------------+                # Basic base64 validation
+-------------+                try:
+-------------+                    base64.b64decode(image_data)
+-------------+                    print("   ✅ PASS: NanoBanana API generated valid base64 image")
+-------------+                    return True, data["id"]
+-------------+                except:
+-------------+                    print("   ❌ FAIL: Generated image is not valid base64")
+-------------+                    return False, None
+-------------+            else:
+-------------+                print("   ❌ FAIL: No generated image data in response")
+-------------+                return False, None
+-------------+        else:
+-------------+            print(f"   ❌ FAIL: Image generation failed with status {response.status_code}")
+-------------+            try:
+-------------+                error_data = response.json()
+-------------+                print(f"   Error details: {error_data}")
+-------------+            except:
+-------------+                print(f"   Error response: {response.text}")
+-------------+            return False, None
+-------------+            
+-------------+    except Exception as e:
+-------------+        print(f"   ❌ FAIL: Image generation failed with error: {str(e)}")
+-------------+        return False, None
+-------------+
+-------------+def test_3_mongodb_storage(image_id):
+-------------+    """Test 3: Verify generated images are stored in MongoDB properly"""
+-------------+    print(f"\n💾 Test 3: Testing MongoDB storage...")
+-------------+    
+-------------+    if not image_id:
+-------------+        print("   ❌ FAIL: No image ID provided for MongoDB test")
+-------------+        return False
+-------------+    
+-------------+    try:
+-------------+        print(f"   Retrieving image with ID: {image_id}")
+-------------+        response = requests.get(f"{BACKEND_URL}/images/{image_id}", timeout=10)
+-------------+        print(f"   Status Code: {response.status_code}")
+-------------+        
+-------------+        if response.status_code == 200:
+-------------+            data = response.json()
+-------------+            print(f"   Retrieved image keys: {list(data.keys())}")
+-------------+            
+-------------+            # Check required MongoDB fields
+-------------+            required_fields = ["id", "prompt", "generated_image", "created_at"]
+-------------+            missing_fields = [field for field in required_fields if field not in data]
+-------------+            
+-------------+            if missing_fields:
+-------------+                print(f"   ❌ FAIL: Missing required fields in stored image: {missing_fields}")
+-------------+                return False
+-------------+            
+-------------+            # Validate stored data
+-------------+            if data.get("generated_image"):
+-------------+                stored_image_size = len(data['generated_image'])
+-------------+                print(f"   Stored image size: {stored_image_size} characters")
+-------------+                
+-------------+                # Verify it's valid base64
+-------------+                try:
+-------------+                    base64.b64decode(data['generated_image'])
+-------------+                    print("   ✅ PASS: Image properly stored in MongoDB with valid base64 format")
+-------------+                except:
+-------------+                    print("   ❌ FAIL: Stored image is not valid base64")
+-------------+                    return False
+-------------+            else:
+-------------+                print("   ❌ FAIL: No image data in stored record")
+-------------+                return False
+-------------+            
+-------------+            # Check metadata
+-------------+            if data.get("created_at"):
+-------------+                print(f"   Created at: {data['created_at']}")
+-------------+                print("   ✅ PASS: Metadata properly stored")
+-------------+            
+-------------+            return True
+-------------+        else:
+-------------+            print(f"   ❌ FAIL: Failed to retrieve image from MongoDB - status {response.status_code}")
+-------------+            return False
+-------------+            
+-------------+    except Exception as e:
+-------------+        print(f"   ❌ FAIL: MongoDB storage test failed with error: {str(e)}")
+-------------+        return False
+-------------+
+-------------+def test_4_image_retrieval():
+-------------+    """Test 4: Test image retrieval from database"""
+-------------+    print("\n📋 Test 4: Testing image retrieval from database...")
+-------------+    try:
+-------------+        response = requests.get(f"{BACKEND_URL}/images?limit=5", timeout=10)
+-------------+        print(f"   Status Code: {response.status_code}")
+-------------+        
+-------------+        if response.status_code == 200:
+-------------+            data = response.json()
+-------------+            print(f"   Response keys: {list(data.keys())}")
+-------------+            
+-------------+            if "images" in data:
+-------------+                images = data["images"]
+-------------+                print(f"   Retrieved {len(images)} images from database")
+-------------+                
+-------------+                if len(images) > 0:
+-------------+                    # Check first image structure
+-------------+                    first_image = images[0]
+-------------+                    print(f"   First image keys: {list(first_image.keys())}")
+-------------+                    
+-------------+                    required_fields = ["id", "prompt", "generated_image", "created_at"]
+-------------+                    missing_fields = [field for field in required_fields if field not in first_image]
+-------------+                    
+-------------+                    if missing_fields:
+-------------+                        print(f"   ❌ FAIL: Missing required fields in retrieved image: {missing_fields}")
+-------------+                        return False
+-------------+                    
+-------------+                    print("   ✅ PASS: Image retrieval working properly")
+-------------+                    return True
+-------------+                else:
+-------------+                    print("   ⚠️  No images found in database (this might be expected for a fresh install)")
+-------------+                    print("   ✅ PASS: Endpoint working, no data yet")
+-------------+                    return True
+-------------+            else:
+-------------+                print("   ❌ FAIL: No 'images' key in response")
+-------------+                return False
+-------------+        else:
+-------------+            print(f"   ❌ FAIL: Image retrieval failed - status {response.status_code}")
+-------------+            return False
+-------------+            
+-------------+    except Exception as e:
+-------------+        print(f"   ❌ FAIL: Image retrieval test failed with error: {str(e)}")
+-------------+        return False
+-------------+
+-------------+def main():
+-------------+    """Run the focused tests as requested in the review"""
+-------------+    print("🚀 NanoBanana API Integration Test")
+-------------+    print("Testing core functionality as requested in review")
+-------------+    print("=" * 60)
+-------------+    
+-------------+    test_results = {}
+-------------+    
+-------------+    # Test 1: Health Check
+-------------+    test_results["health"] = test_1_health_endpoint()
+-------------+    
+-------------+    # Test 2: Image Generation (only if health check passes)
+-------------+    if test_results["health"]:
+-------------+        success, image_id = test_2_generate_image()
+-------------+        test_results["generation"] = success
+-------------+        
+-------------+        # Test 3: MongoDB Storage (only if generation succeeded)
+-------------+        if success and image_id:
+-------------+            test_results["mongodb"] = test_3_mongodb_storage(image_id)
+-------------+        else:
+-------------+            test_results["mongodb"] = False
+-------------+            print("\n💾 Skipping MongoDB test - no image generated")
+-------------+    else:
+-------------+        test_results["generation"] = False
+-------------+        test_results["mongodb"] = False
+-------------+        print("\n🎨 Skipping image generation test - backend not healthy")
+-------------+        print("\n💾 Skipping MongoDB test - backend not healthy")
+-------------+    
+-------------+    # Test 4: Image Retrieval (only if health check passes)
+-------------+    if test_results["health"]:
+-------------+        test_results["retrieval"] = test_4_image_retrieval()
+-------------+    else:
+-------------+        test_results["retrieval"] = False
+-------------+        print("\n📋 Skipping image retrieval test - backend not healthy")
+-------------+    
+-------------+    # Summary
+-------------+    print("\n" + "=" * 60)
+-------------+    print("📊 FOCUSED TEST SUMMARY")
+-------------+    print("=" * 60)
+-------------+    
+-------------+    total_tests = len(test_results)
+-------------+    passed_tests = sum(1 for result in test_results.values() if result)
+-------------+    
+-------------+    for test_name, result in test_results.items():
+-------------+        status = "✅ PASS" if result else "❌ FAIL"
+-------------+        print(f"{test_name.upper()}: {status}")
+-------------+    
+-------------+    print(f"\nOverall: {passed_tests}/{total_tests} tests passed ({(passed_tests/total_tests)*100:.1f}%)")
+-------------+    
+-------------+    if passed_tests == total_tests:
+-------------+        print("\n🎉 SUCCESS: All core NanoBanana API integration tests passed!")
+-------------+        print("✅ Backend is running properly")
+-------------+        print("✅ NanoBanana API is working and generating images")
+-------------+        print("✅ MongoDB storage is working with base64 format")
+-------------+        print("✅ Image retrieval from database is functional")
+-------------+    else:
+-------------+        print(f"\n⚠️  {total_tests - passed_tests} test(s) failed. Check details above.")
+-------------+    
+-------------+    return test_results
+-------------+
+-------------+if __name__ == "__main__":
+-------------+    main()
+-------------\ No newline at end of file
 -------------diff --git a/model.patch b/model.patch
--------------index d748e93..e69de29 100644
+-------------index 8e0c289..ab60a0e 100644
 ---------------- a/model.patch
 -------------+++ b/model.patch
--------------@@ -1,85 +0,0 @@
+-------------@@ -1,90 +0,0 @@
 --------------diff --git a/model.patch b/model.patch
---------------index 9f3d0e3..e69de29 100644
+--------------index d748e93..e69de29 100644
 ----------------- a/model.patch
 --------------+++ b/model.patch
---------------@@ -1,80 +0,0 @@
----------------diff --git a/test_result.md b/test_result.md
----------------index 9618c8d..6beacfd 100644
------------------- a/test_result.md
----------------+++ b/test_result.md
----------------@@ -107,39 +107,48 @@ user_problem_statement: "Build a React Native mobile application to generate ima
---------------- backend:
----------------   - task: "NanoBanana API Integration"
----------------     implemented: true
-----------------    working: "unknown"
----------------+    working: true
----------------     file: "server.py"
----------------     stuck_count: 0
----------------     priority: "high"
-----------------    needs_retesting: true
----------------+    needs_retesting: false
----------------     status_history:
----------------       - working: "unknown"
----------------         agent: "main"
----------------         comment: "Implemented Gemini 2.5 Flash Image integration with emergentintegrations library. Added predefined prompt categories and image generation/editing endpoints."
----------------+      - working: true
----------------+        agent: "testing"
----------------+        comment: "✅ TESTED: Gemini 2.5 Flash Image integration working perfectly. Successfully generated images from text prompts and edited existing images. API key configured correctly, emergentintegrations library functioning as expected."
---------------- 
----------------   - task: "MongoDB Image Storage"
----------------     implemented: true
-----------------    working: "unknown"
----------------+    working: true
----------------     file: "server.py"
----------------     stuck_count: 0
----------------     priority: "high"
-----------------    needs_retesting: true
----------------+    needs_retesting: false
----------------     status_history:
----------------       - working: "unknown"
----------------         agent: "main"
----------------         comment: "Implemented MongoDB storage for generated images with base64 format and metadata tracking."
----------------+      - working: true
----------------+        agent: "testing"
----------------+        comment: "✅ TESTED: MongoDB storage working correctly. Images stored in base64 format with proper metadata (prompt, created_at, prompt_category). Gallery retrieval, specific image fetch, and deletion all functional."
---------------- 
----------------   - task: "API Endpoints"
----------------     implemented: true
-----------------    working: "unknown"
----------------+    working: true
----------------     file: "server.py"
----------------     stuck_count: 0
----------------     priority: "high"
-----------------    needs_retesting: true
----------------+    needs_retesting: false
----------------     status_history:
----------------       - working: "unknown"
----------------         agent: "main"
----------------         comment: "Created endpoints: /api/prompts, /api/generate-image, /api/images. Health check working."
----------------+      - working: true
----------------+        agent: "testing"
----------------+        comment: "✅ TESTED: All API endpoints working. GET /api/health ✅, GET /api/prompts ✅ (4 categories), POST /api/generate-image ✅ (both text-to-image and image editing), GET /api/images ✅ (gallery with pagination), GET /api/images/{id} ✅, DELETE /api/images/{id} ✅. Minor: Invalid ID error handling returns 500 instead of 400, but functionality works."
---------------- 
---------------- frontend:
----------------   - task: "Mobile UI Components"
----------------@@ -185,14 +194,13 @@ metadata:
----------------   run_ui: false
---------------- 
---------------- test_plan:
-----------------  current_focus:
-----------------    - "NanoBanana API Integration"
-----------------    - "API Endpoints"
-----------------    - "MongoDB Image Storage"
----------------+  current_focus: []
----------------   stuck_tasks: []
----------------   test_all: false
----------------   test_priority: "high_first"
---------------- 
---------------- agent_communication:
----------------   - agent: "main"
-----------------    message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
----------------\ No newline at end of file
----------------+    message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
----------------+  - agent: "testing"
----------------+    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
----------------\ No newline at end of file
+--------------@@ -1,85 +0,0 @@
+---------------diff --git a/model.patch b/model.patch
+---------------index 9f3d0e3..e69de29 100644
+------------------ a/model.patch
+---------------+++ b/model.patch
+---------------@@ -1,80 +0,0 @@
+----------------diff --git a/test_result.md b/test_result.md
+----------------index 9618c8d..6beacfd 100644
+------------------- a/test_result.md
+----------------+++ b/test_result.md
+----------------@@ -107,39 +107,48 @@ user_problem_statement: "Build a React Native mobile application to generate ima
+---------------- backend:
+----------------   - task: "NanoBanana API Integration"
+----------------     implemented: true
+-----------------    working: "unknown"
+----------------+    working: true
+----------------     file: "server.py"
+----------------     stuck_count: 0
+----------------     priority: "high"
+-----------------    needs_retesting: true
+----------------+    needs_retesting: false
+----------------     status_history:
+----------------       - working: "unknown"
+----------------         agent: "main"
+----------------         comment: "Implemented Gemini 2.5 Flash Image integration with emergentintegrations library. Added predefined prompt categories and image generation/editing endpoints."
+----------------+      - working: true
+----------------+        agent: "testing"
+----------------+        comment: "✅ TESTED: Gemini 2.5 Flash Image integration working perfectly. Successfully generated images from text prompts and edited existing images. API key configured correctly, emergentintegrations library functioning as expected."
+---------------- 
+----------------   - task: "MongoDB Image Storage"
+----------------     implemented: true
+-----------------    working: "unknown"
+----------------+    working: true
+----------------     file: "server.py"
+----------------     stuck_count: 0
+----------------     priority: "high"
+-----------------    needs_retesting: true
+----------------+    needs_retesting: false
+----------------     status_history:
+----------------       - working: "unknown"
+----------------         agent: "main"
+----------------         comment: "Implemented MongoDB storage for generated images with base64 format and metadata tracking."
+----------------+      - working: true
+----------------+        agent: "testing"
+----------------+        comment: "✅ TESTED: MongoDB storage working correctly. Images stored in base64 format with proper metadata (prompt, created_at, prompt_category). Gallery retrieval, specific image fetch, and deletion all functional."
+---------------- 
+----------------   - task: "API Endpoints"
+----------------     implemented: true
+-----------------    working: "unknown"
+----------------+    working: true
+----------------     file: "server.py"
+----------------     stuck_count: 0
+----------------     priority: "high"
+-----------------    needs_retesting: true
+----------------+    needs_retesting: false
+----------------     status_history:
+----------------       - working: "unknown"
+----------------         agent: "main"
+----------------         comment: "Created endpoints: /api/prompts, /api/generate-image, /api/images. Health check working."
+----------------+      - working: true
+----------------+        agent: "testing"
+----------------+        comment: "✅ TESTED: All API endpoints working. GET /api/health ✅, GET /api/prompts ✅ (4 categories), POST /api/generate-image ✅ (both text-to-image and image editing), GET /api/images ✅ (gallery with pagination), GET /api/images/{id} ✅, DELETE /api/images/{id} ✅. Minor: Invalid ID error handling returns 500 instead of 400, but functionality works."
+---------------- 
+---------------- frontend:
+----------------   - task: "Mobile UI Components"
+----------------@@ -185,14 +194,13 @@ metadata:
+----------------   run_ui: false
+---------------- 
+---------------- test_plan:
+-----------------  current_focus:
+-----------------    - "NanoBanana API Integration"
+-----------------    - "API Endpoints"
+-----------------    - "MongoDB Image Storage"
+----------------+  current_focus: []
+----------------   stuck_tasks: []
+----------------   test_all: false
+----------------   test_priority: "high_first"
+---------------- 
+---------------- agent_communication:
+----------------   - agent: "main"
+-----------------    message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
+----------------\ No newline at end of file
+----------------+    message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
+----------------+  - agent: "testing"
+----------------+    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
+----------------\ No newline at end of file
+-------------diff --git a/test_result.md b/test_result.md
+-------------index 6beacfd..e4f5067 100644
+---------------- a/test_result.md
+-------------+++ b/test_result.md
+-------------@@ -203,4 +203,6 @@ agent_communication:
+-------------   - agent: "main"
+-------------     message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
+-------------   - agent: "testing"
+--------------    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
+-------------\ No newline at end of file
+-------------+    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
+-------------+  - agent: "testing"
+-------------+    message: "✅ RE-VERIFICATION COMPLETE: User requested focused testing of NanoBanana API integration. All 4 core tests passed (100% success rate): 1) Health endpoint ✅ - backend running properly, 2) Generate-image endpoint ✅ - NanoBanana API generating valid base64 images successfully, 3) MongoDB storage ✅ - images stored properly with metadata, 4) Image retrieval ✅ - database queries working correctly. Core image generation functionality is fully operational and ready for curated prompt selection system implementation."
+-------------\ No newline at end of file
 ------------diff --git a/test_result.md b/test_result.md
-------------index 6beacfd..e4f5067 100644
+------------index 115aab3..686d076 100644
 --------------- a/test_result.md
 ------------+++ b/test_result.md
-------------@@ -203,4 +203,6 @@ agent_communication:
+------------@@ -135,6 +135,21 @@ backend:
+------------         agent: "testing"
+------------         comment: "✅ TESTED: MongoDB storage working correctly. Images stored in base64 format with proper metadata (prompt, created_at, prompt_category). Gallery retrieval, specific image fetch, and deletion all functional."
+------------ 
+------------+  - task: "Curated Prompt System"
+------------+    implemented: true
+------------+    working: true
+------------+    file: "server.py"
+------------+    stuck_count: 0
+------------+    priority: "high"
+------------+    needs_retesting: false
+------------+    status_history:
+------------+      - working: "unknown"
+------------+        agent: "main"
+------------+        comment: "Implemented curated prompt selection system with 12 professional prompts across Professional, Artistic, and Lifestyle categories. Added new endpoints: /api/prompts, /api/prompts/categories/{category}, /api/generate-with-prompt."
+------------+      - working: true
+------------+        agent: "testing"
+------------+        comment: "✅ TESTED: Curated prompt system fully functional. All 12 prompts returned correctly with proper structure. Category filtering works (6 Professional, 4 Artistic, 2 Lifestyle). Image generation with curated prompts working perfectly - NanoBanana API integration seamless. Generated images include complete curated prompt metadata (prompt_id, title, description, category, generation_type). Error handling proper for invalid prompt IDs and missing images. 100% success rate (7/7 tests passed)."
+------------+
+------------   - task: "API Endpoints"
+------------     implemented: true
+------------     working: true
+------------@@ -207,4 +222,8 @@ agent_communication:
 ------------   - agent: "main"
-------------     message: "Initial implementation complete. Created full-stack image generation app with NanoBanana/Gemini integration, MongoDB storage, and React Native UI. Backend health check is working. Ready for comprehensive testing."
+------------     message: "Re-tested NanoBanana API integration with 100% success rate. Core image generation functionality confirmed working. Now implementing curated prompt selection system with 12 professional prompts as requested by user. Will replace text input with prompt selection cards and add Supabase integration for SaaS features."
 ------------   - agent: "testing"
--------------    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
+-------------    message: "✅ RE-VERIFICATION COMPLETE: User requested focused testing of NanoBanana API integration. All 4 core tests passed (100% success rate): 1) Health endpoint ✅ - backend running properly, 2) Generate-image endpoint ✅ - NanoBanana API generating valid base64 images successfully, 3) MongoDB storage ✅ - images stored properly with metadata, 4) Image retrieval ✅ - database queries working correctly. Core image generation functionality is fully operational and ready for curated prompt selection system implementation."
 ------------\ No newline at end of file
-------------+    message: "✅ BACKEND TESTING COMPLETE: All high-priority backend tasks tested successfully. NanoBanana/Gemini API integration working perfectly - both text-to-image generation and image editing functional. MongoDB storage working correctly with base64 format. All API endpoints operational. Success rate: 88.9% (8/9 tests passed). Only minor issue: invalid ID error handling returns 500 instead of 400, but core functionality works. Backend is production-ready."
-------------+  - agent: "testing"
 ------------+    message: "✅ RE-VERIFICATION COMPLETE: User requested focused testing of NanoBanana API integration. All 4 core tests passed (100% success rate): 1) Health endpoint ✅ - backend running properly, 2) Generate-image endpoint ✅ - NanoBanana API generating valid base64 images successfully, 3) MongoDB storage ✅ - images stored properly with metadata, 4) Image retrieval ✅ - database queries working correctly. Core image generation functionality is fully operational and ready for curated prompt selection system implementation."
+------------+  - agent: "main"
+------------+    message: "Implemented curated prompt selection system with 12 professional prompts across 3 categories (Professional, Artistic, Lifestyle). Added new endpoints: /api/prompts, /api/prompts/categories/{category}, /api/generate-with-prompt. System integrates seamlessly with existing NanoBanana API and stores complete metadata including prompt_id, title, description, category, and generation_type."
+------------+  - agent: "testing"
+------------+    message: "✅ CURATED PROMPT SYSTEM TESTING COMPLETE: Comprehensive testing of new curated prompt system shows 100% success rate (7/7 tests passed). Key findings: 1) /api/prompts endpoint ✅ - returns all 12 prompts with correct structure and categories, 2) /api/prompts/categories/{category} endpoint ✅ - filtering works perfectly (6 Professional, 4 Artistic, 2 Lifestyle prompts), 3) /api/generate-with-prompt endpoint ✅ - seamlessly integrates with NanoBanana API, generates high-quality images with reference photos, 4) Generated image metadata ✅ - includes complete curated prompt information (prompt_id, title, description, category, generation_type), 5) Error handling ✅ - proper validation for invalid prompt IDs and missing images. The curated prompt system is production-ready and ready for frontend integration."
 ------------\ No newline at end of file
------------diff --git a/test_result.md b/test_result.md
------------index 115aab3..686d076 100644
--------------- a/test_result.md
------------+++ b/test_result.md
------------@@ -135,6 +135,21 @@ backend:
------------         agent: "testing"
------------         comment: "✅ TESTED: MongoDB storage working correctly. Images stored in base64 format with proper metadata (prompt, created_at, prompt_category). Gallery retrieval, specific image fetch, and deletion all functional."
------------ 
------------+  - task: "Curated Prompt System"
------------+    implemented: true
------------+    working: true
------------+    file: "server.py"
------------+    stuck_count: 0
------------+    priority: "high"
------------+    needs_retesting: false
------------+    status_history:
------------+      - working: "unknown"
------------+        agent: "main"
------------+        comment: "Implemented curated prompt selection system with 12 professional prompts across Professional, Artistic, and Lifestyle categories. Added new endpoints: /api/prompts, /api/prompts/categories/{category}, /api/generate-with-prompt."
------------+      - working: true
------------+        agent: "testing"
------------+        comment: "✅ TESTED: Curated prompt system fully functional. All 12 prompts returned correctly with proper structure. Category filtering works (6 Professional, 4 Artistic, 2 Lifestyle). Image generation with curated prompts working perfectly - NanoBanana API integration seamless. Generated images include complete curated prompt metadata (prompt_id, title, description, category, generation_type). Error handling proper for invalid prompt IDs and missing images. 100% success rate (7/7 tests passed)."
------------+
------------   - task: "API Endpoints"
------------     implemented: true
------------     working: true
------------@@ -207,4 +222,8 @@ agent_communication:
------------   - agent: "main"
------------     message: "Re-tested NanoBanana API integration with 100% success rate. Core image generation functionality confirmed working. Now implementing curated prompt selection system with 12 professional prompts as requested by user. Will replace text input with prompt selection cards and add Supabase integration for SaaS features."
------------   - agent: "testing"
-------------    message: "✅ RE-VERIFICATION COMPLETE: User requested focused testing of NanoBanana API integration. All 4 core tests passed (100% success rate): 1) Health endpoint ✅ - backend running properly, 2) Generate-image endpoint ✅ - NanoBanana API generating valid base64 images successfully, 3) MongoDB storage ✅ - images stored properly with metadata, 4) Image retrieval ✅ - database queries working correctly. Core image generation functionality is fully operational and ready for curated prompt selection system implementation."
------------\ No newline at end of file
------------+    message: "✅ RE-VERIFICATION COMPLETE: User requested focused testing of NanoBanana API integration. All 4 core tests passed (100% success rate): 1) Health endpoint ✅ - backend running properly, 2) Generate-image endpoint ✅ - NanoBanana API generating valid base64 images successfully, 3) MongoDB storage ✅ - images stored properly with metadata, 4) Image retrieval ✅ - database queries working correctly. Core image generation functionality is fully operational and ready for curated prompt selection system implementation."
------------+  - agent: "main"
------------+    message: "Implemented curated prompt selection system with 12 professional prompts across 3 categories (Professional, Artistic, Lifestyle). Added new endpoints: /api/prompts, /api/prompts/categories/{category}, /api/generate-with-prompt. System integrates seamlessly with existing NanoBanana API and stores complete metadata including prompt_id, title, description, category, and generation_type."
------------+  - agent: "testing"
------------+    message: "✅ CURATED PROMPT SYSTEM TESTING COMPLETE: Comprehensive testing of new curated prompt system shows 100% success rate (7/7 tests passed). Key findings: 1) /api/prompts endpoint ✅ - returns all 12 prompts with correct structure and categories, 2) /api/prompts/categories/{category} endpoint ✅ - filtering works perfectly (6 Professional, 4 Artistic, 2 Lifestyle prompts), 3) /api/generate-with-prompt endpoint ✅ - seamlessly integrates with NanoBanana API, generates high-quality images with reference photos, 4) Generated image metadata ✅ - includes complete curated prompt information (prompt_id, title, description, category, generation_type), 5) Error handling ✅ - proper validation for invalid prompt IDs and missing images. The curated prompt system is production-ready and ready for frontend integration."
------------\ No newline at end of file
+--diff --git a/test_result.md b/test_result.md
+--index 780c585..f26263b 100644
+----- a/test_result.md
+--+++ b/test_result.md
+--@@ -242,4 +242,6 @@ agent_communication:
+--   - agent: "testing"
+--     message: "✅ CURATED PROMPT SYSTEM TESTING COMPLETE: Comprehensive testing of new curated prompt system shows 100% success rate (7/7 tests passed). Key findings: 1) /api/prompts endpoint ✅ - returns all 12 prompts with correct structure and categories, 2) /api/prompts/categories/{category} endpoint ✅ - filtering works perfectly (6 Professional, 4 Artistic, 2 Lifestyle prompts), 3) /api/generate-with-prompt endpoint ✅ - seamlessly integrates with NanoBanana API, generates high-quality images with reference photos, 4) Generated image metadata ✅ - includes complete curated prompt information (prompt_id, title, description, category, generation_type), 5) Error handling ✅ - proper validation for invalid prompt IDs and missing images. The curated prompt system is production-ready and ready for frontend integration."
+--   - agent: "main"
+---    message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
+--\ No newline at end of file
+--+    message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
+--+  - agent: "testing"
+--+    message: "✅ POST-DARK MODE BACKEND VERIFICATION COMPLETE: Comprehensive testing of all backend API endpoints after dark mode implementation shows 100% success rate (10/10 tests passed). Key findings: 1) Health check endpoint ✅ - backend running properly, 2) Curated prompts endpoint ✅ - returns all 12 prompts correctly with 3 categories (6 Professional, 4 Artistic, 2 Lifestyle), 3) MongoDB connection ✅ - database connectivity and image storage working perfectly, 4) NanoBanana API integration ✅ - both curated prompt generation and general image generation working flawlessly, generating high-quality images, 5) All error handling ✅ - proper validation and error responses. Backend is fully functional and ready to support the updated frontend with dark mode implementation."
+--\ No newline at end of file
 -diff --git a/test_result.md b/test_result.md
--index 780c585..f26263b 100644
+-index f26263b..23823f0 100644
 ---- a/test_result.md
 -+++ b/test_result.md
--@@ -242,4 +242,6 @@ agent_communication:
--   - agent: "testing"
--     message: "✅ CURATED PROMPT SYSTEM TESTING COMPLETE: Comprehensive testing of new curated prompt system shows 100% success rate (7/7 tests passed). Key findings: 1) /api/prompts endpoint ✅ - returns all 12 prompts with correct structure and categories, 2) /api/prompts/categories/{category} endpoint ✅ - filtering works perfectly (6 Professional, 4 Artistic, 2 Lifestyle prompts), 3) /api/generate-with-prompt endpoint ✅ - seamlessly integrates with NanoBanana API, generates high-quality images with reference photos, 4) Generated image metadata ✅ - includes complete curated prompt information (prompt_id, title, description, category, generation_type), 5) Error handling ✅ - proper validation for invalid prompt IDs and missing images. The curated prompt system is production-ready and ready for frontend integration."
+-@@ -165,6 +165,21 @@ backend:
+-         agent: "testing"
+-         comment: "✅ TESTED: All API endpoints working. GET /api/health ✅, GET /api/prompts ✅ (4 categories), POST /api/generate-image ✅ (both text-to-image and image editing), GET /api/images ✅ (gallery with pagination), GET /api/images/{id} ✅, DELETE /api/images/{id} ✅. Minor: Invalid ID error handling returns 500 instead of 400, but functionality works."
+- 
+-+  - task: "Stripe Payment Integration"
+-+    implemented: true
+-+    working: true
+-+    file: "server.py"
+-+    stuck_count: 0
+-+    priority: "high"
+-+    needs_retesting: false
+-+    status_history:
+-+      - working: "unknown"
+-+        agent: "main"
+-+        comment: "Implemented Stripe payment integration with emergentintegrations library. Added payment packages endpoint, checkout session creation, payment status checking, and webhook handling. Supports pro_monthly ($9.99) and pro_yearly ($99.99) packages."
+-+      - working: true
+-+        agent: "testing"
+-+        comment: "✅ TESTED: Stripe payment integration fully functional. All 4 new payment endpoints working correctly: 1) GET /api/payment/packages ✅ - returns pro_monthly ($9.99) and pro_yearly ($99.99) packages with correct structure, 2) POST /api/payment/checkout-session ✅ - successfully creates Stripe checkout sessions with valid URLs and session IDs, 3) GET /api/payment/status/{session_id} ✅ - retrieves payment status with proper response structure, 4) Error handling ✅ - correctly rejects invalid package IDs. Integration with emergentintegrations library working seamlessly. Payment flow ready for production use."
+-+
+- frontend:
+-   - task: "Dark Mode Implementation"
+-     implemented: true
+-@@ -244,4 +259,8 @@ agent_communication:
 -   - agent: "main"
---    message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
+-     message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
+-   - agent: "testing"
+--    message: "✅ POST-DARK MODE BACKEND VERIFICATION COMPLETE: Comprehensive testing of all backend API endpoints after dark mode implementation shows 100% success rate (10/10 tests passed). Key findings: 1) Health check endpoint ✅ - backend running properly, 2) Curated prompts endpoint ✅ - returns all 12 prompts correctly with 3 categories (6 Professional, 4 Artistic, 2 Lifestyle), 3) MongoDB connection ✅ - database connectivity and image storage working perfectly, 4) NanoBanana API integration ✅ - both curated prompt generation and general image generation working flawlessly, generating high-quality images, 5) All error handling ✅ - proper validation and error responses. Backend is fully functional and ready to support the updated frontend with dark mode implementation."
 -\ No newline at end of file
--+    message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
--+  - agent: "testing"
 -+    message: "✅ POST-DARK MODE BACKEND VERIFICATION COMPLETE: Comprehensive testing of all backend API endpoints after dark mode implementation shows 100% success rate (10/10 tests passed). Key findings: 1) Health check endpoint ✅ - backend running properly, 2) Curated prompts endpoint ✅ - returns all 12 prompts correctly with 3 categories (6 Professional, 4 Artistic, 2 Lifestyle), 3) MongoDB connection ✅ - database connectivity and image storage working perfectly, 4) NanoBanana API integration ✅ - both curated prompt generation and general image generation working flawlessly, generating high-quality images, 5) All error handling ✅ - proper validation and error responses. Backend is fully functional and ready to support the updated frontend with dark mode implementation."
+-+  - agent: "main"
+-+    message: "✅ STRIPE PAYMENT INTEGRATION IMPLEMENTED: Added comprehensive Stripe payment integration using emergentintegrations library. Implemented 4 new payment endpoints: GET /api/payment/packages (returns pro_monthly $9.99 and pro_yearly $99.99), POST /api/payment/checkout-session (creates Stripe checkout sessions), GET /api/payment/status/{session_id} (checks payment status), and POST /api/webhook/stripe (handles webhooks). Integration includes proper error handling, transaction logging to MongoDB, and dynamic success/cancel URL generation. Ready for testing to verify all payment endpoints work correctly."
+-+  - agent: "testing"
+-+    message: "✅ STRIPE PAYMENT INTEGRATION TESTING COMPLETE: Comprehensive testing of new Stripe payment integration shows 100% success rate (14/14 tests passed). Key findings: 1) Payment Packages endpoint ✅ - correctly returns pro_monthly ($9.99) and pro_yearly ($99.99) packages with proper structure, 2) Checkout Session Creation ✅ - successfully creates Stripe checkout sessions with valid URLs and session IDs using emergentintegrations library, 3) Payment Status endpoint ✅ - retrieves payment status with correct response structure, 4) Error handling ✅ - properly rejects invalid package IDs with appropriate error messages, 5) Existing functionality ✅ - all previous endpoints (health, prompts, image generation, MongoDB storage) continue working perfectly. The Stripe payment integration is production-ready and seamlessly integrated with existing NanoBanana API functionality."
 -\ No newline at end of file
-diff --git a/test_result.md b/test_result.md
-index f26263b..23823f0 100644
---- a/test_result.md
-+++ b/test_result.md
-@@ -165,6 +165,21 @@ backend:
-         agent: "testing"
-         comment: "✅ TESTED: All API endpoints working. GET /api/health ✅, GET /api/prompts ✅ (4 categories), POST /api/generate-image ✅ (both text-to-image and image editing), GET /api/images ✅ (gallery with pagination), GET /api/images/{id} ✅, DELETE /api/images/{id} ✅. Minor: Invalid ID error handling returns 500 instead of 400, but functionality works."
- 
-+  - task: "Stripe Payment Integration"
-+    implemented: true
-+    working: true
-+    file: "server.py"
-+    stuck_count: 0
-+    priority: "high"
-+    needs_retesting: false
-+    status_history:
-+      - working: "unknown"
-+        agent: "main"
-+        comment: "Implemented Stripe payment integration with emergentintegrations library. Added payment packages endpoint, checkout session creation, payment status checking, and webhook handling. Supports pro_monthly ($9.99) and pro_yearly ($99.99) packages."
-+      - working: true
-+        agent: "testing"
-+        comment: "✅ TESTED: Stripe payment integration fully functional. All 4 new payment endpoints working correctly: 1) GET /api/payment/packages ✅ - returns pro_monthly ($9.99) and pro_yearly ($99.99) packages with correct structure, 2) POST /api/payment/checkout-session ✅ - successfully creates Stripe checkout sessions with valid URLs and session IDs, 3) GET /api/payment/status/{session_id} ✅ - retrieves payment status with proper response structure, 4) Error handling ✅ - correctly rejects invalid package IDs. Integration with emergentintegrations library working seamlessly. Payment flow ready for production use."
-+
- frontend:
-   - task: "Dark Mode Implementation"
-     implemented: true
-@@ -244,4 +259,8 @@ agent_communication:
-   - agent: "main"
-     message: "✅ DARK MODE IMPLEMENTATION COMPLETE: Implemented comprehensive dark mode system with ThemeContext, AsyncStorage for persistence, and theme toggle in profile section. Updated all major components (FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, bottom navigation) to support both light and dark themes. Created proper color schemes and theme switching functionality. Ready for testing to verify dark mode works correctly across all screens."
-   - agent: "testing"
--    message: "✅ POST-DARK MODE BACKEND VERIFICATION COMPLETE: Comprehensive testing of all backend API endpoints after dark mode implementation shows 100% success rate (10/10 tests passed). Key findings: 1) Health check endpoint ✅ - backend running properly, 2) Curated prompts endpoint ✅ - returns all 12 prompts correctly with 3 categories (6 Professional, 4 Artistic, 2 Lifestyle), 3) MongoDB connection ✅ - database connectivity and image storage working perfectly, 4) NanoBanana API integration ✅ - both curated prompt generation and general image generation working flawlessly, generating high-quality images, 5) All error handling ✅ - proper validation and error responses. Backend is fully functional and ready to support the updated frontend with dark mode implementation."
-\ No newline at end of file
-+    message: "✅ POST-DARK MODE BACKEND VERIFICATION COMPLETE: Comprehensive testing of all backend API endpoints after dark mode implementation shows 100% success rate (10/10 tests passed). Key findings: 1) Health check endpoint ✅ - backend running properly, 2) Curated prompts endpoint ✅ - returns all 12 prompts correctly with 3 categories (6 Professional, 4 Artistic, 2 Lifestyle), 3) MongoDB connection ✅ - database connectivity and image storage working perfectly, 4) NanoBanana API integration ✅ - both curated prompt generation and general image generation working flawlessly, generating high-quality images, 5) All error handling ✅ - proper validation and error responses. Backend is fully functional and ready to support the updated frontend with dark mode implementation."
-+  - agent: "main"
-+    message: "✅ STRIPE PAYMENT INTEGRATION IMPLEMENTED: Added comprehensive Stripe payment integration using emergentintegrations library. Implemented 4 new payment endpoints: GET /api/payment/packages (returns pro_monthly $9.99 and pro_yearly $99.99), POST /api/payment/checkout-session (creates Stripe checkout sessions), GET /api/payment/status/{session_id} (checks payment status), and POST /api/webhook/stripe (handles webhooks). Integration includes proper error handling, transaction logging to MongoDB, and dynamic success/cancel URL generation. Ready for testing to verify all payment endpoints work correctly."
-+  - agent: "testing"
-+    message: "✅ STRIPE PAYMENT INTEGRATION TESTING COMPLETE: Comprehensive testing of new Stripe payment integration shows 100% success rate (14/14 tests passed). Key findings: 1) Payment Packages endpoint ✅ - correctly returns pro_monthly ($9.99) and pro_yearly ($99.99) packages with proper structure, 2) Checkout Session Creation ✅ - successfully creates Stripe checkout sessions with valid URLs and session IDs using emergentintegrations library, 3) Payment Status endpoint ✅ - retrieves payment status with correct response structure, 4) Error handling ✅ - properly rejects invalid package IDs with appropriate error messages, 5) Existing functionality ✅ - all previous endpoints (health, prompts, image generation, MongoDB storage) continue working perfectly. The Stripe payment integration is production-ready and seamlessly integrated with existing NanoBanana API functionality."
-\ No newline at end of file
