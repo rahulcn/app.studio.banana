@@ -304,9 +304,12 @@ const PhotoViewerModal: React.FC<{
           <View style={styles.photoViewerHeaderRow}>
             <TouchableOpacity 
               style={styles.photoViewerCloseButton} 
-              onPress={onClose}
+              onPress={() => {
+                console.log('🔥 Close button pressed!');
+                onClose();
+              }}
               activeOpacity={0.7}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
             >
               <Ionicons name="close" size={28} color="white" />
             </TouchableOpacity>
