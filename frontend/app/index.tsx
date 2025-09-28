@@ -1462,11 +1462,11 @@ const FreeGenerateScreen: React.FC<{
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalPromptScrollView}
                 contentContainerStyle={styles.horizontalPromptContainer}
-                snapToInterval={280} // Width of each card + margin
+                snapToInterval={296} // Width of each card (280) + gap (16)
                 decelerationRate="fast"
                 pagingEnabled={false}
+                nestedScrollEnabled={true}
               >
-                {console.log(`🔍 Rendering ${filteredPrompts.length} prompt cards:`, filteredPrompts.map(p => p.title))}
                 {filteredPrompts.map((prompt, index) => (
                   <TouchableOpacity
                     key={prompt.id}
