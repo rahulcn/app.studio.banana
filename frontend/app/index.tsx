@@ -342,7 +342,7 @@ const FreeGenerateScreen: React.FC<{
         <View style={styles.header}>
           <TouchableOpacity onPress={() => {
             setGeneratedImage(null);
-            setPrompt('');
+            setSelectedPromptId(null);
             setReferenceImage(null);
           }}>
             <Ionicons name="arrow-back" size={24} color="#007AFF" />
