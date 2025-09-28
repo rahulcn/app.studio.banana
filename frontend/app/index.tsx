@@ -661,6 +661,103 @@ const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
 // Profile Screen Component  
 const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
   const { theme, isDarkMode, toggleTheme } = useTheme();
+  const [paymentPackages, setPaymentPackages] = useState<any[]>([]);
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  
+  // Load payment packages on component mount
+  useEffect(() => {
+    loadPaymentPackages();
+  }, []);
+
+  const loadPaymentPackages = async () => {
+    try {
+      const response = await fetch('/api/payment/packages');
+      const data = await response.json();
+      
+      if (data.success) {
+        setPaymentPackages(Object.entries(data.packages).map(([key, value]: [string, any]) => ({
+          id: key,
+          ...value
+        })));
+      }
+    } catch (error) {
+      console.log('Error loading payment packages:', error);
+    }
+  };
+
+  const handleUpgradeToPro = async (packageId: string) => {
+    if (isUpgrading) return;
+    
+    setIsUpgrading(true);
+    
+    try {
+      console.log(`🚀 Starting upgrade process for package: ${packageId}`);
+      
+      // Create checkout session
+      const checkoutResponse = await fetch('/api/payment/checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          package_id: packageId,
+          origin_url: window.location.origin
+        })
+      });
+      
+      if (!checkoutResponse.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+      
+      const checkoutData = await checkoutResponse.json();
+      console.log(`💳 Checkout session created: ${checkoutData.session_id}`);
+      
+      // Open Stripe checkout
+      const result = await WebBrowser.openBrowserAsync(checkoutData.url);
+      console.log(`🌐 Browser result:`, result);
+      
+      // Check if user completed or cancelled payment
+      if (result.type === 'dismiss' || result.type === 'cancel') {
+        console.log('💭 User cancelled payment flow');
+        Alert.alert(
+          'Payment Cancelled',
+          'You can upgrade to Pro anytime from your profile.',
+          [{ text: 'OK' }]
+        );
+      }
+      
+    } catch (error) {
+      console.error('❌ Upgrade error:', error);
+      Alert.alert(
+        'Upgrade Error',
+        'Failed to start upgrade process. Please try again.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsUpgrading(false);
+    }
+  };
+
+  const showUpgradeOptions = () => {
+    const monthlyPackage = paymentPackages.find(p => p.id === 'pro_monthly');
+    const yearlyPackage = paymentPackages.find(p => p.id === 'pro_yearly');
+    
+    Alert.alert(
+      'Upgrade to Pro',
+      'Choose your preferred plan:',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        ...(monthlyPackage ? [{
+          text: `Monthly $${monthlyPackage.amount}`,
+          onPress: () => handleUpgradeToPro('pro_monthly')
+        }] : []),
+        ...(yearlyPackage ? [{
+          text: `Yearly $${yearlyPackage.amount} (Save 17%)`,
+          onPress: () => handleUpgradeToPro('pro_yearly')
+        }] : []),
+      ]
+    );
+  };
   
   return (
     <ScrollView style={[styles.modernScrollView, { backgroundColor: theme.colors.background }]}>
