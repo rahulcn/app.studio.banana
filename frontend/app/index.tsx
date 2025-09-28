@@ -2386,4 +2386,127 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748b',
   },
+  // Generate Screen Styles
+  modernScrollView: {
+    flex: 1,
+    paddingHorizontal: 24,
+  },
+  modernCard: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    marginTop: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+  },
+  modernCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modernCardIcon: {
+    backgroundColor: '#eff6ff',
+    padding: 8,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  modernCardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 8,
+  },
+  modernCardDescription: {
+    fontSize: 14,
+    color: '#64748b',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  modernProgressSection: {
+    marginBottom: 12,
+  },
+  modernProgressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  modernProgressLabel: {
+    fontSize: 14,
+    color: '#64748b',
+  },
+  modernProgressValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  modernProgressBarBackground: {
+    backgroundColor: '#e2e8f0',
+    height: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  modernProgressBarFill: {
+    backgroundColor: '#3b82f6',
+    height: '100%',
+    borderRadius: 4,
+  },
+  modernReferenceImageContainer: {
+    alignItems: 'center',
+  },
+  modernReferenceImageWrapper: {
+    position: 'relative',
+    marginBottom: 12,
+  },
+  modernReferenceImage: {
+    width: 96,
+    height: 96,
+    borderRadius: 12,
+  },
+  modernRemoveImageButton: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#ef4444',
+    borderRadius: 12,
+    padding: 4,
+  },
+  modernSuccessText: {
+    fontSize: 14,
+    color: '#10b981',
+    fontWeight: '500',
+  },
+  modernUploadOptionsContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  modernUploadOption: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#e2e8f0',
+    borderStyle: 'dashed',
+  },
+  modernUploadIcon: {
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  modernUploadText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#374151',
+  },
 });
