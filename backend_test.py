@@ -25,28 +25,53 @@ BACKEND_URL = f"{BASE_URL}/api"
 
 print(f"🔗 Testing backend at: {BACKEND_URL}")
 
-class CuratedPromptTester:
-    def __init__(self):
-        self.backend_url = BACKEND_URL
-        self.test_results = []
-        self.total_tests = 0
-        self.passed_tests = 0
+def test_api_endpoint(method: str, endpoint: str, expected_status: int = 200, data: Dict = None) -> Dict[str, Any]:
+    """Test an API endpoint and return results"""
+    url = f"{BACKEND_URL}{endpoint}"
+    
+    try:
+        print(f"\n🔍 Testing {method} {endpoint}")
+        print(f"   URL: {url}")
         
-    def log_test(self, test_name: str, success: bool, details: str = ""):
-        """Log test result"""
-        self.total_tests += 1
-        if success:
-            self.passed_tests += 1
-            status = "✅ PASS"
+        if method.upper() == "GET":
+            response = requests.get(url, timeout=30)
+        elif method.upper() == "POST":
+            response = requests.post(url, json=data, timeout=30)
         else:
-            status = "❌ FAIL"
+            return {"success": False, "error": f"Unsupported method: {method}"}
+        
+        print(f"   Status: {response.status_code}")
+        
+        # Check status code
+        if response.status_code != expected_status:
+            return {
+                "success": False,
+                "status_code": response.status_code,
+                "expected_status": expected_status,
+                "error": f"Expected status {expected_status}, got {response.status_code}",
+                "response_text": response.text[:500]
+            }
+        
+        # Parse JSON response
+        try:
+            response_data = response.json()
+            return {
+                "success": True,
+                "status_code": response.status_code,
+                "data": response_data
+            }
+        except json.JSONDecodeError:
+            return {
+                "success": False,
+                "error": "Invalid JSON response",
+                "response_text": response.text[:500]
+            }
             
-        result = f"{status} - {test_name}"
-        if details:
-            result += f": {details}"
-            
-        self.test_results.append(result)
-        print(result)
+    except requests.exceptions.RequestException as e:
+        return {
+            "success": False,
+            "error": f"Request failed: {str(e)}"
+        }
         
     def test_health_endpoint(self):
         """Test basic health endpoint"""
