@@ -918,92 +918,43 @@ const FreeGenerateScreen: React.FC<{
 
   const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
 
-  // Load curated prompts on component mount - load ALL prompts initially
+  // Load curated prompts on component mount - start with All category
   useEffect(() => {
-    const loadCuratedPrompts = async () => {
-      try {
-        console.log('📋 Loading curated prompts from backend...');
-        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/All`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to load prompts: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log(`✅ Loaded ${data.prompts.length} curated prompts`);
-        setCuratedPrompts(data.prompts);
-      } catch (error) {
-        console.error('❌ Failed to load curated prompts:', error);
-        Alert.alert('Error', 'Failed to load prompts. Please try again.');
-      } finally {
-        setLoadingPrompts(false);
-      }
-    };
-    
-    loadCuratedPrompts();
+    loadPromptsForCategory('All');
   }, []);
 
-  // Load prompts by category when category changes (except for initial load)
-  useEffect(() => {
-    // Skip the initial "All" category load since we already loaded all prompts
-    if (selectedCategory === 'All') {
-      return;
-    }
-
-    const loadPromptsByCategory = async () => {
-      try {
-        console.log(`🏷️ Loading prompts for category: ${selectedCategory}`);
-        setLoadingPrompts(true);
-        
-        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/${selectedCategory}`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to load prompts for category ${selectedCategory}: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log(`✅ Loaded ${data.prompts.length} prompts for ${selectedCategory} category`);
-        setCuratedPrompts(data.prompts);
-      } catch (error) {
-        console.error(`❌ Failed to load prompts for category ${selectedCategory}:`, error);
-        Alert.alert('Error', `Failed to load ${selectedCategory} prompts. Please try again.`);
-      } finally {
-        setLoadingPrompts(false);
+  // Function to load prompts for any category
+  const loadPromptsForCategory = async (category: string) => {
+    try {
+      console.log(`🔄 Loading prompts for category: ${category}`);
+      setLoadingPrompts(true);
+      
+      const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/${category}`);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to load prompts for category ${category}: ${response.status}`);
       }
-    };
-    
-    loadPromptsByCategory();
-  }, [selectedCategory]);
+      
+      const data = await response.json();
+      console.log(`✅ Loaded ${data.prompts.length} prompts for ${category} category:`, data.prompts.map(p => p.title));
+      setCuratedPrompts(data.prompts);
+    } catch (error) {
+      console.error(`❌ Failed to load prompts for category ${category}:`, error);
+      Alert.alert('Error', `Failed to load ${category} prompts. Please try again.`);
+    } finally {
+      setLoadingPrompts(false);
+    }
+  };
 
-  // Handle switching back to "All" category - need to reload all prompts
+  // Handle category selection - simplified approach
   const handleCategorySelection = async (category: string) => {
     if (category === selectedCategory) {
       return; // Already selected
     }
     
+    console.log(`🏷️ Switching from "${selectedCategory}" to "${category}"`);
     setSelectedCategory(category);
-    
-    if (category === 'All') {
-      try {
-        console.log('📋 Loading all prompts for "All" category...');
-        setLoadingPrompts(true);
-        
-        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/prompts/categories/All`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to load all prompts: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log(`✅ Loaded ${data.prompts.length} prompts for "All" category`);
-        setCuratedPrompts(data.prompts);
-      } catch (error) {
-        console.error('❌ Failed to load all prompts:', error);
-        Alert.alert('Error', 'Failed to load prompts. Please try again.');
-      } finally {
-        setLoadingPrompts(false);
-      }
-    }
+    await loadPromptsForCategory(category);
   };
 
   // Since we're fetching filtered prompts from the backend, we don't need client-side filtering
