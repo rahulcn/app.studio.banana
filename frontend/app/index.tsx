@@ -21,6 +21,137 @@ import * as FileSystem from 'expo-file-system';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Theme Context
+type ThemeMode = 'light' | 'dark';
+
+interface Theme {
+  mode: ThemeMode;
+  colors: {
+    background: string;
+    surface: string;
+    card: string;
+    primary: string;
+    secondary: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    success: string;
+    warning: string;
+    error: string;
+    accent: string;
+  };
+}
+
+const lightTheme: Theme = {
+  mode: 'light',
+  colors: {
+    background: '#f8f9fa',
+    surface: '#ffffff',
+    card: '#ffffff',
+    primary: '#007AFF',
+    secondary: '#6c757d',
+    text: '#1a1a1a',
+    textSecondary: '#666666',
+    border: '#e1e5e9',
+    success: '#34C759',
+    warning: '#FF6B35',
+    error: '#FF3B30',
+    accent: '#0ea5e9',
+  },
+};
+
+const darkTheme: Theme = {
+  mode: 'dark',
+  colors: {
+    background: '#000000',
+    surface: '#1c1c1e',
+    card: '#2c2c2e',
+    primary: '#007AFF',
+    secondary: '#8e8e93',
+    text: '#ffffff',
+    textSecondary: '#8e8e93',
+    border: '#38383a',
+    success: '#34C759',
+    warning: '#FF9F0A',
+    error: '#FF453A',
+    accent: '#0ea5e9',
+  },
+};
+
+interface ThemeContextType {
+  theme: Theme;
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+  setTheme: (mode: ThemeMode) => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+// Theme Provider Component
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentTheme, setCurrentTheme] = useState<Theme>(lightTheme);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const loadThemePreference = async () => {
+      try {
+        const storedTheme = await AsyncStorage.getItem('theme_mode');
+        if (storedTheme === 'dark') {
+          setCurrentTheme(darkTheme);
+          setIsDarkMode(true);
+        } else {
+          setCurrentTheme(lightTheme);
+          setIsDarkMode(false);
+        }
+      } catch (error) {
+        console.log('Error loading theme preference:', error);
+      }
+    };
+    loadThemePreference();
+  }, []);
+
+  const toggleTheme = async () => {
+    const newMode = isDarkMode ? 'light' : 'dark';
+    const newTheme = newMode === 'dark' ? darkTheme : lightTheme;
+    
+    setCurrentTheme(newTheme);
+    setIsDarkMode(!isDarkMode);
+    
+    try {
+      await AsyncStorage.setItem('theme_mode', newMode);
+    } catch (error) {
+      console.log('Error saving theme preference:', error);
+    }
+  };
+
+  const setTheme = async (mode: ThemeMode) => {
+    const newTheme = mode === 'dark' ? darkTheme : lightTheme;
+    setCurrentTheme(newTheme);
+    setIsDarkMode(mode === 'dark');
+    
+    try {
+      await AsyncStorage.setItem('theme_mode', mode);
+    } catch (error) {
+      console.log('Error saving theme preference:', error);
+    }
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme: currentTheme, isDarkMode, toggleTheme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+// Custom hook to use theme
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
+
 interface User {
   email: string;
 }
