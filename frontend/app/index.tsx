@@ -829,15 +829,28 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
+        <TouchableOpacity 
+          style={styles.modernSettingsOption} 
+          activeOpacity={0.7}
+          onPress={showUpgradeOptions}
+          disabled={isUpgrading}
+        >
           <View style={[styles.modernSettingsIcon, { backgroundColor: '#dcfce7' }]}>
-            <Ionicons name="star" size={20} color="#10b981" />
+            {isUpgrading ? (
+              <ActivityIndicator size={20} color="#10b981" />
+            ) : (
+              <Ionicons name="star" size={20} color="#10b981" />
+            )}
           </View>
           <View style={styles.modernSettingsContent}>
-            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>Upgrade to Pro</Text>
-            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>Unlimited generations</Text>
+            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>
+              {isUpgrading ? 'Processing...' : 'Upgrade to Pro'}
+            </Text>
+            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>
+              {isUpgrading ? 'Starting payment flow...' : 'Unlimited generations'}
+            </Text>
           </View>
-          <Ionicons name="chevron-forward" size={16} color={theme.colors.textSecondary} />
+          {!isUpgrading && <Ionicons name="chevron-forward" size={16} color={theme.colors.textSecondary} />}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
