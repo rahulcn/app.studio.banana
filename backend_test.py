@@ -447,6 +447,186 @@ class CuratedPromptTester:
             self.log_test("All Categories Test", False, f"Error: {str(e)}")
             return False
 
+    # ===== NEW STRIPE PAYMENT INTEGRATION TESTS =====
+    
+    def test_payment_packages_endpoint(self):
+        """Test GET /api/payment/packages - should return pro_monthly ($9.99) and pro_yearly ($99.99)"""
+        try:
+            response = requests.get(f"{self.backend_url}/payment/packages", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                if "packages" not in data or "success" not in data:
+                    self.log_test("Payment Packages", False, "Missing required fields in response")
+                    return False
+                
+                if not data.get("success"):
+                    self.log_test("Payment Packages", False, "Success flag is False")
+                    return False
+                
+                packages = data["packages"]
+                
+                # Check pro_monthly package
+                if "pro_monthly" not in packages:
+                    self.log_test("Payment Packages", False, "Missing pro_monthly package")
+                    return False
+                
+                pro_monthly = packages["pro_monthly"]
+                if (pro_monthly.get("amount") != 9.99 or 
+                    pro_monthly.get("currency") != "usd" or
+                    "Monthly" not in pro_monthly.get("name", "")):
+                    self.log_test("Payment Packages", False, f"Invalid pro_monthly package: {pro_monthly}")
+                    return False
+                
+                # Check pro_yearly package
+                if "pro_yearly" not in packages:
+                    self.log_test("Payment Packages", False, "Missing pro_yearly package")
+                    return False
+                
+                pro_yearly = packages["pro_yearly"]
+                if (pro_yearly.get("amount") != 99.99 or
+                    pro_yearly.get("currency") != "usd" or
+                    "Yearly" not in pro_yearly.get("name", "")):
+                    self.log_test("Payment Packages", False, f"Invalid pro_yearly package: {pro_yearly}")
+                    return False
+                
+                self.log_test("Payment Packages", True, "Both pro_monthly ($9.99) and pro_yearly ($99.99) packages returned correctly")
+                return True
+                
+            else:
+                self.log_test("Payment Packages", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Payment Packages", False, f"Error: {str(e)}")
+            return False
+    
+    def test_checkout_session_creation(self):
+        """Test POST /api/payment/checkout-session with package_id and origin_url"""
+        try:
+            # Test data as specified in the review request
+            payload = {
+                "package_id": "pro_monthly",
+                "origin_url": "https://app.emergent.sh"
+            }
+            
+            response = requests.post(
+                f"{self.backend_url}/payment/checkout-session",
+                json=payload,
+                headers={"Content-Type": "application/json"},
+                timeout=15
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check required fields
+                required_fields = ["url", "session_id", "package_name", "amount"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test("Checkout Session Creation", False, f"Missing fields: {missing_fields}")
+                    return False, None
+                
+                # Verify values
+                if (data.get("package_name") != "Pro Monthly" or
+                    data.get("amount") != 9.99 or
+                    not data.get("url") or
+                    not data.get("session_id")):
+                    self.log_test("Checkout Session Creation", False, f"Invalid response values: {data}")
+                    return False, None
+                
+                # Check that URL looks like a Stripe checkout URL
+                if "stripe" not in data["url"].lower():
+                    self.log_test("Checkout Session Creation", False, f"URL doesn't appear to be a Stripe URL: {data['url']}")
+                    return False, None
+                
+                self.log_test("Checkout Session Creation", True, f"Successfully created checkout session with ID: {data['session_id']}")
+                return True, data["session_id"]
+                
+            else:
+                error_text = response.text if response.text else "No error details"
+                self.log_test("Checkout Session Creation", False, f"HTTP {response.status_code}: {error_text}")
+                return False, None
+                
+        except Exception as e:
+            self.log_test("Checkout Session Creation", False, f"Error: {str(e)}")
+            return False, None
+    
+    def test_payment_status_endpoint(self, session_id=None):
+        """Test GET /api/payment/status/{session_id}"""
+        try:
+            # Use provided session_id or a mock one
+            test_session_id = session_id or "cs_test_mock_session_id_12345"
+            
+            response = requests.get(f"{self.backend_url}/payment/status/{test_session_id}", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check required fields
+                expected_fields = ["session_id", "payment_status", "status", "success"]
+                missing_fields = [field for field in expected_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test("Payment Status", False, f"Missing fields: {missing_fields}")
+                    return False
+                
+                # Verify session_id matches
+                if data.get("session_id") != test_session_id:
+                    self.log_test("Payment Status", False, f"Session ID mismatch: expected {test_session_id}, got {data.get('session_id')}")
+                    return False
+                
+                # Check success flag
+                if not data.get("success"):
+                    self.log_test("Payment Status", False, "Success flag is False")
+                    return False
+                
+                self.log_test("Payment Status", True, f"Payment status endpoint working correctly for session: {test_session_id}")
+                return True
+                
+            else:
+                error_text = response.text if response.text else "No error details"
+                self.log_test("Payment Status", False, f"HTTP {response.status_code}: {error_text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Payment Status", False, f"Error: {str(e)}")
+            return False
+    
+    def test_invalid_package_checkout(self):
+        """Test checkout with invalid package_id"""
+        try:
+            payload = {
+                "package_id": "invalid_package",
+                "origin_url": "https://app.emergent.sh"
+            }
+            
+            response = requests.post(
+                f"{self.backend_url}/payment/checkout-session",
+                json=payload,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 400:
+                error_detail = response.json().get("detail", "")
+                if "invalid package" in error_detail.lower():
+                    self.log_test("Invalid Package Handling", True, "Correctly rejects invalid package_id")
+                    return True
+                else:
+                    self.log_test("Invalid Package Handling", False, f"Wrong error message: {error_detail}")
+                    return False
+            else:
+                self.log_test("Invalid Package Handling", False, f"Expected 400 error, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Invalid Package Handling", False, f"Error: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run comprehensive backend API tests after dark mode implementation"""
         print("🧪 Starting Comprehensive Backend API Tests")
