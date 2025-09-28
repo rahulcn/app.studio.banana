@@ -952,7 +952,18 @@ const FreeGenerateScreen: React.FC<{
       'Are you sure you want to remove the reference image?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Remove', onPress: () => setReferenceImage(null) },
+        { 
+          text: 'Remove', 
+          style: 'destructive',
+          onPress: () => {
+            console.log('🗑️ Removing reference image');
+            setReferenceImage(null);
+            // Show confirmation that image was removed
+            setTimeout(() => {
+              Alert.alert('Success', 'Reference image removed successfully');
+            }, 100);
+          }
+        },
       ]
     );
   };
