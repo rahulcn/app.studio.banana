@@ -1515,6 +1515,7 @@ const FreeGenerateScreen: React.FC<{
                 decelerationRate="fast"
                 pagingEnabled={false}
               >
+                {console.log(`🔍 Rendering ${filteredPrompts.length} prompt cards:`, filteredPrompts.map(p => p.title))}
                 {filteredPrompts.map((prompt, index) => (
                   <TouchableOpacity
                     key={prompt.id}
