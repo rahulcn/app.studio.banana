@@ -239,54 +239,56 @@ const useFreeTier = (): FreeTier => {
 
 // Welcome/Onboarding Screen
 const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
+  const { theme } = useTheme();
+  
   return (
-    <SafeAreaView style={styles.modernContainer}>
+    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background }]}>
       <ScrollView contentContainerStyle={styles.modernWelcomeContainer}>
         {/* Header Section */}
         <View style={styles.modernHeaderSection}>
           <View style={styles.modernTitleContainer}>
-            <Text style={styles.modernTitle}>
+            <Text style={[styles.modernTitle, { color: theme.colors.text }]}>
               AI Canvas Studio
             </Text>
-            <Text style={styles.modernSubtitle}>
+            <Text style={[styles.modernSubtitle, { color: theme.colors.textSecondary }]}>
               Transform your photos with professional AI artistry
             </Text>
           </View>
 
           {/* Feature Cards */}
           <View style={styles.modernFeatureContainer}>
-            <View style={styles.modernFeatureCard}>
+            <View style={[styles.modernFeatureCard, { backgroundColor: theme.colors.card }]}>
               <View style={styles.modernFeatureRow}>
                 <View style={[styles.modernIconContainer, { backgroundColor: '#eff6ff' }]}>
                   <Ionicons name="brush" size={24} color="#0ea5e9" />
                 </View>
                 <View style={styles.modernFeatureContent}>
-                  <Text style={styles.modernFeatureTitle}>AI-Powered</Text>
-                  <Text style={styles.modernFeatureText}>Advanced Gemini 2.5 Flash technology</Text>
+                  <Text style={[styles.modernFeatureTitle, { color: theme.colors.text }]}>AI-Powered</Text>
+                  <Text style={[styles.modernFeatureText, { color: theme.colors.textSecondary }]}>Advanced Gemini 2.5 Flash technology</Text>
                 </View>
               </View>
             </View>
 
-            <View style={styles.modernFeatureCard}>
+            <View style={[styles.modernFeatureCard, { backgroundColor: theme.colors.card }]}>
               <View style={styles.modernFeatureRow}>
                 <View style={[styles.modernIconContainer, { backgroundColor: '#f0fdf4' }]}>
                   <Ionicons name="flash" size={24} color="#10b981" />
                 </View>
                 <View style={styles.modernFeatureContent}>
-                  <Text style={styles.modernFeatureTitle}>Instant Results</Text>
-                  <Text style={styles.modernFeatureText}>Professional quality in seconds</Text>
+                  <Text style={[styles.modernFeatureTitle, { color: theme.colors.text }]}>Instant Results</Text>
+                  <Text style={[styles.modernFeatureText, { color: theme.colors.textSecondary }]}>Professional quality in seconds</Text>
                 </View>
               </View>
             </View>
 
-            <View style={styles.modernFeatureCard}>
+            <View style={[styles.modernFeatureCard, { backgroundColor: theme.colors.card }]}>
               <View style={styles.modernFeatureRow}>
                 <View style={[styles.modernIconContainer, { backgroundColor: '#faf5ff' }]}>
                   <Ionicons name="gift" size={24} color="#8b5cf6" />
                 </View>
                 <View style={styles.modernFeatureContent}>
-                  <Text style={styles.modernFeatureTitle}>Free to Start</Text>
-                  <Text style={styles.modernFeatureText}>100 free generations, no signup required</Text>
+                  <Text style={[styles.modernFeatureTitle, { color: theme.colors.text }]}>Free to Start</Text>
+                  <Text style={[styles.modernFeatureText, { color: theme.colors.textSecondary }]}>100 free generations, no signup required</Text>
                 </View>
               </View>
             </View>
