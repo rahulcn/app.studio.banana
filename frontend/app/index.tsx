@@ -722,7 +722,7 @@ const FreeGenerateScreen: React.FC<{
               <Ionicons name="flash" size={20} color="white" />
               <Text style={styles.generateButtonText}>
                 {!freeTier.hasUsesLeft() 
-                  ? 'Free Tier Exhausted' 
+                  ? 'Limit Reached (100/100)' 
                   : !selectedPromptId
                   ? 'Select a Style First'
                   : !referenceImage
