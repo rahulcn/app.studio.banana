@@ -186,6 +186,15 @@ async def get_curated_prompts():
 @app.get("/api/prompts/categories/{category}")
 async def get_prompts_by_category(category: str):
     """Get prompts filtered by category"""
+    # Handle "All" category - return all prompts
+    if category.lower() == "all":
+        return {
+            "prompts": CURATED_PROMPTS, 
+            "category": "All", 
+            "count": len(CURATED_PROMPTS)
+        }
+    
+    # Filter by specific category
     filtered_prompts = [p for p in CURATED_PROMPTS if p["category"].lower() == category.lower()]
     if not filtered_prompts:
         raise HTTPException(status_code=404, detail=f"No prompts found for category: {category}")
