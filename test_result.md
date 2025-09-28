@@ -180,6 +180,21 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Stripe payment integration fully functional. All 4 new payment endpoints working correctly: 1) GET /api/payment/packages ✅ - returns pro_monthly ($9.99) and pro_yearly ($99.99) packages with correct structure, 2) POST /api/payment/checkout-session ✅ - successfully creates Stripe checkout sessions with valid URLs and session IDs, 3) GET /api/payment/status/{session_id} ✅ - retrieves payment status with proper response structure, 4) Error handling ✅ - correctly rejects invalid package IDs. Integration with emergentintegrations library working seamlessly. Payment flow ready for production use."
 
+  - task: "All Category Filtering Fix"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "unknown"
+        agent: "main"
+        comment: "Fixed All category filtering to return all 12 prompts instead of filtering them like specific categories. Updated /api/prompts endpoint to include 'All' as first category and /api/prompts/categories/All endpoint to return all prompts from all categories."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: All category filtering fix working perfectly. Comprehensive testing shows 100% success rate (12/12 tests passed): 1) GET /api/prompts ✅ - returns 'All' as first category in categories array ['All', 'Professional', 'Artistic', 'Lifestyle'], 2) GET /api/prompts/categories/All ✅ - returns all 12 prompts with all categories represented (Professional, Artistic, Lifestyle), 3) GET /api/prompts/categories/Professional ✅ - returns exactly 6 prompts, 4) GET /api/prompts/categories/Artistic ✅ - returns exactly 4 prompts, 5) GET /api/prompts/categories/Lifestyle ✅ - returns exactly 2 prompts. All category endpoints working correctly with proper response structure and counts."
+
 frontend:
   - task: "Dark Mode Implementation"
     implemented: true
