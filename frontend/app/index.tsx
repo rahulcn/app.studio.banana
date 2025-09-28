@@ -1113,6 +1113,7 @@ const FreeGenerateScreen: React.FC<{
               </Text>
               
               <ScrollView 
+                ref={horizontalScrollRef}
                 horizontal 
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalPromptScrollView}
