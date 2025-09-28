@@ -680,27 +680,29 @@ const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
 
 // Profile Screen Component  
 const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
+  const { theme, isDarkMode, toggleTheme } = useTheme();
+  
   return (
-    <ScrollView style={styles.modernScrollView}>
+    <ScrollView style={[styles.modernScrollView, { backgroundColor: theme.colors.background }]}>
       {/* Usage Stats Card */}
-      <View style={styles.modernCard}>
+      <View style={[styles.modernCard, { backgroundColor: theme.colors.card }]}>
         <View style={styles.modernCardHeader}>
           <View style={styles.modernCardIcon}>
             <Ionicons name="flash" size={20} color="#0ea5e9" />
           </View>
-          <Text style={styles.modernCardTitle}>Free Tier</Text>
+          <Text style={[styles.modernCardTitle, { color: theme.colors.text }]}>Free Tier</Text>
         </View>
         
-        <Text style={styles.modernCardDescription}>Anonymous user</Text>
+        <Text style={[styles.modernCardDescription, { color: theme.colors.textSecondary }]}>Anonymous user</Text>
         
         <View style={styles.modernProgressSection}>
           <View style={styles.modernProgressHeader}>
-            <Text style={styles.modernProgressLabel}>Generations used</Text>
-            <Text style={styles.modernProgressValue}>
+            <Text style={[styles.modernProgressLabel, { color: theme.colors.text }]}>Generations used</Text>
+            <Text style={[styles.modernProgressValue, { color: theme.colors.text }]}>
               {freeTier.usageCount} / {freeTier.FREE_LIMIT}
             </Text>
           </View>
-          <View style={styles.modernProgressBarBackground}>
+          <View style={[styles.modernProgressBarBackground, { backgroundColor: theme.colors.border }]}>
             <View 
               style={[
                 styles.modernProgressBarFill,
@@ -708,25 +710,57 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
               ]}
             />
           </View>
-          <Text style={styles.modernProgressRemainingText}>
+          <Text style={[styles.modernProgressRemainingText, { color: theme.colors.textSecondary }]}>
             {freeTier.remainingUses} generations remaining
           </Text>
         </View>
       </View>
 
       {/* Settings Options */}
-      <View style={styles.modernCard}>
-        <Text style={styles.modernCardTitle}>Settings</Text>
+      <View style={[styles.modernCard, { backgroundColor: theme.colors.card }]}>
+        <Text style={[styles.modernCardTitle, { color: theme.colors.text }]}>Settings</Text>
         
+        {/* Dark Mode Toggle */}
+        <TouchableOpacity 
+          style={styles.modernSettingsOption} 
+          activeOpacity={0.7}
+          onPress={toggleTheme}
+        >
+          <View style={[styles.modernSettingsIcon, { backgroundColor: isDarkMode ? '#1f2937' : '#f3f4f6' }]}>
+            <Ionicons 
+              name={isDarkMode ? "moon" : "sunny"} 
+              size={20} 
+              color={isDarkMode ? "#fbbf24" : "#f59e0b"} 
+            />
+          </View>
+          <View style={styles.modernSettingsContent}>
+            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>
+              {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+            </Text>
+            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>
+              {isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
+            </Text>
+          </View>
+          <View style={[styles.themeToggleSwitch, { backgroundColor: isDarkMode ? theme.colors.primary : theme.colors.border }]}>
+            <View style={[
+              styles.themeToggleSwitchButton, 
+              { 
+                transform: [{ translateX: isDarkMode ? 22 : 2 }],
+                backgroundColor: theme.colors.surface
+              }
+            ]} />
+          </View>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
           <View style={[styles.modernSettingsIcon, { backgroundColor: '#dcfce7' }]}>
             <Ionicons name="star" size={20} color="#10b981" />
           </View>
           <View style={styles.modernSettingsContent}>
-            <Text style={styles.modernSettingsTitle}>Upgrade to Pro</Text>
-            <Text style={styles.modernSettingsDescription}>Unlimited generations</Text>
+            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>Upgrade to Pro</Text>
+            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>Unlimited generations</Text>
           </View>
-          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+          <Ionicons name="chevron-forward" size={16} color={theme.colors.textSecondary} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
@@ -734,10 +768,10 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
             <Ionicons name="help-circle" size={20} color="#8b5cf6" />
           </View>
           <View style={styles.modernSettingsContent}>
-            <Text style={styles.modernSettingsTitle}>Help & Support</Text>
-            <Text style={styles.modernSettingsDescription}>Get assistance</Text>
+            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>Help & Support</Text>
+            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>Get assistance</Text>
           </View>
-          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+          <Ionicons name="chevron-forward" size={16} color={theme.colors.textSecondary} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
@@ -745,10 +779,10 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
             <Ionicons name="information-circle" size={20} color="#d97706" />
           </View>
           <View style={styles.modernSettingsContent}>
-            <Text style={styles.modernSettingsTitle}>About</Text>
-            <Text style={styles.modernSettingsDescription}>App information</Text>
+            <Text style={[styles.modernSettingsTitle, { color: theme.colors.text }]}>About</Text>
+            <Text style={[styles.modernSettingsDescription, { color: theme.colors.textSecondary }]}>App information</Text>
           </View>
-          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+          <Ionicons name="chevron-forward" size={16} color={theme.colors.textSecondary} />
         </TouchableOpacity>
       </View>
     </ScrollView>
