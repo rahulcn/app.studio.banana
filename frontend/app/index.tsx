@@ -1444,7 +1444,7 @@ const FreeGenerateScreen: React.FC<{
                           ? styles.modernCategoryButtonSelected 
                           : styles.modernCategoryButtonUnselected
                       ]}
-                      onPress={() => setSelectedCategory(category)}
+                      onPress={() => handleCategorySelection(category)}
                       activeOpacity={0.7}
                     >
                       <Text style={[
