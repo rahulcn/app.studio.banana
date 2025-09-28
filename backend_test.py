@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 """
-Backend API Testing Suite for AI Image Generator
-Tests all backend endpoints including new Stripe payment integration
-Focus: Health check, curated prompts, MongoDB connection, NanoBanana API integration, and Stripe payments
+Backend API Testing Script for AI Image Generator
+Testing the "All" category filtering fix
 """
 
 import requests
 import json
-import base64
-import time
+import sys
 from typing import Dict, Any
-import os
-from datetime import datetime
 
 # Get backend URL from frontend .env file
 def get_backend_url():
@@ -28,9 +24,6 @@ BASE_URL = get_backend_url()
 BACKEND_URL = f"{BASE_URL}/api"
 
 print(f"🔗 Testing backend at: {BACKEND_URL}")
-
-# Sample base64 image for testing (small test image)
-SAMPLE_IMAGE_BASE64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
 
 class CuratedPromptTester:
     def __init__(self):
