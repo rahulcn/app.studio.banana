@@ -797,25 +797,27 @@ const FreeGenerateScreen: React.FC<{
           </View>
         ) : (
           <>
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Choose Style Category</Text>
+            {/* Category Selection */}
+            <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
+              <Text className="text-lg font-bold text-gray-900 mb-4">Choose Style Category</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={styles.stylesContainer}>
+                <View className="flex-row space-x-3">
                   {categories.map((category) => (
                     <TouchableOpacity
                       key={category}
-                      style={[
-                        styles.styleCard,
-                        selectedCategory === category && styles.selectedStyleCard,
-                      ]}
+                      className={`px-4 py-2 rounded-full border-2 ${
+                        selectedCategory === category 
+                          ? 'bg-blue-50 border-blue-500' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
                       onPress={() => setSelectedCategory(category)}
+                      activeOpacity={0.7}
                     >
-                      <Text
-                        style={[
-                          styles.styleName,
-                          selectedCategory === category && styles.selectedStyleName,
-                        ]}
-                      >
+                      <Text className={`font-medium ${
+                        selectedCategory === category 
+                          ? 'text-blue-600' 
+                          : 'text-gray-600'
+                      }`}>
                         {category}
                       </Text>
                     </TouchableOpacity>
@@ -824,48 +826,68 @@ const FreeGenerateScreen: React.FC<{
               </ScrollView>
             </View>
 
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>
+            {/* Prompt Selection */}
+            <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
+              <Text className="text-lg font-bold text-gray-900 mb-2">
                 Select Professional Style ({filteredPrompts.length} available)
               </Text>
-              <Text style={styles.promptHint}>
+              <Text className="text-sm text-gray-600 mb-4 leading-relaxed">
                 Choose from our curated collection of professional AI prompts designed for high-quality image generation.
               </Text>
               
-              <ScrollView style={styles.promptsScrollView} showsVerticalScrollIndicator={false}>
-                {filteredPrompts.map((prompt) => (
-                  <TouchableOpacity
-                    key={prompt.id}
-                    style={[
-                      styles.promptCard,
-                      selectedPromptId === prompt.id && styles.selectedPromptCard,
-                    ]}
-                    onPress={() => setSelectedPromptId(prompt.id)}
-                  >
-                    <View style={styles.promptCardHeader}>
-                      <Text style={[
-                        styles.promptTitle,
-                        selectedPromptId === prompt.id && styles.selectedPromptTitle
-                      ]}>
-                        {prompt.title}
+              <ScrollView className="max-h-80" showsVerticalScrollIndicator={false}>
+                <View className="space-y-3">
+                  {filteredPrompts.map((prompt) => (
+                    <TouchableOpacity
+                      key={prompt.id}
+                      className={`rounded-xl p-4 border-2 ${
+                        selectedPromptId === prompt.id 
+                          ? 'bg-blue-50 border-blue-500' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      onPress={() => setSelectedPromptId(prompt.id)}
+                      activeOpacity={0.7}
+                    >
+                      <View className="flex-row items-start justify-between mb-2">
+                        <Text className={`flex-1 text-base font-semibold mr-2 ${
+                          selectedPromptId === prompt.id 
+                            ? 'text-blue-700' 
+                            : 'text-gray-900'
+                        }`}>
+                          {prompt.title}
+                        </Text>
+                        <View className={`px-2 py-1 rounded-md ${
+                          prompt.category === 'Professional' 
+                            ? 'bg-blue-100' 
+                            : prompt.category === 'Artistic' 
+                            ? 'bg-orange-100' 
+                            : 'bg-green-100'
+                        }`}>
+                          <Text className={`text-xs font-bold ${
+                            prompt.category === 'Professional' 
+                              ? 'text-blue-600' 
+                              : prompt.category === 'Artistic' 
+                              ? 'text-orange-600' 
+                              : 'text-green-600'
+                          }`}>
+                            {prompt.category}
+                          </Text>
+                        </View>
+                      </View>
+                      
+                      <Text className="text-sm text-gray-600 leading-relaxed mb-2">
+                        {prompt.description}
                       </Text>
-                      <View style={[
-                        styles.categoryBadge,
-                        { backgroundColor: prompt.category === 'Professional' ? '#007AFF' : 
-                                         prompt.category === 'Artistic' ? '#FF6B35' : '#34C759' }
-                      ]}>
-                        <Text style={styles.categoryBadgeText}>{prompt.category}</Text>
-                      </View>
-                    </View>
-                    <Text style={styles.promptDescription}>{prompt.description}</Text>
-                    {selectedPromptId === prompt.id && (
-                      <View style={styles.selectedIndicator}>
-                        <Ionicons name="checkmark-circle" size={20} color="#007AFF" />
-                        <Text style={styles.selectedText}>Selected</Text>
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                ))}
+                      
+                      {selectedPromptId === prompt.id && (
+                        <View className="flex-row items-center pt-2 border-t border-gray-200">
+                          <Ionicons name="checkmark-circle" size={16} color="#0ea5e9" />
+                          <Text className="ml-2 text-xs text-blue-600 font-medium">Selected</Text>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </ScrollView>
             </View>
           </>
