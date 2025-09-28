@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-09-28T18:26:48.531116",
+  "test_focus": "Post dark mode implementation verification",
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    "\u2705 PASS - Health Check: Backend is running",
+    "\u2705 PASS - Get All Prompts: All 12 prompts returned with correct structure",
+    "\u2705 PASS - All Categories Test: All categories correct: Professional: 6 prompts \u2705, Artistic: 4 prompts \u2705, Lifestyle: 2 prompts \u2705",
+    "\u2705 PASS - Get Prompts by Category: Found 6 Professional prompts",
+    "\u2705 PASS - MongoDB Storage: Successfully connected to MongoDB, retrieved 5 images",
+    "\u2705 PASS - Generate with Curated Prompt: Successfully generated image with curated prompt. Image size: 1746360 chars",
+    "\u2705 PASS - General Image Generation: Successfully generated image from text prompt. Image size: 2052052 chars",
+    "\u2705 PASS - Invalid Category Handling: Correctly returns 404 for invalid category",
+    "\u2705 PASS - Invalid Prompt ID Handling: Correctly rejects invalid prompt_id with proper error message",
+    "\u2705 PASS - Missing Image Handling: Correctly returns 422 for missing required image_data"
+  ]
+}
