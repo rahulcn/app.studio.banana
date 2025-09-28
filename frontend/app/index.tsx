@@ -135,7 +135,7 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
           <View style={styles.benefit}>
             <Ionicons name="gift" size={32} color="#34C759" />
             <Text style={styles.benefitTitle}>Free to Start</Text>
-            <Text style={styles.benefitText}>5 free generations, no signup required</Text>
+            <Text style={styles.benefitText}>100 free generations, no signup required</Text>
           </View>
         </View>
 
