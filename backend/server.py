@@ -159,6 +159,17 @@ class PromptSelectionRequest(BaseModel):
     prompt_id: int
     image_data: str  # base64 encoded reference image (required for curated prompts)
 
+# Payment Models
+class PaymentRequest(BaseModel):
+    package_id: str  # "pro_monthly" or "pro_yearly"
+    origin_url: str  # Frontend origin URL for dynamic success/cancel URLs
+
+class PaymentSessionResponse(BaseModel):
+    url: str
+    session_id: str
+    package_name: str
+    amount: float
+
 @app.get("/api/health")
 async def health_check():
     return {"status": "healthy", "service": "ai-image-generator", "version": "1.0.0"}
