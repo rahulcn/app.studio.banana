@@ -3063,6 +3063,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
+  photoViewerHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   photoViewerHeaderContent: {
     flex: 1,
     alignItems: 'center',
