@@ -3374,4 +3374,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#64748b',
   },
+  // Direct Section Styles (no card background)
+  directSection: {
+    marginBottom: 32,
+    paddingHorizontal: 24,
+  },
+  directSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 8,
+  },
+  directSectionDescription: {
+    fontSize: 14,
+    color: '#64748b',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
 });
