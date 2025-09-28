@@ -1073,8 +1073,8 @@ const FreeGenerateScreen: React.FC<{
         ) : (
           <>
             {/* Category Selection */}
-            <View style={styles.modernCard}>
-              <Text style={styles.modernCardTitle}>Choose Style Category</Text>
+            <View style={styles.directSection}>
+              <Text style={styles.directSectionTitle}>Choose Style Category</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.modernCategoryContainer}>
                   {categories.map((category) => (
