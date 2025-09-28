@@ -337,10 +337,54 @@ const FreeGenerateScreen: React.FC<{
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Describe Your Image</Text>
+          <Text style={styles.sectionTitle}>Reference Image (Optional)</Text>
+          
+          {referenceImage ? (
+            <View style={styles.referenceImageContainer}>
+              <Image 
+                source={{ uri: `data:image/jpeg;base64,${referenceImage}` }}
+                style={styles.referenceImage}
+                resizeMode="cover"
+              />
+              <TouchableOpacity 
+                style={styles.removeReferenceButton}
+                onPress={removeReferenceImage}
+              >
+                <Ionicons name="close-circle" size={24} color="#FF3B30" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.referenceOptions}>
+              <TouchableOpacity style={styles.referenceButton} onPress={pickReferenceImage}>
+                <Ionicons name="images-outline" size={20} color="#007AFF" />
+                <Text style={styles.referenceButtonText}>Choose from Gallery</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.referenceButton} onPress={takeReferencePhoto}>
+                <Ionicons name="camera-outline" size={20} color="#007AFF" />
+                <Text style={styles.referenceButtonText}>Take Photo</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          
+          {referenceImage && (
+            <Text style={styles.referenceHint}>
+              The AI will use this image as inspiration for style, composition, or subject matter.
+            </Text>
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            {referenceImage ? 'Describe the Changes' : 'Describe Your Image'}
+          </Text>
           <TextInput
             style={styles.promptInput}
-            placeholder="A beautiful sunset over mountains, a cute cat playing, abstract art..."
+            placeholder={
+              referenceImage 
+                ? "Transform this into a watercolor painting, make it more dramatic, change the style to vintage..."
+                : "A beautiful sunset over mountains, a cute cat playing, abstract art..."
+            }
             value={prompt}
             onChangeText={setPrompt}
             multiline
