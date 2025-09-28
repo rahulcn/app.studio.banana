@@ -1,10 +1,10 @@
 {
-  "timestamp": "2025-09-28T18:26:48.531116",
-  "test_focus": "Post dark mode implementation verification",
+  "timestamp": "2025-09-28T18:42:52.787596",
+  "test_focus": "Stripe payment integration testing + existing functionality verification",
   "summary": {
-    "passed": 10,
-    "total": 10,
-    "success_rate": 100.0
+    "passed": 13,
+    "total": 14,
+    "success_rate": 92.85714285714286
   },
   "detailed_results": [
     "\u2705 PASS - Health Check: Backend is running",
@@ -12,8 +12,12 @@
     "\u2705 PASS - All Categories Test: All categories correct: Professional: 6 prompts \u2705, Artistic: 4 prompts \u2705, Lifestyle: 2 prompts \u2705",
     "\u2705 PASS - Get Prompts by Category: Found 6 Professional prompts",
     "\u2705 PASS - MongoDB Storage: Successfully connected to MongoDB, retrieved 5 images",
-    "\u2705 PASS - Generate with Curated Prompt: Successfully generated image with curated prompt. Image size: 1746360 chars",
-    "\u2705 PASS - General Image Generation: Successfully generated image from text prompt. Image size: 2052052 chars",
+    "\u2705 PASS - Payment Packages: Both pro_monthly ($9.99) and pro_yearly ($99.99) packages returned correctly",
+    "\u2705 PASS - Checkout Session Creation: Successfully created checkout session with ID: cs_test_a1myqGeeyrFiYt0wame5KJoGIbMMzCe0qQAt3RByy5eXPjISVLkrYfwSUU",
+    "\u2705 PASS - Payment Status: Payment status endpoint working correctly for session: cs_test_a1myqGeeyrFiYt0wame5KJoGIbMMzCe0qQAt3RByy5eXPjISVLkrYfwSUU",
+    "\u274c FAIL - Invalid Package Handling: Expected 400 error, got 500",
+    "\u2705 PASS - Generate with Curated Prompt: Successfully generated image with curated prompt. Image size: 1970944 chars",
+    "\u2705 PASS - General Image Generation: Successfully generated image from text prompt. Image size: 2072488 chars",
     "\u2705 PASS - Invalid Category Handling: Correctly returns 404 for invalid category",
     "\u2705 PASS - Invalid Prompt ID Handling: Correctly rejects invalid prompt_id with proper error message",
     "\u2705 PASS - Missing Image Handling: Correctly returns 422 for missing required image_data"
