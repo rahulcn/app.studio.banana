@@ -773,9 +773,11 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      <ScrollView style={styles.modernScrollView}>
-        {/* Free Tier Card */}
-        <View style={styles.modernCard}>
+      {/* Tab Content */}
+      {activeTab === 'generate' && (
+        <ScrollView style={styles.modernScrollView}>
+          {/* Free Tier Card */}
+          <View style={styles.modernCard}>
           <View style={styles.modernCardHeader}>
             <View style={styles.modernCardIcon}>
               <Ionicons name="flash" size={20} color="#0ea5e9" />
