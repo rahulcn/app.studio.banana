@@ -148,19 +148,30 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
   );
 };
 
-// Free Tier Generate Screen
+// Curated prompt interface
+interface CuratedPrompt {
+  id: number;
+  title: string;
+  description: string;
+  prompt: string;
+  category: string;
+}
+
+// Free Tier Generate Screen with Curated Prompts
 const FreeGenerateScreen: React.FC<{
   onBack: () => void;
   freeTier: FreeTier;
   onSignupPrompt: () => void;
 }> = ({ onBack, freeTier, onSignupPrompt }) => {
-  const [prompt, setPrompt] = useState('');
-  const [selectedStyle, setSelectedStyle] = useState('photorealistic');
+  const [selectedPromptId, setSelectedPromptId] = useState<number | null>(null);
+  const [curatedPrompts, setCuratedPrompts] = useState<CuratedPrompt[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [generating, setGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
+  const [loadingPrompts, setLoadingPrompts] = useState(true);
 
-  const styles_list = ['photorealistic', 'artistic', 'cartoon', 'vintage', 'abstract'];
+  const categories = ['All', 'Professional', 'Artistic', 'Lifestyle'];
 
   const pickReferenceImage = async () => {
     try {
