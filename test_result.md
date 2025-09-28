@@ -166,6 +166,18 @@ backend:
         comment: "✅ TESTED: All API endpoints working. GET /api/health ✅, GET /api/prompts ✅ (4 categories), POST /api/generate-image ✅ (both text-to-image and image editing), GET /api/images ✅ (gallery with pagination), GET /api/images/{id} ✅, DELETE /api/images/{id} ✅. Minor: Invalid ID error handling returns 500 instead of 400, but functionality works."
 
 frontend:
+  - task: "Dark Mode Implementation"
+    implemented: true
+    working: "unknown"
+    file: "index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "unknown"
+        agent: "main"
+        comment: "Implemented comprehensive dark mode system with ThemeContext, AsyncStorage persistence, and theme toggle in profile section. Added theme support to all components: FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, and bottom navigation. Created light and dark theme definitions with proper color schemes."
+
   - task: "Mobile UI Components"
     implemented: true
     working: "unknown"
