@@ -334,7 +334,7 @@ const PhotoViewerModal: React.FC<{
           </View>
         </SafeAreaView>
 
-        {/* Photo Carousel */}
+        {/* Photo Carousel - Simplified for better functionality */}
         <ScrollView
           ref={scrollViewRef}
           horizontal
@@ -343,50 +343,73 @@ const PhotoViewerModal: React.FC<{
           onScroll={handleScroll}
           scrollEventThrottle={16}
           style={styles.photoViewerScrollView}
-          contentContainerStyle={{ alignItems: 'center' }}
+          decelerationRate="fast"
         >
           {images.map((image, index) => (
             <View key={image.id || index} style={[styles.photoViewerImageContainer, { width: screenWidth }]}>
-              <ScrollView
-                maximumZoomScale={3}
-                minimumZoomScale={1}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.photoViewerZoomContainer}
-                centerContent={true}
-                bounces={false}
-                bouncesZoom={true}
-              >
-                <Image
-                  source={{ uri: `data:image/png;base64,${image.generated_image}` }}
-                  style={[
-                    styles.photoViewerImage,
-                    {
-                      width: screenWidth,
-                      height: screenHeight * 0.6,
-                    }
-                  ]}
-                  resizeMode="contain"
-                />
-              </ScrollView>
-              
-              {/* Navigation indicators */}
-              {images.length > 1 && (
-                <View style={styles.photoViewerIndicators}>
-                  {images.map((_, i) => (
-                    <View
-                      key={i}
-                      style={[
-                        styles.photoViewerDot,
-                        currentIndex === i && styles.photoViewerDotActive
-                      ]}
-                    />
-                  ))}
-                </View>
-              )}
+              {/* Simplified - no nested ScrollView to avoid conflicts */}
+              <Image
+                source={{ uri: `data:image/png;base64,${image.generated_image}` }}
+                style={[
+                  styles.photoViewerImage,
+                  {
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.6,
+                  }
+                ]}
+                resizeMode="contain"
+              />
             </View>
           ))}
         </ScrollView>
+
+        {/* Navigation indicators - Outside to avoid conflicts */}
+        {images.length > 1 && (
+          <View style={styles.photoViewerIndicators}>
+            {images.map((_, i) => (
+              <View
+                key={i}
+                style={[
+                  styles.photoViewerDot,
+                  currentIndex === i && styles.photoViewerDotActive
+                ]}
+              />
+            ))}
+          </View>
+        )}
+
+        {/* Manual Navigation Buttons for testing */}
+        {images.length > 1 && (
+          <>
+            {currentIndex > 0 && (
+              <TouchableOpacity
+                style={styles.photoViewerPrevButton}
+                onPress={() => {
+                  console.log('⬅️ Previous button pressed');
+                  goToPrevious();
+                }}
+                activeOpacity={0.7}
+                hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+              >
+                <Ionicons name="chevron-back" size={32} color="white" />
+              </TouchableOpacity>
+            )}
+            
+            {currentIndex < images.length - 1 && (
+              <TouchableOpacity
+                style={styles.photoViewerNextButton}
+                onPress={() => {
+                  console.log('➡️ Next button pressed');
+                  goToNext();
+                }}
+                activeOpacity={0.7}
+                hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+              >
+                <Ionicons name="chevron-forward" size={32} color="white" />
+              </TouchableOpacity>
+            )}
+          </>
+        )}
 
         {/* Footer with metadata */}
         <View style={styles.photoViewerFooter}>
