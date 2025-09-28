@@ -556,10 +556,10 @@ const FreeGenerateScreen: React.FC<{
         <TouchableOpacity
           style={[
             styles.generateButton,
-            (!freeTier.hasUsesLeft() || generating || !prompt.trim()) && styles.generateButtonDisabled,
+            (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage) && styles.generateButtonDisabled,
           ]}
           onPress={handleGenerate}
-          disabled={!freeTier.hasUsesLeft() || generating || !prompt.trim()}
+          disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
         >
           {generating ? (
             <ActivityIndicator color="white" />
