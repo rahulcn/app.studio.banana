@@ -1217,4 +1217,23 @@ const styles = StyleSheet.create({
     color: '#666',
     textDecorationLine: 'underline',
   },
+  // Auth Screen Header
+  authHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e1e5e9',
+  },
+  authHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    marginLeft: 16,
+  },
+  backButton: {
+    padding: 4,
+  },
 });
