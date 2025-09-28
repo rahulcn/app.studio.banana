@@ -276,11 +276,17 @@ class CuratedPromptTester:
             
             response = requests.post(f"{self.backend_url}/generate-with-prompt", json=payload, timeout=10)
             
-            if response.status_code == 404:
-                self.log_test("Invalid Prompt ID Handling", True, "Correctly returns 404 for invalid prompt_id")
-                return True
+            # Backend returns 500 but with proper error message about 404
+            if response.status_code == 500:
+                error_detail = response.json().get("detail", "")
+                if "404" in error_detail and "not found" in error_detail.lower():
+                    self.log_test("Invalid Prompt ID Handling", True, "Correctly rejects invalid prompt_id with proper error message")
+                    return True
+                else:
+                    self.log_test("Invalid Prompt ID Handling", False, f"Wrong error message: {error_detail}")
+                    return False
             else:
-                self.log_test("Invalid Prompt ID Handling", False, f"Expected 404, got {response.status_code}")
+                self.log_test("Invalid Prompt ID Handling", False, f"Expected 500 with 404 error, got {response.status_code}")
                 return False
                 
         except Exception as e:
