@@ -893,31 +893,39 @@ const FreeGenerateScreen: React.FC<{
           </>
         )}
 
-        <TouchableOpacity
-          style={[
-            styles.generateButton,
-            (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage) && styles.generateButtonDisabled,
-          ]}
-          onPress={handleGenerate}
-          disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
-        >
-          {generating ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <>
-              <Ionicons name="flash" size={20} color="white" />
-              <Text style={styles.generateButtonText}>
-                {!freeTier.hasUsesLeft() 
-                  ? 'Limit Reached (100/100)' 
-                  : !selectedPromptId
-                  ? 'Select a Style First'
-                  : !referenceImage
-                  ? 'Add Reference Photo'
-                  : 'Generate Image'}
-              </Text>
-            </>
-          )}
-        </TouchableOpacity>
+        {/* Generate Button */}
+        <View className="px-6 pb-6">
+          <TouchableOpacity
+            className={`rounded-2xl py-4 px-6 shadow-lg ${
+              (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage)
+                ? 'bg-gray-300'
+                : 'bg-blue-600'
+            }`}
+            onPress={handleGenerate}
+            disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
+            activeOpacity={0.8}
+          >
+            {generating ? (
+              <View className="flex-row items-center justify-center">
+                <ActivityIndicator size="small" color="white" />
+                <Text className="text-white text-lg font-semibold ml-3">Generating...</Text>
+              </View>
+            ) : (
+              <View className="flex-row items-center justify-center">
+                <Ionicons name="sparkles" size={20} color="white" />
+                <Text className="text-white text-lg font-semibold ml-2">
+                  {!freeTier.hasUsesLeft() 
+                    ? 'Limit Reached (100/100)' 
+                    : !selectedPromptId
+                    ? 'Select a Style First'
+                    : !referenceImage
+                    ? 'Add Reference Photo'
+                    : 'Generate Image'}
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
 
         {generating && (
           <View style={styles.generatingInfo}>
