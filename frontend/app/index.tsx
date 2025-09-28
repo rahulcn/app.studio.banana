@@ -108,71 +108,71 @@ const useFreeTier = (): FreeTier => {
 // Welcome/Onboarding Screen
 const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <SafeAreaView style={styles.modernContainer}>
+      <ScrollView contentContainerStyle={styles.modernWelcomeContainer}>
         {/* Header Section */}
-        <View className="flex-1 justify-center items-center px-6 py-12">
-          <View className="mb-12 items-center">
-            <Text className="text-4xl font-bold text-gray-900 mb-4 text-center">
+        <View style={styles.modernHeaderSection}>
+          <View style={styles.modernTitleContainer}>
+            <Text style={styles.modernTitle}>
               AI Canvas Studio
             </Text>
-            <Text className="text-lg text-gray-600 text-center leading-relaxed max-w-sm">
+            <Text style={styles.modernSubtitle}>
               Transform your photos with professional AI artistry
             </Text>
           </View>
 
           {/* Feature Cards */}
-          <View className="w-full max-w-sm mb-8">
-            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
-              <View className="flex-row items-center mb-3">
-                <View className="bg-blue-50 p-2 rounded-xl mr-4">
+          <View style={styles.modernFeatureContainer}>
+            <View style={styles.modernFeatureCard}>
+              <View style={styles.modernFeatureRow}>
+                <View style={[styles.modernIconContainer, { backgroundColor: '#eff6ff' }]}>
                   <Ionicons name="brush" size={24} color="#0ea5e9" />
                 </View>
-                <View className="flex-1">
-                  <Text className="text-lg font-semibold text-gray-900">AI-Powered</Text>
-                  <Text className="text-sm text-gray-600">Advanced Gemini 2.5 Flash technology</Text>
+                <View style={styles.modernFeatureContent}>
+                  <Text style={styles.modernFeatureTitle}>AI-Powered</Text>
+                  <Text style={styles.modernFeatureText}>Advanced Gemini 2.5 Flash technology</Text>
                 </View>
               </View>
             </View>
 
-            <View className="bg-white rounded-2xl p-6 mb-4 shadow-sm border border-gray-100">
-              <View className="flex-row items-center mb-3">
-                <View className="bg-green-50 p-2 rounded-xl mr-4">
+            <View style={styles.modernFeatureCard}>
+              <View style={styles.modernFeatureRow}>
+                <View style={[styles.modernIconContainer, { backgroundColor: '#f0fdf4' }]}>
                   <Ionicons name="flash" size={24} color="#10b981" />
                 </View>
-                <View className="flex-1">
-                  <Text className="text-lg font-semibold text-gray-900">Instant Results</Text>
-                  <Text className="text-sm text-gray-600">Professional quality in seconds</Text>
+                <View style={styles.modernFeatureContent}>
+                  <Text style={styles.modernFeatureTitle}>Instant Results</Text>
+                  <Text style={styles.modernFeatureText}>Professional quality in seconds</Text>
                 </View>
               </View>
             </View>
 
-            <View className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
-              <View className="flex-row items-center mb-3">
-                <View className="bg-purple-50 p-2 rounded-xl mr-4">
+            <View style={styles.modernFeatureCard}>
+              <View style={styles.modernFeatureRow}>
+                <View style={[styles.modernIconContainer, { backgroundColor: '#faf5ff' }]}>
                   <Ionicons name="gift" size={24} color="#8b5cf6" />
                 </View>
-                <View className="flex-1">
-                  <Text className="text-lg font-semibold text-gray-900">Free to Start</Text>
-                  <Text className="text-sm text-gray-600">100 free generations, no signup required</Text>
+                <View style={styles.modernFeatureContent}>
+                  <Text style={styles.modernFeatureTitle}>Free to Start</Text>
+                  <Text style={styles.modernFeatureText}>100 free generations, no signup required</Text>
                 </View>
               </View>
             </View>
           </View>
 
           {/* CTA Section */}
-          <View className="w-full max-w-sm items-center">
-            <Text className="text-sm text-gray-500 mb-6 text-center">
+          <View style={styles.modernCtaContainer}>
+            <Text style={styles.modernCtaText}>
               ✨ Start with 100 free image generations
             </Text>
 
             <TouchableOpacity 
-              className="bg-blue-600 w-full rounded-2xl py-4 px-6 shadow-lg"
+              style={styles.modernCtaButton}
               onPress={onGetStarted}
               activeOpacity={0.9}
             >
-              <View className="flex-row items-center justify-center">
-                <Text className="text-white text-lg font-semibold mr-2">Get Started Free</Text>
+              <View style={styles.modernCtaButtonContent}>
+                <Text style={styles.modernCtaButtonText}>Get Started Free</Text>
                 <Ionicons name="arrow-forward" size={20} color="white" />
               </View>
             </TouchableOpacity>
