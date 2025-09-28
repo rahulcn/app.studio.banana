@@ -3592,4 +3592,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8fafc', // Light gray background
   },
+  // Dark Mode Toggle Switch Styles
+  themeToggleSwitch: {
+    width: 48,
+    height: 24,
+    borderRadius: 12,
+    padding: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  themeToggleSwitchButton: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
+  },
 });
