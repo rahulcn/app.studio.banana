@@ -532,6 +532,21 @@ const FreeGenerateScreen: React.FC<{
 
           <View style={styles.actionButtons}>
             <TouchableOpacity
+              style={[styles.saveButton, savingImage && styles.saveButtonDisabled]}
+              onPress={saveImageToGallery}
+              disabled={savingImage}
+            >
+              {savingImage ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Ionicons name="download" size={20} color="white" />
+              )}
+              <Text style={styles.saveButtonText}>
+                {savingImage ? 'Saving...' : 'Save to Gallery'}
+              </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
               style={styles.secondaryButton}
               onPress={() => {
                 setGeneratedImage(null);
