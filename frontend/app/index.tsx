@@ -259,95 +259,159 @@ const FullscreenImagePreview: React.FC<{
   );
 };
 
-// Simple Profile Modal Component
-const ProfileModal: React.FC<{
-  visible: boolean;
-  onClose: () => void;
-  freeTier: FreeTier;
-}> = ({ visible, onClose, freeTier }) => {
-  return (
-    <Modal visible={visible} transparent={true} animationType="slide">
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          {/* Header */}
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Profile</Text>
-            <TouchableOpacity 
-              style={styles.modalCloseButton}
-              onPress={onClose}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="close" size={20} color="#374151" />
-            </TouchableOpacity>
-          </View>
+// Gallery Screen Component
+const GalleryScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
+  const [generatedImages, setGeneratedImages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-          {/* Usage Stats */}
-          <View style={styles.usageStatsContainer}>
-            <View style={styles.usageStatsHeader}>
-              <View style={styles.usageStatsIcon}>
-                <Ionicons name="flash" size={20} color="#0ea5e9" />
-              </View>
-              <View style={styles.usageStatsContent}>
-                <Text style={styles.usageStatsTier}>Free Tier</Text>
-                <Text style={styles.usageStatsUser}>Anonymous user</Text>
-              </View>
-            </View>
-            
-            <View style={styles.usageProgress}>
-              <View style={styles.usageProgressHeader}>
-                <Text style={styles.usageProgressLabel}>Generations used</Text>
-                <Text style={styles.usageProgressValue}>
-                  {freeTier.usageCount} / {freeTier.FREE_LIMIT}
+  useEffect(() => {
+    const loadGeneratedImages = async () => {
+      try {
+        console.log('📸 Loading generated images from backend...');
+        const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/images`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load images: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log(`✅ Loaded ${data.images?.length || 0} generated images`);
+        setGeneratedImages(data.images || []);
+      } catch (error) {
+        console.error('❌ Failed to load generated images:', error);
+        Alert.alert('Error', 'Failed to load generated images. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadGeneratedImages();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.modernLoadingContainer}>
+        <ActivityIndicator size="large" color="#3b82f6" />
+        <Text style={styles.modernLoadingText}>Loading your gallery...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView style={styles.modernScrollView}>
+      {generatedImages.length === 0 ? (
+        <View style={styles.modernEmptyStateContainer}>
+          <View style={styles.modernEmptyStateIcon}>
+            <Ionicons name="images-outline" size={64} color="#9ca3af" />
+          </View>
+          <Text style={styles.modernEmptyStateTitle}>No Images Yet</Text>
+          <Text style={styles.modernEmptyStateText}>
+            Your generated images will appear here. Start creating to build your gallery!
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.modernGalleryGrid}>
+          {generatedImages.map((image, index) => (
+            <TouchableOpacity 
+              key={image.id || index} 
+              style={styles.modernGalleryItem}
+              activeOpacity={0.8}
+            >
+              <Image 
+                source={{ uri: `data:image/png;base64,${image.generated_image}` }}
+                style={styles.modernGalleryImage}
+                resizeMode="cover"
+              />
+              <View style={styles.modernGalleryOverlay}>
+                <Text style={styles.modernGalleryTitle} numberOfLines={1}>
+                  {image.prompt_title || 'AI Generated'}
+                </Text>
+                <Text style={styles.modernGalleryDate}>
+                  {new Date(image.created_at).toLocaleDateString()}
                 </Text>
               </View>
-              <View style={styles.usageProgressBar}>
-                <View 
-                  style={[
-                    styles.usageProgressFill,
-                    { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
-                  ]}
-                />
-              </View>
-            </View>
-            
-            <Text style={styles.usageRemainingText}>
-              {freeTier.remainingUses} generations remaining
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+    </ScrollView>
+  );
+};
+
+// Profile Screen Component  
+const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
+  return (
+    <ScrollView style={styles.modernScrollView}>
+      {/* Usage Stats Card */}
+      <View style={styles.modernCard}>
+        <View style={styles.modernCardHeader}>
+          <View style={styles.modernCardIcon}>
+            <Ionicons name="flash" size={20} color="#0ea5e9" />
+          </View>
+          <Text style={styles.modernCardTitle}>Free Tier</Text>
+        </View>
+        
+        <Text style={styles.modernCardDescription}>Anonymous user</Text>
+        
+        <View style={styles.modernProgressSection}>
+          <View style={styles.modernProgressHeader}>
+            <Text style={styles.modernProgressLabel}>Generations used</Text>
+            <Text style={styles.modernProgressValue}>
+              {freeTier.usageCount} / {freeTier.FREE_LIMIT}
             </Text>
           </View>
-
-          {/* Quick Actions */}
-          <View>
-            <TouchableOpacity 
-              style={styles.actionButton}
-              activeOpacity={0.7}
-            >
-              <View style={[styles.actionIcon, { backgroundColor: '#dcfce7' }]}>
-                <Ionicons name="star" size={20} color="#10b981" />
-              </View>
-              <View style={styles.actionContent}>
-                <Text style={styles.actionTitle}>Upgrade to Pro</Text>
-                <Text style={styles.actionDescription}>Unlimited generations</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.actionButton}
-              activeOpacity={0.7}
-            >
-              <View style={[styles.actionIcon, { backgroundColor: '#f3e8ff' }]}>
-                <Ionicons name="help-circle" size={20} color="#8b5cf6" />
-              </View>
-              <View style={styles.actionContent}>
-                <Text style={styles.actionTitle}>Help & Support</Text>
-                <Text style={styles.actionDescription}>Get assistance</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
-            </TouchableOpacity>
+          <View style={styles.modernProgressBarBackground}>
+            <View 
+              style={[
+                styles.modernProgressBarFill,
+                { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
+              ]}
+            />
           </View>
+          <Text style={styles.modernProgressRemainingText}>
+            {freeTier.remainingUses} generations remaining
+          </Text>
         </View>
       </View>
-    </Modal>
+
+      {/* Settings Options */}
+      <View style={styles.modernCard}>
+        <Text style={styles.modernCardTitle}>Settings</Text>
+        
+        <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
+          <View style={[styles.modernSettingsIcon, { backgroundColor: '#dcfce7' }]}>
+            <Ionicons name="star" size={20} color="#10b981" />
+          </View>
+          <View style={styles.modernSettingsContent}>
+            <Text style={styles.modernSettingsTitle}>Upgrade to Pro</Text>
+            <Text style={styles.modernSettingsDescription}>Unlimited generations</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
+          <View style={[styles.modernSettingsIcon, { backgroundColor: '#f3e8ff' }]}>
+            <Ionicons name="help-circle" size={20} color="#8b5cf6" />
+          </View>
+          <View style={styles.modernSettingsContent}>
+            <Text style={styles.modernSettingsTitle}>Help & Support</Text>
+            <Text style={styles.modernSettingsDescription}>Get assistance</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modernSettingsOption} activeOpacity={0.7}>
+          <View style={[styles.modernSettingsIcon, { backgroundColor: '#fef3c7' }]}>
+            <Ionicons name="information-circle" size={20} color="#d97706" />
+          </View>
+          <View style={styles.modernSettingsContent}>
+            <Text style={styles.modernSettingsTitle}>About</Text>
+            <Text style={styles.modernSettingsDescription}>App information</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
