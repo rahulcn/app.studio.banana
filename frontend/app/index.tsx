@@ -1202,8 +1202,8 @@ const FreeGenerateScreen: React.FC<{
 
         {/* Reference Image Section */}
         <View style={styles.directSection}>
-          <Text style={styles.directSectionTitle}>Reference Image</Text>
-          <Text style={styles.directSectionDescription}>
+          <Text style={[styles.directSectionTitle, { color: theme.colors.text }]}>Reference Image</Text>
+          <Text style={[styles.directSectionDescription, { color: theme.colors.textSecondary }]}>
             Upload or take a photo to use as reference for AI generation (required)
           </Text>
           
@@ -1223,32 +1223,32 @@ const FreeGenerateScreen: React.FC<{
                   <Ionicons name="close" size={16} color="white" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.modernSuccessText}>
+              <Text style={[styles.modernSuccessText, { color: theme.colors.success }]}>
                 ✨ Perfect! Your reference image is ready
               </Text>
             </View>
           ) : (
             <View style={styles.modernUploadOptionsContainer}>
               <TouchableOpacity 
-                style={styles.modernUploadOption}
+                style={[styles.modernUploadOption, { backgroundColor: theme.colors.card }]}
                 onPress={pickReferenceImage}
                 activeOpacity={0.7}
               >
                 <View style={[styles.modernUploadIcon, { backgroundColor: '#eff6ff' }]}>
                   <Ionicons name="images" size={24} color="#0ea5e9" />
                 </View>
-                <Text style={styles.modernUploadText}>Choose from Gallery</Text>
+                <Text style={[styles.modernUploadText, { color: theme.colors.text }]}>Choose from Gallery</Text>
               </TouchableOpacity>
 
               <TouchableOpacity 
-                style={styles.modernUploadOption}
+                style={[styles.modernUploadOption, { backgroundColor: theme.colors.card }]}
                 onPress={takeReferencePhoto}
                 activeOpacity={0.7}
               >
                 <View style={[styles.modernUploadIcon, { backgroundColor: '#f0fdf4' }]}>
                   <Ionicons name="camera" size={24} color="#10b981" />
                 </View>
-                <Text style={styles.modernUploadText}>Take Photo</Text>
+                <Text style={[styles.modernUploadText, { color: theme.colors.text }]}>Take Photo</Text>
               </TouchableOpacity>
             </View>
           )}
