@@ -743,13 +743,10 @@ const FreeGenerateScreen: React.FC<{
 
         {!freeTier.hasUsesLeft() && (
           <View style={styles.upgradePrompt}>
-            <Text style={styles.upgradeTitle}>Free tier exhausted!</Text>
+            <Text style={styles.upgradeTitle}>Free tier limit reached!</Text>
             <Text style={styles.upgradeText}>
-              Sign up to get unlimited generations and premium features
+              You've used all 100 free image generations. The app is currently in testing mode.
             </Text>
-            <TouchableOpacity style={styles.upgradeButton} onPress={onSignupPrompt}>
-              <Text style={styles.upgradeButtonText}>Unlock Unlimited</Text>
-            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
