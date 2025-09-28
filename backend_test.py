@@ -14,7 +14,7 @@ from io import BytesIO
 from PIL import Image
 
 # Configuration
-BACKEND_URL = "https://visual-prompt-9.preview.emergentagent.com/api"
+BACKEND_URL = "https://aicanvas-39.preview.emergentagent.com/api"
 TEST_RESULTS = []
 
 def log_test(test_name, status, details=""):
