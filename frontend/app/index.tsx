@@ -983,7 +983,7 @@ const FreeGenerateScreen: React.FC<{
 
       {/* Tab Content */}
       {activeTab === 'generate' && (
-        <ScrollView style={styles.modernScrollView}>
+        <ScrollView style={styles.cleanScrollView}>
           {/* Free Tier Card */}
           <View style={styles.modernCard}>
           <View style={styles.modernCardHeader}>
