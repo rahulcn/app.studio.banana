@@ -740,54 +740,54 @@ const FreeGenerateScreen: React.FC<{
         </View>
 
         {/* Reference Image Section */}
-        <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100">
-          <Text className="text-lg font-bold text-gray-900 mb-2">Reference Image</Text>
-          <Text className="text-sm text-gray-600 mb-4 leading-relaxed">
+        <View style={styles.modernCard}>
+          <Text style={styles.modernCardTitle}>Reference Image</Text>
+          <Text style={styles.modernCardDescription}>
             Upload or take a photo to use as reference for AI generation (required)
           </Text>
           
           {referenceImage ? (
-            <View className="items-center">
-              <View className="relative mb-3">
+            <View style={styles.modernReferenceImageContainer}>
+              <View style={styles.modernReferenceImageWrapper}>
                 <Image 
                   source={{ uri: `data:image/jpeg;base64,${referenceImage}` }}
-                  className="w-24 h-24 rounded-xl"
+                  style={styles.modernReferenceImage}
                   resizeMode="cover"
                 />
                 <TouchableOpacity 
-                  className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1"
+                  style={styles.modernRemoveImageButton}
                   onPress={removeReferenceImage}
                   activeOpacity={0.7}
                 >
                   <Ionicons name="close" size={16} color="white" />
                 </TouchableOpacity>
               </View>
-              <Text className="text-sm text-green-600 font-medium">
+              <Text style={styles.modernSuccessText}>
                 ✨ Perfect! Your reference image is ready
               </Text>
             </View>
           ) : (
-            <View className="flex-row space-x-3">
+            <View style={styles.modernUploadOptionsContainer}>
               <TouchableOpacity 
-                className="flex-1 bg-gray-50 rounded-xl p-4 items-center border-2 border-dashed border-gray-200"
+                style={styles.modernUploadOption}
                 onPress={pickReferenceImage}
                 activeOpacity={0.7}
               >
-                <View className="bg-blue-50 p-3 rounded-xl mb-2">
+                <View style={[styles.modernUploadIcon, { backgroundColor: '#eff6ff' }]}>
                   <Ionicons name="images" size={24} color="#0ea5e9" />
                 </View>
-                <Text className="text-sm font-medium text-gray-700">Choose from Gallery</Text>
+                <Text style={styles.modernUploadText}>Choose from Gallery</Text>
               </TouchableOpacity>
 
               <TouchableOpacity 
-                className="flex-1 bg-gray-50 rounded-xl p-4 items-center border-2 border-dashed border-gray-200"
+                style={styles.modernUploadOption}
                 onPress={takeReferencePhoto}
                 activeOpacity={0.7}
               >
-                <View className="bg-green-50 p-3 rounded-xl mb-2">
+                <View style={[styles.modernUploadIcon, { backgroundColor: '#f0fdf4' }]}>
                   <Ionicons name="camera" size={24} color="#10b981" />
                 </View>
-                <Text className="text-sm font-medium text-gray-700">Take Photo</Text>
+                <Text style={styles.modernUploadText}>Take Photo</Text>
               </TouchableOpacity>
             </View>
           )}
