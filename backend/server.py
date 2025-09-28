@@ -1,23 +1,25 @@
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+from typing import Optional
 import asyncio
 import os
 import base64
-from datetime import datetime, timedelta
+from datetime import datetime
 from dotenv import load_dotenv
-from supabase import create_client, Client
-from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+import pymongo
+from bson import ObjectId
+
+# Import emergent integrations for NanoBanana
+from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
 
 # Load environment variables
 load_dotenv()
 
 app = FastAPI(
-    title="AI Image Generator SaaS",
-    description="Hybrid Supabase + Stripe SaaS for AI image generation",
-    version="2.0.0"
+    title="AI Image Generator",
+    description="NanoBanana AI Image Generation API",
+    version="1.0.0"
 )
 
 # CORS middleware
@@ -29,13 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Supabase
-supabase_url = os.getenv("SUPABASE_URL")
-supabase_service_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-supabase: Client = create_client(supabase_url, supabase_service_key)
-
-# Initialize Stripe
-stripe_api_key = os.getenv("STRIPE_API_KEY")
+# MongoDB connection
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+client = pymongo.MongoClient(MONGO_URL)
+db = client.image_generator
+images_collection = db.images
 
 # Payment packages (server-side only - security)
 PAYMENT_PACKAGES = {
