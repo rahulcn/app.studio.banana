@@ -10,7 +10,7 @@ import base64
 from datetime import datetime
 
 # Backend URL from frontend env
-BACKEND_URL = "https://aicanvas-39.preview.emergentagent.com/api"
+BACKEND_URL = "https://promptgen-7.preview.emergentagent.com/api"
 
 def test_1_health_endpoint():
     """Test 1: Health endpoint to confirm backend is running"""

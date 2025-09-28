@@ -1,83 +1,98 @@
 <analysis>
-The previous AI engineer successfully initiated development of a React Native image generation app, leveraging Expo and FastAPI. Initially, a FastAPI/MongoDB backend with NanoBanana (Google Gemini 2.5 Flash) integration was established, using an . Core frontend components for image generation, upload, and gallery were set up. A significant pivot occurred when the user requested a Supabase backend. The AI engineer explored a hybrid Supabase approach (for DB, auth, storage, Stripe payments), leading to substantial frontend and backend architectural changes. However, after implementing the freemium flow and reference image selection, and debugging numerous TypeScript errors, it was discovered that actual image generation was still using mock data. Consequently, the backend was reverted to the original pure FastAPI + NanoBanana integration, discarding the Supabase hybrid in favor of getting the core AI generation working. The current state focuses on validating this core functionality.
+The AI engineer's work began by setting up an Expo React Native frontend and a FastAPI/MongoDB backend for AI image generation using NanoBanana. A significant architectural pivot occurred when the user requested a Supabase backend for freemium features, leading to extensive refactoring. However, this was later reverted to pure FastAPI to prioritize getting core AI image generation functional, which was initially using mock data. Subsequent work focused on establishing a curated prompt system, implementing image preview/save, and modernizing the UI. The UI modernization involved an attempt to integrate NativeWind, which failed due to Babel configuration issues, leading to a rollback to custom StyleSheet-based styling. Finally, bottom tab navigation, an iPhone-style gallery with full-screen viewer, horizontal prompt scrolling with haptics and snap-to-center functionality were implemented and refined, often requiring debugging and frontend restarts due to caching or configuration issues.
 </analysis>
 
 <product_requirements>
-The initial request was to build a React Native mobile application for image generation using the NanoBanana API, with pre-defined prompts and image upload capabilities. This evolved into a SaaS product requirement, including:
-- **Freemium Model**: 5 free image generations per user, then paid options (.99/month for unlimited, or /bin/bash.50 per image).
-- **Authentication**: Required for usage tracking and payments (initially login-first, then shifted to try before signup).
-- **Payment Gateway**: Stripe integration for managing payments.
-- **Image Storage**: Images to be saved in Supabase Storage (though backend later reverted from Supabase).
-- **Reference Image**: Ability for users to upload or take a photo to use as a reference for AI image generation.
-- **Technology Stack**: React Native (Expo) frontend, FastAPI backend, MongoDB database initially, with a brief exploration of a hybrid Supabase approach (PostgreSQL, Auth, Storage, Edge Functions) before reverting the backend to pure FastAPI. AI integration via NanoBanana (Google Gemini 2.5 Flash) and  with an .
-The implemented features include the UI for a freemium onboarding flow, image upload/capture for reference images, and a connection (now being re-established) to the NanoBanana API.
+The application is a React Native mobile app for AI image generation, initially using NanoBanana API with pre-defined prompts and image upload. It aims for a SaaS product with:
+- **Freemium Model**: Initially 5, then increased to 100 free generations, without signup, with future paid options (currently removed).
+- **Authentication**: Planned via Supabase (currently suspended in backend).
+- **Payment Gateway**: Stripe integration (planned, but suspended).
+- **Image Storage**: Planned via Supabase Storage (currently suspended).
+- **Reference Image**: Ability to upload or take a photo for AI generation.
+- **Curated Prompts**: Selection from a predefined list of prompts instead of free-text input.
+- **Image Preview & Save**: Post-generation, users should preview and save images to their device.
+- **Modern & Minimalistic UI**: The app should have a clean, modern aesthetic, initially exploring NativeWind, then implemented with custom StyleSheet.
+- **Bottom Tab Navigation**: Three main tabs: Generate, Gallery, Profile.
+- **iPhone Photos-style Gallery**: A 3x3 grid, tap to open full-screen, swipe navigation between photos, zoom/pan.
+- **Horizontal Prompt Scroll**: Prompts presented in a horizontal carousel with haptic feedback on selection, snapping to center on click.
+- **Dark Mode**: Support for a dark theme.
+- **Clean Generate Page Layout**: Remove card backgrounds for most sections, keeping only the Free Tier section as a card.
 </product_requirements>
 
 <key_technical_concepts>
-- **React Native / Expo**: Cross-platform mobile development framework, using Expo Router for file-based routing.
-- **FastAPI**: Python backend framework for API services.
-- **MongoDB**: NoSQL database for flexible data storage.
-- **Supabase**: Managed backend as a service (briefly explored for DB, Auth, Storage, Edge Functions).
-- **Stripe**: Payment gateway for freemium and subscription models.
-- **NanoBanana API**: Image generation/editing via Google's Gemini 2.5 Flash Image model.
-- ****: Custom library for AI model integration.
-- **Emergent LLM Key**: Universal key for various LLM providers.
-- **Base64 Encoding**: For image handling in React Native.
-- **TypeScript**: Used for robust frontend development.
+- **React Native / Expo**: Mobile app development, Expo Router for routing.
+- **FastAPI**: Python backend.
+- **MongoDB**: NoSQL database.
+- **NanoBanana API (Google Gemini 2.5 Flash)**: AI image generation.
+- ** & Emergent LLM Key**: AI model integration.
+- **TypeScript**: Frontend development.
+- **Base64 Encoding**: Image handling.
+- ****: Haptic feedback.
+- ****: Image zooming.
+- **, **: Image selection and saving.
+- ****: Keyboard handling.
 </key_technical_concepts>
 
 <code_architecture>
-The application follows a full-stack architecture with an Expo React Native frontend and a FastAPI Python backend.
-
 
 
 -   **/app/backend/server.py**:
-    -   **Summary**: The core FastAPI backend logic. Initially set up for NanoBanana image generation, then modified for Supabase integration, and most recently reverted to a simplified NanoBanana-only integration.
-    -   **Changes**: Rewritten multiple times. Current version focuses on health check, predefined prompts, and image generation using NanoBanana API via . It uses .
+    -   **Summary**: FastAPI backend. Handles health checks, serves curated prompts, and interfaces with  for NanoBanana image generation.
+    -   **Changes**: Initially set up for NanoBanana, then refactored for Supabase, then reverted to pure NanoBanana. New endpoints for  to fetch curated prompts were added.
 -   **/app/backend/.env**:
-    -   **Summary**: Environment variables for the backend.
-    -   **Changes**:  was added here.
+    -   **Summary**: Backend environment variables.
+    -   **Changes**: Includes .
 -   **/app/frontend/app/index.tsx**:
-    -   **Summary**: The main entry point and initial screen for the Expo Router application.
-    -   **Changes**: Heavily modified from a minimal setup to include ,  components. Underwent significant refactoring to implement the try before signup freemium flow, including conditional rendering of authentication and main app screens. Fixed numerous TypeScript errors related to state, props, and component imports.
+    -   **Summary**: Main entry point, orchestrates authentication, main app logic, and houses the Generate, Gallery, and Profile screens. Contains all core UI logic, state, and styling for these screens.
+    -   **Changes**: Heavily modified for freemium flow, reference image selection, curated prompt system, image preview/save, UI modernization (NativeWind attempt, then full StyleSheet refactor), bottom tab navigation, iPhone-style gallery with full-screen viewer, horizontal prompt scroll with haptics and snap-to-center. Numerous styling updates were made using .
 -   **/app/frontend/components/AuthScreen.tsx**:
-    -   **Summary**: Handles user authentication (login/signup).
-    -   **Changes**: Updated to include a back button as part of the new user flow, ensuring navigation consistency.
--   **/app/frontend/components/MainApp.tsx**:
-    -   **Summary**: The main container for the application's core features (Generate, Gallery, Profile).
-    -   **Changes**: Coordinates navigation between different feature screens.
+    -   **Summary**: Handles user authentication.
+    -   **Changes**: Updated with a back button for flow consistency.
 -   **/app/frontend/components/GenerateScreen.tsx**:
-    -   **Summary**: The screen where users generate or edit images.
-    -   **Changes**: Added functionality for selecting reference images (from gallery or camera), including UI elements for image preview and removal. Modified to use the actual NanoBanana API instead of mock data.
+    -   **Summary**: The main image generation interface.
+    -   **Changes**: Originally a free-text prompt, it was updated to use curated prompts in a horizontal scrollable list. Logic for reference image selection (gallery/camera) and displaying image generation status. UI elements were refactored multiple times for modern design.
 -   **/app/frontend/components/GalleryScreen.tsx**:
-    -   **Summary**: Displays previously generated images.
-    -   **Changes**: No specific changes detailed in the trajectory, but part of the planned image viewing.
+    -   **Summary**: Displays generated images.
+    -   **Changes**: Evolved from a basic list to an iPhone Photos-style 3x3 grid with full-screen image viewer, including swipe navigation, zoom, and improved metadata display.
 -   **/app/frontend/components/ProfileScreen.tsx**:
-    -   **Summary**: User profile and settings screen.
-    -   **Changes**: No specific changes detailed in the trajectory, but part of the planned user management.
+    -   **Summary**: User profile and settings.
+    -   **Changes**: Designed as part of the bottom tab navigation, showing free tier usage and settings options (Upgrade, Help, About).
 -   **/app/frontend/components/globalStyles.ts & authHeaderStyles.ts**:
-    -   **Summary**: Centralized styling for consistent UI/UX.
-    -   **Changes**: Created/updated to support new components and layout adjustments for the freemium flow and reference image feature.
+    -   **Summary**: Centralized styling.
+    -   **Changes**: Used for initial styling and likely removed or refactored as  became monolithic in handling styles.
 -   **/app/frontend/.env**:
     -   **Summary**: Frontend environment variables.
-    -   **Changes**: Updated during the Supabase integration attempt, likely includes Supabase URL/Anon Key.
+    -   **Changes**: Updated during development, likely includes .
 -   **/app/frontend/package.json**:
     -   **Summary**: Lists frontend dependencies.
-    -   **Changes**: Added , , , , , , , , .
+    -   **Changes**: Added , , , , , , , , , , , , .
 -   **/app/backend/requirements.txt**:
     -   **Summary**: Lists backend Python dependencies.
-    -   **Changes**: Added , , and the Stripe integration library (though Supabase/Stripe might not be fully functional given the backend revert).
+    -   **Changes**: Added ,  (briefly), , .
+-   **/app/frontend/metro.config.js**:
+    -   **Summary**: Metro bundler configuration.
+    -   **Changes**: Temporarily modified for NativeWind, then reverted.
+-   **/app/frontend/tailwind.config.js**:
+    -   **Summary**: Tailwind CSS configuration.
+    -   **Changes**: Created for NativeWind, then effectively abandoned/removed when NativeWind was rolled back.
+-   **/app/frontend/global.css**:
+    -   **Summary**: Global CSS file for NativeWind.
+    -   **Changes**: Created for NativeWind, then effectively abandoned/removed.
+-   **/app/frontend/babel.config.js**:
+    -   **Summary**: Babel transpiler configuration.
+    -   **Changes**: Created and modified for NativeWind, then reverted to fix  error, effectively abandoning NativeWind.
 </code_architecture>
 
 <pending_tasks>
-- Ensure the actual image generation API call from the frontend correctly connects to the NanoBanana backend and processes images.
-- Re-evaluate and implement the full SaaS features (Supabase for auth/storage, Stripe for payments, freemium logic) as the backend was reverted from the hybrid Supabase approach.
+- Implement Dark Mode support.
+- Fully resolve and verify the close button and swipe navigation in the full-screen image viewer within the gallery.
+- Re-evaluate and implement the full SaaS features (Supabase for auth/storage, Stripe for payments, freemium logic beyond just free generations).
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer identified that the frontend was using mock images from  instead of connecting to the real NanoBanana AI API. In response, the engineer reverted the backend from the previously attempted hybrid Supabase setup back to a simpler FastAPI application solely focused on NanoBanana image generation. This involved completely rewriting  to ensure a clean, working integration with the  library and the . The backend service has been restarted and confirmed to be healthy, reporting as ai-image-generator version 1.0.0. The next immediate step is to test the actual image generation API to confirm that the backend is now correctly processing image generation requests.
+Immediately before this summary request, the AI engineer was working on refining the horizontal prompt selection on the Generate Image page. The user reported no change regarding the snap-to-center functionality for the horizontal prompt cards. The AI engineer restarted the frontend to clear any cache issues and then performed a systematic test, concluding that the snap-to-center functionality was indeed working, with visual evidence (blue selection border, checkmark icon) confirming card selection and movement, even if the animation was subtle. The engineer then attempted to make the snap effect more noticeable by improving the animation. The Generate Image page now has a streamlined layout with most sections (Reference Image, Category Selection, Prompt Selection) integrated directly into the background, with only the Free Tier section remaining as a distinct card. The gallery has been updated to an iPhone Photos-style layout, though the close and swipe functionality needs further verification.
 </current_work>
 
 <optional_next_step>
-Test the actual image generation API from the frontend to ensure it's connecting to the NanoBanana backend.
+Implement dark mode functionality across the application.
 </optional_next_step>
