@@ -711,27 +711,29 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      <ScrollView className="flex-1 px-6">
+      <ScrollView style={styles.modernScrollView}>
         {/* Free Tier Card */}
-        <View className="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-gray-100 mt-4">
-          <View className="flex-row items-center mb-4">
-            <View className="bg-blue-50 p-2 rounded-xl mr-3">
+        <View style={styles.modernCard}>
+          <View style={styles.modernCardHeader}>
+            <View style={styles.modernCardIcon}>
               <Ionicons name="flash" size={20} color="#0ea5e9" />
             </View>
-            <Text className="text-lg font-bold text-gray-900">Free Tier</Text>
+            <Text style={styles.modernCardTitle}>Free Tier</Text>
           </View>
           
-          <View className="mb-3">
-            <View className="flex-row justify-between items-center mb-2">
-              <Text className="text-sm text-gray-600">Generations remaining</Text>
-              <Text className="text-sm font-semibold text-gray-900">
+          <View style={styles.modernProgressSection}>
+            <View style={styles.modernProgressHeader}>
+              <Text style={styles.modernProgressLabel}>Generations remaining</Text>
+              <Text style={styles.modernProgressValue}>
                 {freeTier.remainingUses} / {freeTier.FREE_LIMIT}
               </Text>
             </View>
-            <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
+            <View style={styles.modernProgressBarBackground}>
               <View 
-                className="bg-blue-500 h-full rounded-full"
-                style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
+                style={[
+                  styles.modernProgressBarFill,
+                  { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
+                ]}
               />
             </View>
           </View>
