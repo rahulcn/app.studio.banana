@@ -293,7 +293,10 @@ const PhotoViewerModal: React.FC<{
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const newIndex = Math.round(offsetX / screenWidth);
-    setCurrentIndex(newIndex);
+    console.log(`📱 Scroll detected: offsetX=${offsetX}, newIndex=${newIndex}, currentIndex=${currentIndex}`);
+    if (newIndex !== currentIndex && newIndex >= 0 && newIndex < images.length) {
+      setCurrentIndex(newIndex);
+    }
   };
 
   return (
