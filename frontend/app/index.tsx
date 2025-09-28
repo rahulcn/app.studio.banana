@@ -3279,6 +3279,7 @@ const styles = StyleSheet.create({
   // Horizontal Prompt Styles
   horizontalPromptScrollView: {
     marginTop: 16,
+    height: 240, // Fixed height to ensure visibility
   },
   horizontalPromptContainer: {
     paddingHorizontal: 16,
