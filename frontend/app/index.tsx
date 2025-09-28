@@ -236,19 +236,66 @@ const FreeGenerateScreen: React.FC<{
 
     setGenerating(true);
     
-    // Simulate generation
-    setTimeout(async () => {
-      // Mock generated image
-      const mockImage = `https://picsum.photos/400/400?random=${Date.now()}`;
-      setGeneratedImage(mockImage);
+    try {
+      // Call the actual backend API for real AI generation
+      const requestBody = {
+        prompt: prompt.trim(),
+        image_data: referenceImage, // Include reference image if selected
+        prompt_category: selectedStyle,
+      };
+
+      console.log('🎨 Generating image with NanoBanana API...');
+      const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/generate-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}: Failed to generate image`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Image generated successfully');
+
+      // Set the generated image (base64 from backend)
+      setGeneratedImage(`data:image/png;base64,${result.generated_image}`);
+      
+      // Update usage count
       await freeTier.incrementUsage();
-      setGenerating(false);
       
       Alert.alert(
         'Success!', 
-        `Image generated! You have ${freeTier.remainingUses - 1} free generations left.`
+        `AI image generated! You have ${freeTier.remainingUses - 1} free generations remaining.`
       );
-    }, 3000);
+      
+    } catch (error) {
+      console.error('❌ Image generation failed:', error);
+      
+      let errorMessage = 'Failed to generate image. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      Alert.alert('Generation Failed', errorMessage);
+      
+      // Fallback to demo image if API fails (for demonstration)
+      console.log('🔄 Using fallback demo image...');
+      const demoImage = `https://picsum.photos/400/400?random=${Date.now()}`;
+      setGeneratedImage(demoImage);
+      await freeTier.incrementUsage();
+      
+      Alert.alert(
+        'Demo Mode', 
+        `Showing demo image (API issue). You have ${freeTier.remainingUses - 1} free generations left.`
+      );
+      
+    } finally {
+      setGenerating(false);
+    }
   };
 
   if (generatedImage) {
