@@ -739,8 +739,14 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
   };
 
   const showUpgradeOptions = () => {
+    console.log('🚨 showUpgradeOptions called!');
+    console.log('📦 Available payment packages:', paymentPackages);
+    
     const monthlyPackage = paymentPackages.find(p => p.id === 'pro_monthly');
     const yearlyPackage = paymentPackages.find(p => p.id === 'pro_yearly');
+    
+    console.log('💳 Monthly package:', monthlyPackage);
+    console.log('💳 Yearly package:', yearlyPackage);
     
     Alert.alert(
       'Upgrade to Pro',
@@ -749,11 +755,17 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
         { text: 'Cancel', style: 'cancel' },
         ...(monthlyPackage ? [{
           text: `Monthly $${monthlyPackage.amount}`,
-          onPress: () => handleUpgradeToPro('pro_monthly')
+          onPress: () => {
+            console.log('🔥 Monthly plan selected');
+            handleUpgradeToPro('pro_monthly');
+          }
         }] : []),
         ...(yearlyPackage ? [{
           text: `Yearly $${yearlyPackage.amount} (Save 17%)`,
-          onPress: () => handleUpgradeToPro('pro_yearly')
+          onPress: () => {
+            console.log('🔥 Yearly plan selected');
+            handleUpgradeToPro('pro_yearly');
+          }
         }] : []),
       ]
     );
