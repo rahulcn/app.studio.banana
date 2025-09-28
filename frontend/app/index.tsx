@@ -207,6 +207,62 @@ const FreeGenerateScreen: React.FC<{
     ? curatedPrompts 
     : curatedPrompts.filter(prompt => prompt.category === selectedCategory);
 
+  // Save image to device gallery
+  const saveImageToGallery = async () => {
+    if (!generatedImage) return;
+    
+    setSavingImage(true);
+    
+    try {
+      // Request media library permissions
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'We need access to your photo library to save images.');
+        return;
+      }
+
+      // Convert base64 to file
+      const base64Data = generatedImage.replace('data:image/png;base64,', '');
+      const filename = `ai_generated_${Date.now()}.png`;
+      const fileUri = `${FileSystem.documentDirectory}${filename}`;
+      
+      // Write base64 data to file
+      await FileSystem.writeAsStringAsync(fileUri, base64Data, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      // Save to photo library
+      const asset = await MediaLibrary.createAssetAsync(fileUri);
+      
+      // Get or create AI Images album
+      let album = await MediaLibrary.getAlbumAsync('AI Generated Images');
+      if (!album) {
+        album = await MediaLibrary.createAlbumAsync('AI Generated Images', asset, false);
+      } else {
+        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+      }
+
+      // Clean up temporary file
+      await FileSystem.deleteAsync(fileUri);
+
+      Alert.alert(
+        'Image Saved! 📸',
+        'Your AI-generated image has been saved to your photo gallery in the "AI Generated Images" album.',
+        [{ text: 'Great!', style: 'default' }]
+      );
+
+    } catch (error) {
+      console.error('Error saving image:', error);
+      Alert.alert(
+        'Save Failed',
+        'Unable to save image to gallery. Please try again.',
+        [{ text: 'OK', style: 'default' }]
+      );
+    } finally {
+      setSavingImage(false);
+    }
+  };
+
   const pickReferenceImage = async () => {
     try {
       // Request permission to access media library
