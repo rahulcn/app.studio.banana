@@ -947,25 +947,9 @@ const FreeGenerateScreen: React.FC<{
   };
 
   const removeReferenceImage = () => {
-    Alert.alert(
-      'Remove Reference Image',
-      'Are you sure you want to remove the reference image?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Remove', 
-          style: 'destructive',
-          onPress: () => {
-            console.log('🗑️ Removing reference image');
-            setReferenceImage(null);
-            // Show confirmation that image was removed
-            setTimeout(() => {
-              Alert.alert('Success', 'Reference image removed successfully');
-            }, 100);
-          }
-        },
-      ]
-    );
+    console.log('🔥 removeReferenceImage function called!');
+    setReferenceImage(null);
+    Alert.alert('Success', 'Reference image removed successfully');
   };
 
   const handleGenerate = async () => {
