@@ -268,13 +268,13 @@ const ProfileModal: React.FC<{
 }> = ({ visible, onClose, freeTier }) => {
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
-      <View className="flex-1 bg-black/50 justify-end">
-        <View className="bg-white rounded-t-3xl p-6 pb-8">
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
           {/* Header */}
-          <View className="flex-row items-center justify-between mb-6">
-            <Text className="text-xl font-bold text-gray-900">Profile</Text>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Profile</Text>
             <TouchableOpacity 
-              className="bg-gray-100 p-2 rounded-xl"
+              style={styles.modalCloseButton}
               onPress={onClose}
               activeOpacity={0.7}
             >
@@ -283,63 +283,65 @@ const ProfileModal: React.FC<{
           </View>
 
           {/* Usage Stats */}
-          <View className="bg-blue-50 rounded-2xl p-4 mb-6">
-            <View className="flex-row items-center mb-3">
-              <View className="bg-blue-100 p-2 rounded-xl mr-3">
+          <View style={styles.usageStatsContainer}>
+            <View style={styles.usageStatsHeader}>
+              <View style={styles.usageStatsIcon}>
                 <Ionicons name="flash" size={20} color="#0ea5e9" />
               </View>
-              <View className="flex-1">
-                <Text className="text-lg font-semibold text-gray-900">Free Tier</Text>
-                <Text className="text-sm text-gray-600">Anonymous user</Text>
+              <View style={styles.usageStatsContent}>
+                <Text style={styles.usageStatsTier}>Free Tier</Text>
+                <Text style={styles.usageStatsUser}>Anonymous user</Text>
               </View>
             </View>
             
-            <View className="mb-3">
-              <View className="flex-row justify-between items-center mb-2">
-                <Text className="text-sm text-gray-600">Generations used</Text>
-                <Text className="text-sm font-semibold text-gray-900">
+            <View style={styles.usageProgress}>
+              <View style={styles.usageProgressHeader}>
+                <Text style={styles.usageProgressLabel}>Generations used</Text>
+                <Text style={styles.usageProgressValue}>
                   {freeTier.usageCount} / {freeTier.FREE_LIMIT}
                 </Text>
               </View>
-              <View className="bg-gray-200 h-2 rounded-full overflow-hidden">
+              <View style={styles.usageProgressBar}>
                 <View 
-                  className="bg-blue-500 h-full rounded-full"
-                  style={{ width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }}
+                  style={[
+                    styles.usageProgressFill,
+                    { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
+                  ]}
                 />
               </View>
             </View>
             
-            <Text className="text-xs text-gray-500">
+            <Text style={styles.usageRemainingText}>
               {freeTier.remainingUses} generations remaining
             </Text>
           </View>
 
           {/* Quick Actions */}
-          <View className="space-y-3">
+          <View>
             <TouchableOpacity 
-              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+              style={styles.actionButton}
               activeOpacity={0.7}
             >
-              <View className="bg-green-100 p-2 rounded-xl mr-3">
+              <View style={[styles.actionIcon, { backgroundColor: '#dcfce7' }]}>
                 <Ionicons name="star" size={20} color="#10b981" />
               </View>
-              <View className="flex-1">
-                <Text className="font-semibold text-gray-900">Upgrade to Pro</Text>
-                <Text className="text-sm text-gray-600">Unlimited generations</Text>
+              <View style={styles.actionContent}>
+                <Text style={styles.actionTitle}>Upgrade to Pro</Text>
+                <Text style={styles.actionDescription}>Unlimited generations</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
             </TouchableOpacity>
 
             <TouchableOpacity 
-              className="bg-gray-50 rounded-xl p-4 flex-row items-center"
+              style={styles.actionButton}
               activeOpacity={0.7}
             >
-              <View className="bg-purple-100 p-2 rounded-xl mr-3">
+              <View style={[styles.actionIcon, { backgroundColor: '#f3e8ff' }]}>
                 <Ionicons name="help-circle" size={20} color="#8b5cf6" />
               </View>
-              <View className="flex-1">
-                <Text className="font-semibold text-gray-900">Help & Support</Text>
-                <Text className="text-sm text-gray-600">Get assistance</Text>
+              <View style={styles.actionContent}>
+                <Text style={styles.actionTitle}>Help & Support</Text>
+                <Text style={styles.actionDescription}>Get assistance</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
             </TouchableOpacity>
