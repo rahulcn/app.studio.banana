@@ -183,6 +183,30 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
   );
 };
 
+// Dark Mode Context
+interface DarkModeContextType {
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
+  colors: {
+    background: string;
+    surface: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    primary: string;
+  };
+}
+
+const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
+
+const useDarkMode = () => {
+  const context = useContext(DarkModeContext);
+  if (!context) {
+    throw new Error('useDarkMode must be used within a DarkModeProvider');
+  }
+  return context;
+};
+
 // Curated prompt interface
 interface CuratedPrompt {
   id: number;
