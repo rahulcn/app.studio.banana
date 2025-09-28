@@ -1746,17 +1746,18 @@ const HomeScreen: React.FC<{
 };
 
 // Main App Component
-export default function App() {
+function App() {
   const { user, loading, signIn, signOut } = useAuth();
   const freeTier = useFreeTier();
   const [appState, setAppState] = useState('welcome'); // welcome, generate, signup_prompt, authenticated
+  const { theme, isDarkMode } = useTheme();
 
   if (loading || freeTier.isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>Loading...</Text>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Loading...</Text>
         </View>
       </SafeAreaView>
     );
@@ -1805,10 +1806,19 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar style={isDarkMode ? "light" : "dark"} />
       {renderCurrentView()}
     </View>
+  );
+}
+
+// App wrapped with Theme Provider
+export default function AppWithTheme() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   );
 }
 
