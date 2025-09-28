@@ -1004,10 +1004,8 @@ const FreeGenerateScreen: React.FC<{
     }
   }, [selectedCategory]);
 
-  // Filter prompts by category
-  const filteredPrompts = selectedCategory === 'All' 
-    ? curatedPrompts 
-    : curatedPrompts.filter(prompt => prompt.category === selectedCategory);
+  // Since we're fetching filtered prompts from the backend, we don't need client-side filtering
+  const filteredPrompts = curatedPrompts;
 
   // Snap card to center function
   const snapCardToCenter = (index: number) => {
