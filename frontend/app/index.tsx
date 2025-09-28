@@ -296,12 +296,12 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
 
           {/* CTA Section */}
           <View style={styles.modernCtaContainer}>
-            <Text style={styles.modernCtaText}>
+            <Text style={[styles.modernCtaText, { color: theme.colors.success }]}>
               ✨ Start with 100 free image generations
             </Text>
 
             <TouchableOpacity 
-              style={styles.modernCtaButton}
+              style={[styles.modernCtaButton, { backgroundColor: theme.colors.primary }]}
               onPress={onGetStarted}
               activeOpacity={0.9}
             >
