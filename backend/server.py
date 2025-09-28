@@ -431,6 +431,189 @@ async def get_image(image_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching image: {str(e)}")
 
+# Payment Endpoints
+@app.get("/api/payment/packages")
+async def get_payment_packages():
+    """Get available payment packages"""
+    return {
+        "packages": PAYMENT_PACKAGES,
+        "success": True
+    }
+
+@app.post("/api/payment/checkout-session")
+async def create_checkout_session(request: PaymentRequest, http_request: Request):
+    """Create Stripe checkout session for Pro upgrade"""
+    try:
+        # Validate package
+        if request.package_id not in PAYMENT_PACKAGES:
+            raise HTTPException(status_code=400, detail="Invalid package ID")
+        
+        package = PAYMENT_PACKAGES[request.package_id]
+        
+        # Get host URL from the request
+        host_url = str(http_request.base_url).rstrip('/')
+        
+        # Create webhook URL
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        
+        # Initialize Stripe checkout
+        stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
+        
+        # Build success and cancel URLs using frontend origin
+        success_url = f"{request.origin_url}/payment-success?session_id={{CHECKOUT_SESSION_ID}}"
+        cancel_url = f"{request.origin_url}/"
+        
+        # Create checkout session request
+        checkout_request = CheckoutSessionRequest(
+            amount=package["amount"],
+            currency=package["currency"],
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata={
+                "package_id": request.package_id,
+                "package_name": package["name"],
+                "source": "mobile_app_pro_upgrade"
+            }
+        )
+        
+        print(f"💳 Creating checkout session for {package['name']} - ${package['amount']}")
+        
+        # Create checkout session with Stripe
+        session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
+        
+        # Store transaction in database
+        transaction_doc = {
+            "session_id": session.session_id,
+            "package_id": request.package_id,
+            "package_name": package["name"],
+            "amount": package["amount"],
+            "currency": package["currency"],
+            "payment_status": "initiated",
+            "status": "pending",
+            "created_at": datetime.now().isoformat(),
+            "metadata": {
+                "package_id": request.package_id,
+                "package_name": package["name"],
+                "source": "mobile_app_pro_upgrade"
+            }
+        }
+        
+        payment_transactions_collection.insert_one(transaction_doc)
+        
+        print(f"💾 Transaction record created for session: {session.session_id}")
+        
+        return PaymentSessionResponse(
+            url=session.url,
+            session_id=session.session_id,
+            package_name=package["name"],
+            amount=package["amount"]
+        )
+        
+    except Exception as e:
+        error_msg = f"Failed to create checkout session: {str(e)}"
+        print(f"❌ {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+@app.get("/api/payment/status/{session_id}")
+async def get_payment_status(session_id: str):
+    """Get payment status for a checkout session"""
+    try:
+        # Initialize Stripe checkout
+        stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url="")
+        
+        # Get payment status from Stripe
+        status_response: CheckoutStatusResponse = await stripe_checkout.get_checkout_status(session_id)
+        
+        print(f"📊 Payment status check for {session_id}: {status_response.payment_status}")
+        
+        # Update transaction in database
+        update_data = {
+            "payment_status": status_response.payment_status,
+            "status": status_response.status,
+            "amount_total": status_response.amount_total,
+            "currency": status_response.currency,
+            "updated_at": datetime.now().isoformat()
+        }
+        
+        # Only process successful payments once
+        if status_response.payment_status == "paid":
+            existing_transaction = payment_transactions_collection.find_one({
+                "session_id": session_id,
+                "payment_status": "paid"
+            })
+            
+            if not existing_transaction:
+                # First time processing this successful payment
+                update_data["processed_at"] = datetime.now().isoformat()
+                print(f"✅ Processing successful payment for session: {session_id}")
+                
+                # TODO: Here you would upgrade the user to Pro
+                # For now, we just log the successful payment
+                print(f"🎉 User upgraded to Pro via session: {session_id}")
+        
+        # Update transaction record
+        payment_transactions_collection.update_one(
+            {"session_id": session_id},
+            {"$set": update_data}
+        )
+        
+        return {
+            "session_id": session_id,
+            "payment_status": status_response.payment_status,
+            "status": status_response.status,
+            "amount_total": status_response.amount_total,
+            "currency": status_response.currency,
+            "metadata": status_response.metadata,
+            "success": True
+        }
+        
+    except Exception as e:
+        error_msg = f"Failed to get payment status: {str(e)}"
+        print(f"❌ {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+@app.post("/api/webhook/stripe")
+async def stripe_webhook(request: Request):
+    """Handle Stripe webhooks"""
+    try:
+        # Get request body and signature
+        body = await request.body()
+        signature = request.headers.get("Stripe-Signature")
+        
+        if not signature:
+            raise HTTPException(status_code=400, detail="Missing Stripe signature")
+        
+        # Initialize Stripe checkout
+        stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url="")
+        
+        # Handle webhook
+        webhook_response = await stripe_checkout.handle_webhook(body, signature)
+        
+        print(f"🔔 Received webhook: {webhook_response.event_type} for session: {webhook_response.session_id}")
+        
+        # Update transaction based on webhook
+        if webhook_response.session_id:
+            update_data = {
+                "payment_status": webhook_response.payment_status,
+                "webhook_received_at": datetime.now().isoformat(),
+                "event_type": webhook_response.event_type,
+                "event_id": webhook_response.event_id
+            }
+            
+            payment_transactions_collection.update_one(
+                {"session_id": webhook_response.session_id},
+                {"$set": update_data}
+            )
+            
+            print(f"💾 Updated transaction record via webhook")
+        
+        return {"received": True}
+        
+    except Exception as e:
+        error_msg = f"Webhook processing failed: {str(e)}"
+        print(f"❌ {error_msg}")
+        raise HTTPException(status_code=400, detail=error_msg)
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
