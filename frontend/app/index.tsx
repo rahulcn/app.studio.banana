@@ -673,6 +673,25 @@ const FreeGenerateScreen: React.FC<{
     ? curatedPrompts 
     : curatedPrompts.filter(prompt => prompt.category === selectedCategory);
 
+  // Snap card to center function
+  const snapCardToCenter = (index: number) => {
+    const cardWidth = 280; // Width of each card
+    const gap = 16; // Gap between cards
+    const containerPadding = 16; // Padding on sides
+    const screenWidth = Dimensions.get('window').width;
+    
+    // Calculate the x position to center the selected card
+    const cardPosition = index * (cardWidth + gap) + containerPadding;
+    const centerOffset = (screenWidth - cardWidth) / 2;
+    const scrollToX = cardPosition - centerOffset;
+    
+    // Scroll to center the selected card
+    horizontalScrollRef.current?.scrollTo({
+      x: Math.max(0, scrollToX),
+      animated: true
+    });
+  };
+
   // Save image to device gallery
   const saveImageToGallery = async () => {
     if (!generatedImage) return;
