@@ -265,8 +265,13 @@ const FreeGenerateScreen: React.FC<{
   };
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) {
-      Alert.alert('Error', 'Please describe what you want to create');
+    if (!selectedPromptId) {
+      Alert.alert('Error', 'Please select a prompt style');
+      return;
+    }
+
+    if (!referenceImage) {
+      Alert.alert('Error', 'Please upload or take a reference photo first. All curated prompts require a reference image.');
       return;
     }
 
@@ -278,15 +283,18 @@ const FreeGenerateScreen: React.FC<{
     setGenerating(true);
     
     try {
-      // Call the actual backend API for real AI generation
+      const selectedPrompt = curatedPrompts.find(p => p.id === selectedPromptId);
+      if (!selectedPrompt) {
+        throw new Error('Selected prompt not found');
+      }
+
       const requestBody = {
-        prompt: prompt.trim(),
-        image_data: referenceImage, // Include reference image if selected
-        prompt_category: selectedStyle,
+        prompt_id: selectedPromptId,
+        image_data: referenceImage,
       };
 
-      console.log('🎨 Generating image with NanoBanana API...');
-      const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/generate-image`, {
+      console.log(`🎨 Generating image with curated prompt: ${selectedPrompt.title}`);
+      const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001'}/api/generate-with-prompt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -300,7 +308,7 @@ const FreeGenerateScreen: React.FC<{
       }
 
       const result = await response.json();
-      console.log('✅ Image generated successfully');
+      console.log('✅ Curated image generated successfully');
 
       // Set the generated image (base64 from backend)
       setGeneratedImage(`data:image/png;base64,${result.generated_image}`);
@@ -310,7 +318,7 @@ const FreeGenerateScreen: React.FC<{
       
       Alert.alert(
         'Success!', 
-        `AI image generated! You have ${freeTier.remainingUses - 1} free generations remaining.`
+        `AI image generated with "${selectedPrompt.title}" style! You have ${freeTier.remainingUses - 1} free generations remaining.`
       );
       
     } catch (error) {
@@ -322,17 +330,6 @@ const FreeGenerateScreen: React.FC<{
       }
       
       Alert.alert('Generation Failed', errorMessage);
-      
-      // Fallback to demo image if API fails (for demonstration)
-      console.log('🔄 Using fallback demo image...');
-      const demoImage = `https://picsum.photos/400/400?random=${Date.now()}`;
-      setGeneratedImage(demoImage);
-      await freeTier.incrementUsage();
-      
-      Alert.alert(
-        'Demo Mode', 
-        `Showing demo image (API issue). You have ${freeTier.remainingUses - 1} free generations left.`
-      );
       
     } finally {
       setGenerating(false);
