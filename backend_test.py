@@ -40,37 +40,24 @@ class CuratedPromptTester:
         self.test_results.append(result)
         print(result)
 
-def create_test_image_base64():
-    """Create a simple test image in base64 format"""
-    try:
-        # Create a simple 100x100 red square image
-        img = Image.new('RGB', (100, 100), color='red')
-        buffer = BytesIO()
-        img.save(buffer, format='PNG')
-        img_data = buffer.getvalue()
-        return base64.b64encode(img_data).decode('utf-8')
-    except Exception as e:
-        print(f"Error creating test image: {e}")
-        return None
-
-def test_health_check():
-    """Test health check endpoint"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/health", timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            if data.get("status") == "healthy":
-                log_test("Health Check", "PASS", f"Service: {data.get('service', 'N/A')}")
-                return True
+    def test_health_endpoint(self):
+        """Test basic health endpoint"""
+        try:
+            response = requests.get(f"{self.backend_url}/health", timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("status") == "healthy":
+                    self.log_test("Health Check", True, "Backend is running")
+                    return True
+                else:
+                    self.log_test("Health Check", False, f"Unexpected status: {data}")
+                    return False
             else:
-                log_test("Health Check", "FAIL", f"Unexpected response: {data}")
+                self.log_test("Health Check", False, f"HTTP {response.status_code}")
                 return False
-        else:
-            log_test("Health Check", "FAIL", f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Health Check", False, f"Connection error: {str(e)}")
             return False
-    except Exception as e:
-        log_test("Health Check", "FAIL", f"Exception: {str(e)}")
-        return False
 
 def test_get_prompts():
     """Test fetching predefined prompt categories"""
