@@ -481,10 +481,29 @@ const FreeGenerateScreen: React.FC<{
         </View>
 
         <ScrollView style={styles.content} contentContainerStyle={styles.resultContainer}>
-          <Image
-            source={{ uri: generatedImage }}
-            style={styles.generatedImage}
-            resizeMode="cover"
+          <TouchableOpacity 
+            style={styles.imagePreviewContainer}
+            onPress={() => setShowFullscreenPreview(true)}
+            activeOpacity={0.8}
+          >
+            <Image
+              source={{ uri: generatedImage }}
+              style={styles.generatedImage}
+              resizeMode="cover"
+            />
+            <View style={styles.imageOverlay}>
+              <Ionicons name="expand" size={24} color="white" />
+              <Text style={styles.imageOverlayText}>Tap to view full screen</Text>
+            </View>
+          </TouchableOpacity>
+          
+          {/* Fullscreen Preview Modal */}
+          <FullscreenImagePreview
+            visible={showFullscreenPreview}
+            imageUri={generatedImage}
+            onClose={() => setShowFullscreenPreview(false)}
+            onSave={saveImageToGallery}
+            saving={savingImage}
           />
           
           <View style={styles.resultInfo}>
