@@ -1153,9 +1153,16 @@ const FreeGenerateScreen: React.FC<{
                     ]}
                     onPress={() => {
                       console.log(`🎯 Selected prompt: ${prompt.title}`);
+                      console.log(`📍 Snapping card ${index + 1} to center`);
+                      
                       // Haptic feedback on selection
                       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      
+                      // Set selected prompt
                       setSelectedPromptId(prompt.id);
+                      
+                      // Snap card to center with smooth animation
+                      snapCardToCenter(index);
                     }}
                     activeOpacity={0.8}
                   >
