@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Backend API Testing Suite for AI Image Generator
-Tests all backend endpoints after dark mode implementation
-Focus: Health check, 12 curated prompts, MongoDB connection, NanoBanana API integration
+Tests all backend endpoints including new Stripe payment integration
+Focus: Health check, curated prompts, MongoDB connection, NanoBanana API integration, and Stripe payments
 """
 
 import requests
