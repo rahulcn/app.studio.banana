@@ -35,7 +35,7 @@ const useAuth = () => {
 };
 
 // Auth Screen Component
-const AuthScreen = ({ onSignIn }) => {
+const AuthScreen = ({ onSignIn, onBack }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -52,6 +52,13 @@ const AuthScreen = ({ onSignIn }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.authHeader}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <Text style={styles.authHeaderTitle}>Create Account</Text>
+      </View>
+      
       <ScrollView contentContainerStyle={styles.authContainer}>
         <View style={styles.header}>
           <View style={styles.iconContainer}>
