@@ -2270,4 +2270,119 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 12,
   },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    paddingBottom: 32,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  modalCloseButton: {
+    backgroundColor: '#f1f5f9',
+    padding: 8,
+    borderRadius: 12,
+  },
+  usageStatsContainer: {
+    backgroundColor: '#eff6ff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+  },
+  usageStatsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  usageStatsIcon: {
+    backgroundColor: '#dbeafe',
+    padding: 8,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  usageStatsContent: {
+    flex: 1,
+  },
+  usageStatsTier: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  usageStatsUser: {
+    fontSize: 14,
+    color: '#64748b',
+  },
+  usageProgress: {
+    marginBottom: 12,
+  },
+  usageProgressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  usageProgressLabel: {
+    fontSize: 14,
+    color: '#64748b',
+  },
+  usageProgressValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  usageProgressBar: {
+    backgroundColor: '#e2e8f0',
+    height: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  usageProgressFill: {
+    backgroundColor: '#3b82f6',
+    height: '100%',
+    borderRadius: 4,
+  },
+  usageRemainingText: {
+    fontSize: 12,
+    color: '#64748b',
+  },
+  actionButton: {
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  actionIcon: {
+    padding: 8,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  actionContent: {
+    flex: 1,
+  },
+  actionTitle: {
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  actionDescription: {
+    fontSize: 14,
+    color: '#64748b',
+  },
 });
