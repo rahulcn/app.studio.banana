@@ -557,16 +557,6 @@ const FreeGenerateScreen: React.FC<{
               <Ionicons name="add" size={20} color="#007AFF" />
               <Text style={styles.secondaryButtonText}>Generate Another</Text>
             </TouchableOpacity>
-            
-            {freeTier.remainingUses === 0 && (
-              <TouchableOpacity
-                style={styles.primaryButton}
-                onPress={onSignupPrompt}
-              >
-                <Ionicons name="star" size={20} color="white" />
-                <Text style={styles.primaryButtonText}>Upgrade Now</Text>
-              </TouchableOpacity>
-            )}
           </View>
         </ScrollView>
       </SafeAreaView>
