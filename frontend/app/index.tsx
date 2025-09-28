@@ -145,7 +145,7 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
         </TouchableOpacity>
 
         <Text style={styles.freeTrialText}>
-          ✨ Start with 5 free image generations
+          ✨ Start with 100 free image generations
         </Text>
       </ScrollView>
     </SafeAreaView>
