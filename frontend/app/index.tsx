@@ -3066,10 +3066,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   photoViewerCloseButton: {
-    position: 'absolute',
-    left: 20,
-    top: 50,
-    zIndex: 10,
     padding: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 20,
@@ -3079,10 +3075,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   photoViewerActionButton: {
-    position: 'absolute',
-    right: 20,
-    top: 50,
-    zIndex: 10,
     padding: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 20,
