@@ -1556,6 +1556,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#007AFF',
+    marginLeft: 6,
   },
   secondaryButtonText: {
     color: '#007AFF',
