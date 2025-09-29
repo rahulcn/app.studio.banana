@@ -61,48 +61,12 @@ const createStorage = () => {
 
 const storage = createStorage();
 
+// Temporarily disable Supabase for SSR compatibility
 let supabaseClient: any = null;
+export const supabase = null;
 
-// Export null initially, client will be created when needed
-export let supabase = null;
-
-// Function to get or create Supabase client safely
-export const getSupabaseClient = () => {
-  if (supabaseClient) {
-    return supabaseClient;
-  }
-  
-  // Only create in browser environment
-  if (typeof window === 'undefined') {
-    return null;
-  }
-  
-  // Only create client if we have valid config
-  if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
-    try {
-      supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          storage: storage,
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: false,
-        },
-      });
-      return supabaseClient;
-    } catch (error) {
-      console.error('Failed to create Supabase client:', error);
-      return null;
-    }
-  }
-  
-  return null;
-};
-
-// Initialize client when possible
-if (typeof window !== 'undefined') {
-  supabaseClient = getSupabaseClient();
-  supabase = supabaseClient;
-}
+// Disabled Supabase functions for now
+export const getSupabaseClient = () => null;
 
 // Database types - Updated for migration schema
 export interface Profile {
