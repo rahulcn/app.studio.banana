@@ -179,6 +179,10 @@ export class SupabaseHelpers {
   
   static async signUp(email: string, password: string, userData?: any) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not available');
+      }
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -195,6 +199,10 @@ export class SupabaseHelpers {
 
   static async signIn(email: string, password: string) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not available');
+      }
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -208,6 +216,10 @@ export class SupabaseHelpers {
 
   static async signOut() {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not available');
+      }
+      
       const { error } = await supabase.auth.signOut()
       return { error }
     } catch (error) {
@@ -218,6 +230,8 @@ export class SupabaseHelpers {
 
   static async getCurrentUser() {
     try {
+      if (!supabase) return null;
+      
       const { data: { user } } = await supabase.auth.getUser()
       return user
     } catch (error) {
@@ -228,6 +242,8 @@ export class SupabaseHelpers {
 
   static async getCurrentSession() {
     try {
+      if (!supabase) return null;
+      
       const { data: { session } } = await supabase.auth.getSession()
       return session
     } catch (error) {
