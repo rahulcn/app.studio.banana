@@ -1937,7 +1937,19 @@ function App() {
     FREE_LIMIT: subscription?.generations_limit || 100,
     usageCount: subscription?.generations_used || 0,
     remainingUses: Math.max(0, (subscription?.generations_limit || 100) - (subscription?.generations_used || 0)),
-    isLoading: loading
+    isLoading: loading,
+    hasUsesLeft: () => {
+      const used = subscription?.generations_used || 0;
+      const limit = subscription?.generations_limit || 100;
+      return used < limit;
+    },
+    incrementUsage: async () => {
+      // In demo mode, we'll just simulate incrementing locally
+      // In a real app, this would update the backend
+      console.log('🔧 Demo mode: Simulating usage increment');
+      const newCount = (subscription?.generations_used || 0) + 1;
+      return newCount;
+    }
   };
 
   if (loading) {
