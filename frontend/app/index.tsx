@@ -1585,7 +1585,7 @@ const FreeGenerateScreen: React.FC<{
               <View style={styles.modernButtonContent}>
                 <Ionicons name="sparkles" size={20} color="white" />
                 <Text style={styles.modernButtonText}>
-                  {!freeTier.hasUsesLeft() 
+                  {!freeTier?.hasUsesLeft?.() 
                     ? 'Limit Reached (100/100)' 
                     : !selectedPromptId
                     ? 'Select a Style First'
