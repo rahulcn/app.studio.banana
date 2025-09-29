@@ -63,13 +63,21 @@ const storage = createStorage();
 
 let supabaseClient: any = null;
 
-// Safely create Supabase client only when needed and in proper environment
-const createSupabaseClient = () => {
+// Export null initially, client will be created when needed
+export let supabase = null;
+
+// Function to get or create Supabase client safely
+export const getSupabaseClient = () => {
   if (supabaseClient) {
     return supabaseClient;
   }
   
-  // Only create client if we have valid config and we're not in SSR
+  // Only create in browser environment
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  
+  // Only create client if we have valid config
   if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
     try {
       supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
@@ -90,22 +98,11 @@ const createSupabaseClient = () => {
   return null;
 };
 
-// Only create Supabase client if we have valid config
-if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
-  // Delay creation until after component mount
-  if (typeof window !== 'undefined') {
-    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        storage: storage,
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false,
-      },
-    });
-  }
+// Initialize client when possible
+if (typeof window !== 'undefined') {
+  supabaseClient = getSupabaseClient();
+  supabase = supabaseClient;
 }
-
-export const supabase = supabaseClient;
 
 // Database types - Updated for migration schema
 export interface Profile {
