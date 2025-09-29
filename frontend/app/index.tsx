@@ -1126,7 +1126,7 @@ const FreeGenerateScreen: React.FC<{
       return;
     }
 
-    if (!freeTier.hasUsesLeft()) {
+    if (!freeTier?.hasUsesLeft?.()) {
       onSignupPrompt();
       return;
     }
