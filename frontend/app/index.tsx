@@ -1942,8 +1942,8 @@ function App() {
   const [appState, setAppState] = useState('welcome'); // welcome, generate, signup_prompt, authenticated
   const { theme, isDarkMode } = useTheme();
 
-  // Calculate free tier info from subscription
-  const freeTier = {
+  // Calculate free tier info from subscription with useCallback to ensure function persistence
+  const freeTier = useCallback(() => ({
     FREE_LIMIT: subscription?.generations_limit || 100,
     usageCount: subscription?.generations_used || 0,
     remainingUses: Math.max(0, (subscription?.generations_limit || 100) - (subscription?.generations_used || 0)),
@@ -1960,7 +1960,7 @@ function App() {
       const newCount = (subscription?.generations_used || 0) + 1;
       return newCount;
     }
-  };
+  }), [subscription, loading]);
 
   if (loading) {
     return (
