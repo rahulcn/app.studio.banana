@@ -198,51 +198,63 @@ backend:
 frontend:
   - task: "Dark Mode Implementation"
     implemented: true
-    working: "unknown"
+    working: "NA"
     file: "index.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "unknown"
         agent: "main"
         comment: "Implemented comprehensive dark mode system with ThemeContext, AsyncStorage persistence, and theme toggle in profile section. Added theme support to all components: FreeGenerateScreen, GalleryScreen, ProfileScreen, WelcomeScreen, and bottom navigation. Created light and dark theme definitions with proper color schemes."
+      - working: "NA"
+        agent: "testing"
+        comment: "❌ CANNOT TEST: Dark mode implementation cannot be fully tested because navigation to generate screen fails. Welcome screen shows proper theming, but cannot access profile screen (where theme toggle is located) or other screens to verify dark mode functionality across the app."
 
   - task: "Mobile UI Components"
     implemented: true
-    working: "unknown"
+    working: false
     file: "index.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "unknown"
         agent: "main"
         comment: "Built React Native UI with home screen, prompt selection, image upload, generation, and gallery views."
+      - working: false
+        agent: "testing"
+        comment: "❌ BLOCKED: Cannot test mobile UI components because navigation to generate screen fails due to freeTier.hasUsesLeft() error. Welcome screen UI components work correctly (AI Canvas Studio branding, feature cards, Get Started button), but generate screen components cannot be tested until navigation issue is resolved."
 
   - task: "Image Upload Integration"
     implemented: true
-    working: "unknown"
+    working: "NA"
     file: "index.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "unknown"
         agent: "main"
         comment: "Integrated expo-image-picker for camera and gallery access with base64 conversion."
+      - working: "NA"
+        agent: "testing"
+        comment: "❌ CANNOT TEST: Image upload integration cannot be tested because navigation to generate screen fails. The image upload components (Choose from Gallery, Take Photo) are implemented in the generate screen but are not accessible due to the freeTier.hasUsesLeft() navigation blocker."
 
   - task: "Navigation Flow"
     implemented: true
-    working: "unknown"
+    working: false
     file: "index.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "unknown"
         agent: "main"
         comment: "Implemented view-based navigation between home, prompts, generate, and gallery screens."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE: Navigation from welcome to generate screen fails due to freeTier.hasUsesLeft() function error. Welcome screen loads correctly with AI Canvas Studio branding and Get Started Free button works, but clicking it triggers JavaScript error: 'freeTier.hasUsesLeft is not a function'. This prevents the generate screen from loading. Fixed FreeTier interface definition and added defensive programming with optional chaining (?.) to all freeTier method calls, but error persists. Issue appears to be in how freeTier object is passed to FreeGenerateScreen component."
 
 metadata:
   created_by: "main_agent"
@@ -251,8 +263,10 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
-  stuck_tasks: []
+  current_focus:
+    - "Navigation Flow"
+  stuck_tasks:
+    - "Navigation Flow"
   test_all: false
   test_priority: "high_first"
 
@@ -283,3 +297,5 @@ agent_communication:
     message: "✅ ALL CATEGORY FILTERING FIX TESTING COMPLETE: Comprehensive testing of the All category filtering fix shows 100% success rate (12/12 tests passed). Key findings: 1) Main prompts endpoint ✅ - GET /api/prompts now correctly returns 'All' as the first category in the categories array ['All', 'Professional', 'Artistic', 'Lifestyle'] with total_count of 12, 2) All category endpoint ✅ - GET /api/prompts/categories/All returns all 12 prompts from all categories (Professional, Artistic, Lifestyle) with proper category field set to 'All', 3) Specific category endpoints ✅ - Professional (6 prompts), Artistic (4 prompts), and Lifestyle (2 prompts) all return correct counts and proper category filtering, 4) Response structure ✅ - all endpoints return proper JSON structure with required fields (prompts, category/categories, count/total_count). The All category filtering fix is working perfectly and ready for frontend integration."
   - agent: "testing"
     message: "✅ COMPREHENSIVE BACKEND TESTING COMPLETE: User requested comprehensive testing of all core backend functionality. Executed 11 comprehensive tests with 90.9% success rate (10/11 tests passed). CRITICAL FUNCTIONALITY WORKING: 1) Health Check ✅ - backend running properly at https://piccraft-11.preview.emergentagent.com/api, 2) Curated Prompts System ✅ - all 12 prompts returned correctly with proper categories (Professional: 6, Artistic: 4, Lifestyle: 2), All category filtering working perfectly, 3) NanoBanana API Integration ✅ - CRITICAL TEST PASSED - successfully generated 2MB+ base64 image using curated prompt with reference image in 20 seconds, 4) Image Storage ✅ - MongoDB gallery retrieval working (20 images), specific image retrieval functional, 5) Stripe Payment Integration ✅ - packages endpoint returning correct pro_monthly ($9.99) and pro_yearly ($99.99) pricing. MINOR ISSUE: Error handling returns HTTP 500 instead of 404 for invalid prompt IDs (functionality works, but status code suboptimal). All core backend functionality is production-ready and fully operational."
+  - agent: "testing"
+    message: "❌ CRITICAL FRONTEND NAVIGATION ISSUE FOUND: Tested Get Started button click functionality as requested. RESULTS: ✅ Welcome screen loads correctly with AI Canvas Studio branding, feature cards, and Get Started Free button. ✅ Get Started Free button is clickable and triggers navigation attempt. ❌ CRITICAL FAILURE: Navigation from welcome to generate screen fails with JavaScript error 'freeTier.hasUsesLeft is not a function'. This prevents users from accessing the main app functionality. ATTEMPTED FIXES: 1) Added FreeTier interface definition, 2) Added defensive programming with optional chaining (?.) to all freeTier method calls, 3) Fixed all freeTier property access throughout the codebase. ERROR PERSISTS despite fixes, suggesting deeper issue with freeTier object creation or prop passing. This blocks testing of generate screen components, prompt categories, image upload, navigation tabs, and dark mode functionality. RECOMMENDATION: Main agent needs to investigate freeTier object creation and prop passing mechanism in App component."
