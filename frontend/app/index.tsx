@@ -1619,12 +1619,12 @@ const FreeGenerateScreen: React.FC<{
       
       {/* Gallery Tab */}
       {activeTab === 'gallery' && (
-        <GalleryScreen freeTier={freeTier()} />
+        <GalleryScreen freeTier={freeTier} />
       )}
       
       {/* Profile Tab */}
       {activeTab === 'profile' && (
-        <ProfileScreen freeTier={freeTier()} />
+        <ProfileScreen freeTier={freeTier} />
       )}
       
       {/* Bottom Tab Navigation */}
