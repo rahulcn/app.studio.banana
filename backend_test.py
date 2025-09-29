@@ -325,13 +325,93 @@ def test_error_handling():
         log_test("Error Handling", "FAIL", f"Expected 404 for invalid prompt ID, got different response")
         return False
 
-if __name__ == "__main__":
-    print("🚀 Starting All Category Filtering Fix Tests...")
-    success = test_all_category_fix()
+def run_all_tests():
+    """Run comprehensive backend testing suite"""
+    print("🚀 Starting AI Image Generation Backend Testing Suite")
+    print("=" * 80)
+    print("Testing Core Features:")
+    print("1. Health Check - /api/health endpoint")
+    print("2. Curated Prompts System - /api/prompts and /api/prompts/categories/All endpoints")
+    print("3. NanoBanana API Integration - /api/generate-with-prompt endpoint")
+    print("4. Image Storage - /api/images endpoint")
+    print("5. Stripe Payment Integration - /api/payment/packages endpoint")
+    print("=" * 80)
     
-    if success:
-        print("\n🎉 ALL TESTS PASSED! The All category filtering fix is working correctly.")
+    start_time = time.time()
+    
+    # Test 1: Health Check
+    test_health_endpoint()
+    
+    # Test 2: Curated Prompts Main Endpoint
+    test_curated_prompts_endpoint()
+    
+    # Test 3: All Category Filtering
+    test_all_category_endpoint()
+    
+    # Test 4: Specific Category Filtering
+    test_specific_category_endpoints()
+    
+    # Test 5: NanoBanana API Integration (most critical)
+    success, image_id = test_nanobanana_integration()
+    
+    # Test 6: Image Storage
+    test_image_storage(image_id)
+    
+    # Test 7: Stripe Payment Integration
+    test_stripe_payment_integration()
+    
+    # Test 8: Error Handling
+    test_error_handling()
+    
+    end_time = time.time()
+    duration = end_time - start_time
+    
+    # Print summary
+    print("\n" + "=" * 80)
+    print("🏁 BACKEND TESTING COMPLETE")
+    print("=" * 80)
+    print(f"⏱️  Total Duration: {duration:.2f} seconds")
+    print(f"✅ Tests Passed: {test_results['passed']}")
+    print(f"❌ Tests Failed: {test_results['failed']}")
+    
+    total_tests = test_results['passed'] + test_results['failed']
+    if total_tests > 0:
+        success_rate = (test_results['passed'] / total_tests * 100)
+        print(f"📊 Success Rate: {success_rate:.1f}%")
+    
+    if test_results['failed'] > 0:
+        print("\n🔍 FAILED TESTS:")
+        for test in test_results['tests']:
+            if test['status'] == 'FAIL':
+                print(f"   ❌ {test['name']}: {test['details']}")
+    
+    print("\n📋 DETAILED TEST RESULTS:")
+    for test in test_results['tests']:
+        status_icon = "✅" if test['status'] == 'PASS' else "❌"
+        print(f"   {status_icon} {test['name']}")
+    
+    # Critical assessment
+    critical_tests = ["Health Check", "NanoBanana Integration", "Curated Prompts Main", "Stripe Payment Packages"]
+    critical_failures = [test for test in test_results['tests'] 
+                        if test['status'] == 'FAIL' and any(critical in test['name'] for critical in critical_tests)]
+    
+    if critical_failures:
+        print(f"\n⚠️  CRITICAL ISSUES FOUND: {len(critical_failures)} critical tests failed")
+        for test in critical_failures:
+            print(f"   🚨 {test['name']}: {test['details']}")
+    else:
+        print("\n✅ All critical backend functionality is working correctly")
+    
+    return test_results
+
+if __name__ == "__main__":
+    print("🚀 Starting AI Image Generation Backend Testing...")
+    results = run_all_tests()
+    
+    # Exit with appropriate code
+    if results['failed'] == 0:
+        print("\n🎉 ALL TESTS PASSED! Backend is fully functional.")
         sys.exit(0)
     else:
-        print("\n💥 SOME TESTS FAILED! Please check the issues above.")
+        print(f"\n💥 {results['failed']} TESTS FAILED! Please check the issues above.")
         sys.exit(1)
