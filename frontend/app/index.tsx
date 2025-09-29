@@ -3426,6 +3426,10 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     backgroundColor: 'white',
     borderTopWidth: 1,
