@@ -316,6 +316,12 @@ export const useTheme = () => {
 };
 
 // Curated prompt interface
+interface CuratedPrompt {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+}
 
 // Welcome/Onboarding Screen
 const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
