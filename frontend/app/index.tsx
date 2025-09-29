@@ -1568,12 +1568,12 @@ const FreeGenerateScreen: React.FC<{
           <TouchableOpacity
             style={[
               styles.modernGenerateButton,
-              (!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage)
+              (!freeTier?.hasUsesLeft?.() || generating || !selectedPromptId || !referenceImage)
                 ? styles.modernGenerateButtonDisabled
                 : styles.modernGenerateButtonEnabled
             ]}
             onPress={handleGenerate}
-            disabled={!freeTier.hasUsesLeft() || generating || !selectedPromptId || !referenceImage}
+            disabled={!freeTier?.hasUsesLeft?.() || generating || !selectedPromptId || !referenceImage}
             activeOpacity={0.8}
           >
             {generating ? (
