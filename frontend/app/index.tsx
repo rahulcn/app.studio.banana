@@ -1245,8 +1245,8 @@ const FreeGenerateScreen: React.FC<{
 
           <View style={styles.usageInfo}>
             <Text style={styles.usageText}>
-              {freeTier.remainingUses > 0 
-                ? `${freeTier.remainingUses} free generations remaining` 
+              {(freeTier?.remainingUses || 0) > 0 
+                ? `${freeTier?.remainingUses || 0} free generations remaining` 
                 : 'Free tier exhausted'}
             </Text>
           </View>
