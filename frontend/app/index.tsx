@@ -251,6 +251,16 @@ interface CuratedPrompt {
   category: string;
 }
 
+// Free tier interface
+interface FreeTier {
+  FREE_LIMIT: number;
+  usageCount: number;
+  remainingUses: number;
+  isLoading: boolean;
+  hasUsesLeft: () => boolean;
+  incrementUsage: () => Promise<number>;
+}
+
 // Welcome/Onboarding Screen
 const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
   const { theme } = useTheme();
