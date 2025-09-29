@@ -315,9 +315,7 @@ export const useTheme = () => {
   return context;
 };
 
-interface User {
-  email: string;
-}
+// Curated prompt interface
 
 interface FreeTier {
   usageCount: number;
