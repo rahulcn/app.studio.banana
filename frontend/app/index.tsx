@@ -3835,6 +3835,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8fafc', // Light gray background
   },
+  scrollContent: {
+    paddingBottom: 80, // Add padding to ensure content is not hidden behind tabs
+    flexGrow: 1,
+  },
   // Dark Mode Toggle Switch Styles
   themeToggleSwitch: {
     width: 48,
