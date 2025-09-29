@@ -2,27 +2,64 @@ import 'react-native-url-polyfill/auto'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createClient } from '@supabase/supabase-js'
 
-// Check if we're in a React Native environment
-const isReactNative = typeof window === 'undefined' || !window.document;
+// Check if we're in a React Native/Node.js environment
+const isReactNative = typeof window === 'undefined';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || ''
 
-// Create storage adapter that works in both web and React Native
-const storage = isReactNative ? AsyncStorage : {
-  getItem: (key: string) => {
-    if (typeof localStorage === 'undefined') return Promise.resolve(null);
-    return Promise.resolve(localStorage.getItem(key));
-  },
-  setItem: (key: string, value: string) => {
-    if (typeof localStorage === 'undefined') return Promise.resolve();
-    return Promise.resolve(localStorage.setItem(key, value));
-  },
-  removeItem: (key: string) => {
-    if (typeof localStorage === 'undefined') return Promise.resolve();
-    return Promise.resolve(localStorage.removeItem(key));
-  },
+// Create storage adapter that handles server-side rendering
+const createStorage = () => {
+  // For server-side rendering or React Native, use AsyncStorage or fallback
+  if (isReactNative) {
+    try {
+      return AsyncStorage;
+    } catch (error) {
+      console.warn('AsyncStorage not available, using fallback');
+      return {
+        getItem: () => Promise.resolve(null),
+        setItem: () => Promise.resolve(),
+        removeItem: () => Promise.resolve(),
+      };
+    }
+  }
+  
+  // For web environments, use localStorage if available
+  return {
+    getItem: (key: string) => {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          return Promise.resolve(localStorage.getItem(key));
+        }
+      } catch (error) {
+        console.warn('localStorage not available');
+      }
+      return Promise.resolve(null);
+    },
+    setItem: (key: string, value: string) => {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(key, value);
+        }
+      } catch (error) {
+        console.warn('localStorage not available');
+      }
+      return Promise.resolve();
+    },
+    removeItem: (key: string) => {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem(key);
+        }
+      } catch (error) {
+        console.warn('localStorage not available');
+      }
+      return Promise.resolve();
+    },
+  };
 };
+
+const storage = createStorage();
 
 let supabaseClient: any = null;
 
