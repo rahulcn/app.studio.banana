@@ -811,19 +811,19 @@ const ProfileScreen: React.FC<{ freeTier: FreeTier }> = ({ freeTier }) => {
           <View style={styles.modernProgressHeader}>
             <Text style={[styles.modernProgressLabel, { color: theme.colors.text }]}>Generations used</Text>
             <Text style={[styles.modernProgressValue, { color: theme.colors.text }]}>
-              {freeTier.usageCount} / {freeTier.FREE_LIMIT}
+              {freeTier?.usageCount || 0} / {freeTier?.FREE_LIMIT || 100}
             </Text>
           </View>
           <View style={[styles.modernProgressBarBackground, { backgroundColor: theme.colors.border }]}>
             <View 
               style={[
                 styles.modernProgressBarFill,
-                { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
+                { width: `${((freeTier?.usageCount || 0) / (freeTier?.FREE_LIMIT || 100)) * 100}%` }
               ]}
             />
           </View>
           <Text style={[styles.modernProgressRemainingText, { color: theme.colors.textSecondary }]}>
-            {freeTier.remainingUses} generations remaining
+            {freeTier?.remainingUses || 0} generations remaining
           </Text>
         </View>
       </View>
