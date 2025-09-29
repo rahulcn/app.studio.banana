@@ -1994,7 +1994,7 @@ function App() {
         return (
           <FreeGenerateScreen 
             onBack={() => setAppState('welcome')}
-            freeTier={freeTier}
+            freeTier={freeTier()}
             onSignupPrompt={handleSignupPrompt}
           />
         );
