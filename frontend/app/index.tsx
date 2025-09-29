@@ -48,6 +48,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [supabaseAvailable, setSupabaseAvailable] = useState(false);
 
   useEffect(() => {
+    // Temporarily force demo mode to get app working
+    console.log('🔧 Forcing demo mode for debugging...');
+    setSupabaseAvailable(false);
+    setLoading(false);
+    return;
+    
     // Check if Supabase is properly configured
     const checkSupabaseConfig = async () => {
       try {
