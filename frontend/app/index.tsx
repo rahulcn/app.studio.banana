@@ -2144,9 +2144,11 @@ function App() {
 // App wrapped with Theme Provider
 export default function AppWithTheme() {
   return (
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
