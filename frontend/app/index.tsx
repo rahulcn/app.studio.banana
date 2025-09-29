@@ -1330,7 +1330,7 @@ const FreeGenerateScreen: React.FC<{
               <View 
                 style={[
                   styles.modernProgressBarFill,
-                  { width: `${(freeTier.usageCount / freeTier.FREE_LIMIT) * 100}%` }
+                  { width: `${((freeTier?.usageCount || 0) / (freeTier?.FREE_LIMIT || 100)) * 100}%` }
                 ]}
               />
             </View>
