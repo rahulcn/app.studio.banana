@@ -1165,7 +1165,7 @@ const FreeGenerateScreen: React.FC<{
       setGeneratedImage(`data:image/png;base64,${result.generated_image}`);
       
       // Update usage count
-      await freeTier.incrementUsage();
+      await freeTier?.incrementUsage?.();
       
       Alert.alert(
         'Success!', 
