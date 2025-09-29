@@ -1,18 +1,44 @@
-import 'react-native-url-polyfill/auto';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createClient } from '@supabase/supabase-js';
+import 'react-native-url-polyfill/auto'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
+// Check if we're in a React Native environment
+const isReactNative = typeof window === 'undefined' || !window.document;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || ''
+
+// Create storage adapter that works in both web and React Native
+const storage = isReactNative ? AsyncStorage : {
+  getItem: (key: string) => {
+    if (typeof localStorage === 'undefined') return Promise.resolve(null);
+    return Promise.resolve(localStorage.getItem(key));
   },
-});
+  setItem: (key: string, value: string) => {
+    if (typeof localStorage === 'undefined') return Promise.resolve();
+    return Promise.resolve(localStorage.setItem(key, value));
+  },
+  removeItem: (key: string) => {
+    if (typeof localStorage === 'undefined') return Promise.resolve();
+    return Promise.resolve(localStorage.removeItem(key));
+  },
+};
+
+let supabaseClient: any = null;
+
+// Only create Supabase client if we have valid config
+if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
+  supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      storage: storage,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: false,
+    },
+  });
+}
+
+export const supabase = supabaseClient;
 
 // Database types - Updated for migration schema
 export interface Profile {
