@@ -23,8 +23,8 @@ import * as Haptics from 'expo-haptics';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Import Supabase
-import { supabase, SupabaseHelpers, Profile, Generation, PaymentSubscription } from '../lib/supabase';
+// Import Supabase - TEMPORARILY DISABLED FOR SSR FIX
+// import { supabase, SupabaseHelpers, Profile, Generation, PaymentSubscription } from '../lib/supabase';
 
 // Auth Context with Supabase
 interface AuthContextType {
