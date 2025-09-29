@@ -56,148 +56,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSupabaseAvailable(false);
     setLoading(false);
   }, []);
-      try {
-        const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
-        const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
-        
-        console.log('🔍 Checking Supabase config...');
-        console.log('📍 URL:', url ? 'Present' : 'Missing');
-        console.log('🔑 Key:', key ? 'Present' : 'Missing');
-        
-        if (!url || !key || url.includes('your-project') || key.includes('your-anon-key')) {
-          console.log('🔧 Supabase not configured, using fallback mode');
-          setSupabaseAvailable(false);
-          setLoading(false);
-          return;
-        }
 
-        // Test Supabase connection
-        console.log('🔍 Testing Supabase connection...');
-        const { data, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('❌ Supabase session error:', error);
-          setSupabaseAvailable(false);
-          setLoading(false);
-          return;
-        }
-        
-        console.log('✅ Supabase connection successful');
-        console.log('📊 Session data:', data);
-        setSupabaseAvailable(true);
-        
-        // Continue with real Supabase setup
-        setupSupabaseAuth();
-        
-      } catch (error) {
-        console.error('❌ Supabase connection failed:', error);
-        console.log('🔧 Falling back to demo mode');
-        setSupabaseAvailable(false);
-        setLoading(false);
-        clearTimeout(timeoutId); // Clear the timeout since we're handling the error immediately
-      }
-    };
-
-    // Set a timeout to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      console.log('⏰ Loading timeout reached, falling back to demo mode');
-      setSupabaseAvailable(false);
-      setLoading(false);
-    }, 10000); // 10 second timeout
-
-    checkSupabaseConfig();
-    
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  const setupSupabaseAuth = () => {
-    console.log('🔗 Setting up Supabase authentication...');
-    
-    // Listen for auth state changes
-    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('🔐 Auth state changed:', event);
-        console.log('👤 Session:', session ? 'Present' : 'None');
-        
-        if (session?.user) {
-          setUser(session.user);
-          await loadUserData(session.user.id);
-        } else {
-          setUser(null);
-          setProfile(null);
-          setSubscription(null);
-        }
-        setLoading(false);
-      }
-    );
-
-    // Check current session
-    checkCurrentSession();
-
-    // Set a fallback timeout for auth setup
-    const authTimeoutId = setTimeout(() => {
-      console.log('⏰ Auth setup timeout, completing setup');
-      setLoading(false);
-    }, 5000);
-
-    return () => {
-      authSubscription?.unsubscribe();
-      clearTimeout(authTimeoutId);
-    };
-  };
-
-  const checkCurrentSession = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-        await loadUserData(session.user.id);
-      }
-    } catch (error) {
-      console.error('Session check error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadUserData = async (userId: string) => {
-    try {
-      // Load user profile
-      const userProfile = await SupabaseHelpers.getProfile(userId);
-      setProfile(userProfile);
-
-      // Load subscription data
-      const userSubscription = await SupabaseHelpers.getUserSubscription(userId);
-      setSubscription(userSubscription);
-
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  };
-
-  // Fallback functions for when Supabase is not available
+  // Demo mode auth functions
   const signIn = async (email: string, password: string) => {
-    try {
-      if (!supabaseAvailable) {
-        // Demo mode - simulate successful login
-        console.log('🔧 Demo mode: Simulating login');
-        setUser({ id: 'demo-user', email });
-        setProfile({ 
-          id: 'demo-user', 
-          email, 
-          username: email.split('@')[0],
-          full_name: 'Demo User',
-          is_public: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        });
-        setSubscription({
-          id: 'demo-sub',
-          user_id: 'demo-user',
-          status: 'active',
-          generations_used: 0,
-          generations_limit: 100,
-          cancel_at_period_end: false,
+    console.log('🔧 Demo mode: Simulating login');
+    setUser({ id: 'demo-user', email });
+    setProfile({ 
+      id: 'demo-user', 
+      email, 
+      username: email.split('@')[0],
+      full_name: 'Demo User',
+      is_public: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+  };
+
+  const signUp = async (email: string, password: string, username?: string) => {
+    console.log('🔧 Demo mode: Simulating signup');
+    await signIn(email, password);
+  };
+
+  const signOut = async () => {
+    console.log('🔧 Demo mode: Signing out');
+    setUser(null);
+    setProfile(null);
+  };
+
+  const updateProfile = async (updates: any) => {
+    console.log('🔧 Demo mode: Updating profile');
+    if (profile) {
+      setProfile({ ...profile, ...updates });
+    }
+  };
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         });
