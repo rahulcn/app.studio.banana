@@ -1323,7 +1323,7 @@ const FreeGenerateScreen: React.FC<{
             <View style={styles.modernProgressHeader}>
               <Text style={[styles.modernProgressLabel, { color: theme.colors.text }]}>Generations remaining</Text>
               <Text style={[styles.modernProgressValue, { color: theme.colors.text }]}>
-                {freeTier.remainingUses} / {freeTier.FREE_LIMIT}
+                {freeTier?.remainingUses || 0} / {freeTier?.FREE_LIMIT || 100}
               </Text>
             </View>
             <View style={[styles.modernProgressBarBackground, { backgroundColor: theme.colors.border }]}>
