@@ -63,16 +63,46 @@ const storage = createStorage();
 
 let supabaseClient: any = null;
 
+// Safely create Supabase client only when needed and in proper environment
+const createSupabaseClient = () => {
+  if (supabaseClient) {
+    return supabaseClient;
+  }
+  
+  // Only create client if we have valid config and we're not in SSR
+  if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
+    try {
+      supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          storage: storage,
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: false,
+        },
+      });
+      return supabaseClient;
+    } catch (error) {
+      console.error('Failed to create Supabase client:', error);
+      return null;
+    }
+  }
+  
+  return null;
+};
+
 // Only create Supabase client if we have valid config
 if (supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('your-project') && !supabaseAnonKey.includes('your-anon-key')) {
-  supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      storage: storage,
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: false,
-    },
-  });
+  // Delay creation until after component mount
+  if (typeof window !== 'undefined') {
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storage: storage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+      },
+    });
+  }
 }
 
 export const supabase = supabaseClient;
