@@ -26,7 +26,165 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import Supabase
 import { supabase, SupabaseHelpers, Profile, Generation, PaymentSubscription } from '../lib/supabase';
 
-// Theme Context
+// Auth Context with Supabase
+interface AuthContextType {
+  user: any | null;
+  profile: Profile | null;
+  loading: boolean;
+  subscription: PaymentSubscription | null;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, username?: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  updateProfile: (updates: Partial<Profile>) => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<any | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [subscription, setSubscription] = useState<PaymentSubscription | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Listen for auth state changes
+    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('🔐 Auth state changed:', event);
+        
+        if (session?.user) {
+          setUser(session.user);
+          await loadUserData(session.user.id);
+        } else {
+          setUser(null);
+          setProfile(null);
+          setSubscription(null);
+        }
+        setLoading(false);
+      }
+    );
+
+    // Check current session
+    checkCurrentSession();
+
+    return () => {
+      authSubscription?.unsubscribe();
+    };
+  }, []);
+
+  const checkCurrentSession = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+        await loadUserData(session.user.id);
+      }
+    } catch (error) {
+      console.error('Session check error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUserData = async (userId: string) => {
+    try {
+      // Load user profile
+      const userProfile = await SupabaseHelpers.getProfile(userId);
+      setProfile(userProfile);
+
+      // Load subscription data
+      const userSubscription = await SupabaseHelpers.getUserSubscription(userId);
+      setSubscription(userSubscription);
+
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      const { data, error } = await SupabaseHelpers.signIn(email, password);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+      // User state will be updated via onAuthStateChange
+    } catch (error) {
+      console.error('Sign in error:', error);
+      throw error;
+    }
+  };
+
+  const signUp = async (email: string, password: string, username?: string) => {
+    try {
+      const { data, error } = await SupabaseHelpers.signUp(email, password, {
+        username: username || email.split('@')[0]
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      Alert.alert(
+        'Registration Successful!', 
+        'Please check your email to verify your account.',
+        [{ text: 'OK' }]
+      );
+    } catch (error) {
+      console.error('Sign up error:', error);
+      throw error;
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await SupabaseHelpers.signOut();
+      // User state will be cleared via onAuthStateChange
+    } catch (error) {
+      console.error('Sign out error:', error);
+      throw error;
+    }
+  };
+
+  const updateProfile = async (updates: Partial<Profile>) => {
+    try {
+      if (!user) return;
+      
+      const { data, error } = await SupabaseHelpers.updateProfile(user.id, updates);
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      setProfile(data);
+    } catch (error) {
+      console.error('Update profile error:', error);
+      throw error;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ 
+      user, 
+      profile, 
+      loading, 
+      subscription, 
+      signIn, 
+      signUp, 
+      signOut, 
+      updateProfile 
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 type ThemeMode = 'light' | 'dark';
 
 interface Theme {
