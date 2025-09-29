@@ -62,8 +62,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         // Test Supabase connection
+        console.log('🔍 Testing Supabase connection...');
         const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('❌ Supabase session error:', error);
+          setSupabaseAvailable(false);
+          setLoading(false);
+          return;
+        }
+        
         console.log('✅ Supabase connection successful');
+        console.log('📊 Session data:', data);
         setSupabaseAvailable(true);
         
         // Continue with real Supabase setup
