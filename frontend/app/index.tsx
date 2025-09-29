@@ -1169,7 +1169,7 @@ const FreeGenerateScreen: React.FC<{
       
       Alert.alert(
         'Success!', 
-        `AI image generated with "${selectedPrompt.title}" style! You have ${freeTier.remainingUses - 1} free generations remaining.`
+        `AI image generated with "${selectedPrompt.title}" style! You have ${(freeTier?.remainingUses || 0) - 1} free generations remaining.`
       );
       
     } catch (error) {
