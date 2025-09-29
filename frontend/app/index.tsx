@@ -54,6 +54,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
         const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
         
+        console.log('🔍 Checking Supabase config...');
+        console.log('📍 URL:', url ? 'Present' : 'Missing');
+        console.log('🔑 Key:', key ? 'Present' : 'Missing');
+        
         if (!url || !key || url.includes('your-project') || key.includes('your-anon-key')) {
           console.log('🔧 Supabase not configured, using fallback mode');
           setSupabaseAvailable(false);
@@ -87,7 +91,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
+    // Set a timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.log('⏰ Loading timeout reached, falling back to demo mode');
+      setSupabaseAvailable(false);
+      setLoading(false);
+    }, 10000); // 10 second timeout
+
     checkSupabaseConfig();
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const setupSupabaseAuth = () => {
