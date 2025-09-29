@@ -2075,12 +2075,19 @@ const HomeScreen: React.FC<{
 
 // Main App Component
 function App() {
-  const { user, loading, signIn, signOut } = useAuth();
-  const freeTier = useFreeTier();
+  const { user, profile, loading, subscription, signIn, signOut } = useAuth();
   const [appState, setAppState] = useState('welcome'); // welcome, generate, signup_prompt, authenticated
   const { theme, isDarkMode } = useTheme();
 
-  if (loading || freeTier.isLoading) {
+  // Calculate free tier info from subscription
+  const freeTier = {
+    FREE_LIMIT: subscription?.generations_limit || 100,
+    usageCount: subscription?.generations_used || 0,
+    remainingUses: Math.max(0, (subscription?.generations_limit || 100) - (subscription?.generations_used || 0)),
+    isLoading: loading
+  };
+
+  if (loading) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <View style={styles.loadingContainer}>
