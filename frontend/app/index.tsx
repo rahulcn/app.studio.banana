@@ -1309,7 +1309,11 @@ const FreeGenerateScreen: React.FC<{
 
       {/* Tab Content */}
       {activeTab === 'generate' && (
-        <ScrollView style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}>
+        <ScrollView 
+          style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
           {/* Free Tier Card */}
           <View style={[styles.modernCard, { backgroundColor: theme.colors.card }]}>
           <View style={styles.modernCardHeader}>
