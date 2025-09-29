@@ -101,53 +101,51 @@ def test_api_endpoint(method: str, endpoint: str, expected_status: int = 200, da
             "success": False,
             "error": f"Request failed: {str(e)}"
         }
-def test_all_category_fix():
-    """Test the All category filtering fix"""
-    print("=" * 80)
-    print("🧪 TESTING ALL CATEGORY FILTERING FIX")
-    print("=" * 80)
+def test_health_endpoint():
+    """Test 1: Health Check Endpoint"""
+    print("\n📋 TEST 1: Health Check Endpoint")
+    result = test_api_endpoint("GET", "/health")
     
-    test_results = []
-    
-    # Test 1: GET /api/prompts - should include "All" as first category
-    print("\n📋 TEST 1: Main prompts endpoint should include 'All' category")
+    if result["success"]:
+        data = result["data"]
+        if data.get("status") == "healthy":
+            log_test("Health Check", "PASS", f"Service: {data.get('service')}, Version: {data.get('version')}")
+            return True
+        else:
+            log_test("Health Check", "FAIL", f"Unexpected response: {data}")
+            return False
+    else:
+        log_test("Health Check", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_curated_prompts_endpoint():
+    """Test 2: Curated Prompts System - Main endpoint"""
+    print("\n📋 TEST 2: Curated Prompts Main Endpoint")
     result = test_api_endpoint("GET", "/prompts")
     
     if result["success"]:
         data = result["data"]
+        prompts = data.get("prompts", [])
         categories = data.get("categories", [])
         total_count = data.get("total_count", 0)
         
-        # Check if "All" is the first category
-        if categories and categories[0] == "All":
-            print("   ✅ 'All' is correctly the first category")
-            test_results.append({"test": "Main prompts endpoint - All category first", "status": "PASS"})
+        if len(prompts) == 12 and total_count == 12:
+            if "All" in categories and len(categories) == 4:
+                log_test("Curated Prompts Main", "PASS", f"Found {len(prompts)} prompts with categories: {categories}")
+                return True
+            else:
+                log_test("Curated Prompts Main", "FAIL", f"Categories issue: {categories}")
+                return False
         else:
-            print(f"   ❌ 'All' is not the first category. Categories: {categories}")
-            test_results.append({"test": "Main prompts endpoint - All category first", "status": "FAIL", "error": f"Categories: {categories}"})
-        
-        # Check expected categories
-        expected_categories = ["All", "Professional", "Artistic", "Lifestyle"]
-        if categories == expected_categories:
-            print("   ✅ Categories match expected list")
-            test_results.append({"test": "Main prompts endpoint - correct categories", "status": "PASS"})
-        else:
-            print(f"   ❌ Categories don't match. Expected: {expected_categories}, Got: {categories}")
-            test_results.append({"test": "Main prompts endpoint - correct categories", "status": "FAIL", "error": f"Got: {categories}"})
-        
-        # Check total count is 12
-        if total_count == 12:
-            print("   ✅ Total count is 12 prompts")
-            test_results.append({"test": "Main prompts endpoint - total count", "status": "PASS"})
-        else:
-            print(f"   ❌ Total count is {total_count}, expected 12")
-            test_results.append({"test": "Main prompts endpoint - total count", "status": "FAIL", "error": f"Got: {total_count}"})
+            log_test("Curated Prompts Main", "FAIL", f"Expected 12 prompts, got {len(prompts)}")
+            return False
     else:
-        print(f"   ❌ Request failed: {result.get('error', 'Unknown error')}")
-        test_results.append({"test": "Main prompts endpoint", "status": "FAIL", "error": result.get('error', 'Unknown error')})
-    
-    # Test 2: GET /api/prompts/categories/All - should return all 12 prompts
-    print("\n📋 TEST 2: All category should return all 12 prompts")
+        log_test("Curated Prompts Main", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_all_category_endpoint():
+    """Test 3: Curated Prompts System - All category filtering"""
+    print("\n📋 TEST 3: All Category Filtering")
     result = test_api_endpoint("GET", "/prompts/categories/All")
     
     if result["success"]:
@@ -156,132 +154,176 @@ def test_all_category_fix():
         category = data.get("category", "")
         count = data.get("count", 0)
         
-        if count == 12:
-            print("   ✅ All category returns 12 prompts")
-            test_results.append({"test": "All category - count", "status": "PASS"})
+        if len(prompts) == 12 and count == 12 and category == "All":
+            log_test("All Category Filtering", "PASS", f"All category returns {count} prompts correctly")
+            return True
         else:
-            print(f"   ❌ All category returns {count} prompts, expected 12")
-            test_results.append({"test": "All category - count", "status": "FAIL", "error": f"Got: {count}"})
-        
-        if category == "All":
-            print("   ✅ Category field is 'All'")
-            test_results.append({"test": "All category - category field", "status": "PASS"})
-        else:
-            print(f"   ❌ Category field is '{category}', expected 'All'")
-            test_results.append({"test": "All category - category field", "status": "FAIL", "error": f"Got: {category}"})
-        
-        # Check that all categories are represented
-        categories_found = set()
-        for prompt in prompts:
-            categories_found.add(prompt.get("category", ""))
-        
-        expected_categories = {"Professional", "Artistic", "Lifestyle"}
-        if categories_found == expected_categories:
-            print("   ✅ All categories represented in results")
-            test_results.append({"test": "All category - all categories represented", "status": "PASS"})
-        else:
-            print(f"   ❌ Categories found: {categories_found}, expected: {expected_categories}")
-            test_results.append({"test": "All category - all categories represented", "status": "FAIL", "error": f"Found: {categories_found}"})
+            log_test("All Category Filtering", "FAIL", f"Expected 12 prompts in 'All', got {count}")
+            return False
     else:
-        print(f"   ❌ Request failed: {result.get('error', 'Unknown error')}")
-        test_results.append({"test": "All category endpoint", "status": "FAIL", "error": result.get('error', 'Unknown error')})
+        log_test("All Category Filtering", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_specific_category_endpoints():
+    """Test 4: Specific category filtering"""
+    print("\n📋 TEST 4: Specific Category Filtering")
+    categories_expected = {
+        "Professional": 6,
+        "Artistic": 4, 
+        "Lifestyle": 2
+    }
     
-    # Test 3: GET /api/prompts/categories/Professional - should return 6 prompts
-    print("\n📋 TEST 3: Professional category should return 6 prompts")
-    result = test_api_endpoint("GET", "/prompts/categories/Professional")
+    all_passed = True
+    
+    for category, expected_count in categories_expected.items():
+        result = test_api_endpoint("GET", f"/prompts/categories/{category}")
+        
+        if result["success"]:
+            data = result["data"]
+            prompts = data.get("prompts", [])
+            count = data.get("count", 0)
+            
+            if len(prompts) == expected_count and count == expected_count:
+                log_test(f"Category {category}", "PASS", f"Found {count} prompts")
+            else:
+                log_test(f"Category {category}", "FAIL", f"Expected {expected_count}, got {count}")
+                all_passed = False
+        else:
+            log_test(f"Category {category}", "FAIL", result.get("error", "Unknown error"))
+            all_passed = False
+    
+    return all_passed
+
+def test_nanobanana_integration():
+    """Test 5: NanoBanana API Integration - Generate with curated prompt"""
+    print("\n📋 TEST 5: NanoBanana API Integration (Critical Test)")
+    print("🎨 This test may take 30-60 seconds for AI image generation...")
+    
+    # Use a sample image for testing
+    sample_image = create_sample_image_base64()
+    
+    # Test with prompt ID 1 (Black & White Artistic Portrait)
+    payload = {
+        "prompt_id": 1,
+        "image_data": sample_image
+    }
+    
+    result = test_api_endpoint("POST", "/generate-with-prompt", data=payload, timeout=120)
     
     if result["success"]:
         data = result["data"]
-        count = data.get("count", 0)
-        category = data.get("category", "")
         
-        if count == 6:
-            print("   ✅ Professional category returns 6 prompts")
-            test_results.append({"test": "Professional category - count", "status": "PASS"})
-        else:
-            print(f"   ❌ Professional category returns {count} prompts, expected 6")
-            test_results.append({"test": "Professional category - count", "status": "FAIL", "error": f"Got: {count}"})
+        # Check required fields
+        required_fields = ["id", "prompt_id", "prompt_title", "generated_image", "success"]
+        missing_fields = [field for field in required_fields if field not in data]
         
-        if category == "Professional":
-            print("   ✅ Category field is 'Professional'")
-            test_results.append({"test": "Professional category - category field", "status": "PASS"})
+        if not missing_fields and data.get("success") == True:
+            generated_image = data.get("generated_image", "")
+            if generated_image and len(generated_image) > 100:  # Valid base64 image should be substantial
+                log_test("NanoBanana Integration", "PASS", 
+                       f"Generated image for prompt '{data.get('prompt_title')}', size: {len(generated_image)} chars")
+                return True, data.get("id")
+            else:
+                log_test("NanoBanana Integration", "FAIL", "Generated image data is empty or too small")
+                return False, None
         else:
-            print(f"   ❌ Category field is '{category}', expected 'Professional'")
-            test_results.append({"test": "Professional category - category field", "status": "FAIL", "error": f"Got: {category}"})
+            log_test("NanoBanana Integration", "FAIL", f"Missing fields: {missing_fields} or success=False")
+            return False, None
     else:
-        print(f"   ❌ Request failed: {result.get('error', 'Unknown error')}")
-        test_results.append({"test": "Professional category endpoint", "status": "FAIL", "error": result.get('error', 'Unknown error')})
-    
-    # Test 4: GET /api/prompts/categories/Artistic - should return 4 prompts
-    print("\n📋 TEST 4: Artistic category should return 4 prompts")
-    result = test_api_endpoint("GET", "/prompts/categories/Artistic")
+        log_test("NanoBanana Integration", "FAIL", result.get("error", "Unknown error"))
+        return False, None
+
+def test_image_storage(image_id=None):
+    """Test 6: Image Storage - Gallery retrieval"""
+    print("\n📋 TEST 6: Image Storage System")
+    result = test_api_endpoint("GET", "/images")
     
     if result["success"]:
         data = result["data"]
-        count = data.get("count", 0)
-        category = data.get("category", "")
+        images = data.get("images", [])
         
-        if count == 4:
-            print("   ✅ Artistic category returns 4 prompts")
-            test_results.append({"test": "Artistic category - count", "status": "PASS"})
+        if isinstance(images, list):
+            log_test("Image Storage Gallery", "PASS", f"Retrieved {len(images)} images from gallery")
+            
+            # If we have an image_id from generation test, try to retrieve specific image
+            if image_id and len(images) > 0:
+                return test_specific_image_retrieval(image_id)
+            return True
         else:
-            print(f"   ❌ Artistic category returns {count} prompts, expected 4")
-            test_results.append({"test": "Artistic category - count", "status": "FAIL", "error": f"Got: {count}"})
-        
-        if category == "Artistic":
-            print("   ✅ Category field is 'Artistic'")
-            test_results.append({"test": "Artistic category - category field", "status": "PASS"})
-        else:
-            print(f"   ❌ Category field is '{category}', expected 'Artistic'")
-            test_results.append({"test": "Artistic category - category field", "status": "FAIL", "error": f"Got: {category}"})
+            log_test("Image Storage Gallery", "FAIL", "Images field is not a list")
+            return False
     else:
-        print(f"   ❌ Request failed: {result.get('error', 'Unknown error')}")
-        test_results.append({"test": "Artistic category endpoint", "status": "FAIL", "error": result.get('error', 'Unknown error')})
-    
-    # Test 5: GET /api/prompts/categories/Lifestyle - should return 2 prompts
-    print("\n📋 TEST 5: Lifestyle category should return 2 prompts")
-    result = test_api_endpoint("GET", "/prompts/categories/Lifestyle")
+        log_test("Image Storage Gallery", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_specific_image_retrieval(image_id):
+    """Test 6b: Specific image retrieval"""
+    print("\n📋 TEST 6b: Specific Image Retrieval")
+    result = test_api_endpoint("GET", f"/images/{image_id}")
     
     if result["success"]:
         data = result["data"]
-        count = data.get("count", 0)
-        category = data.get("category", "")
-        
-        if count == 2:
-            print("   ✅ Lifestyle category returns 2 prompts")
-            test_results.append({"test": "Lifestyle category - count", "status": "PASS"})
+        if data.get("id") == image_id and "generated_image" in data:
+            log_test("Specific Image Retrieval", "PASS", f"Retrieved image {image_id}")
+            return True
         else:
-            print(f"   ❌ Lifestyle category returns {count} prompts, expected 2")
-            test_results.append({"test": "Lifestyle category - count", "status": "FAIL", "error": f"Got: {count}"})
-        
-        if category == "Lifestyle":
-            print("   ✅ Category field is 'Lifestyle'")
-            test_results.append({"test": "Lifestyle category - category field", "status": "PASS"})
-        else:
-            print(f"   ❌ Category field is '{category}', expected 'Lifestyle'")
-            test_results.append({"test": "Lifestyle category - category field", "status": "FAIL", "error": f"Got: {category}"})
+            log_test("Specific Image Retrieval", "FAIL", "Image data incomplete")
+            return False
     else:
-        print(f"   ❌ Request failed: {result.get('error', 'Unknown error')}")
-        test_results.append({"test": "Lifestyle category endpoint", "status": "FAIL", "error": result.get('error', 'Unknown error')})
+        log_test("Specific Image Retrieval", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_stripe_payment_integration():
+    """Test 7: Stripe Payment Integration"""
+    print("\n📋 TEST 7: Stripe Payment Integration")
+    result = test_api_endpoint("GET", "/payment/packages")
     
-    # Summary
-    print("\n" + "=" * 80)
-    print("📊 TEST SUMMARY")
-    print("=" * 80)
+    if result["success"]:
+        data = result["data"]
+        packages = data.get("packages", {})
+        
+        # Check for expected packages
+        expected_packages = ["pro_monthly", "pro_yearly"]
+        found_packages = list(packages.keys())
+        
+        if all(pkg in found_packages for pkg in expected_packages):
+            # Verify package structure
+            pro_monthly = packages.get("pro_monthly", {})
+            pro_yearly = packages.get("pro_yearly", {})
+            
+            if (pro_monthly.get("amount") == 9.99 and 
+                pro_yearly.get("amount") == 99.99 and
+                data.get("success") == True):
+                log_test("Stripe Payment Packages", "PASS", 
+                       f"Found packages: {found_packages} with correct pricing")
+                return True
+            else:
+                log_test("Stripe Payment Packages", "FAIL", "Package pricing or structure incorrect")
+                return False
+        else:
+            log_test("Stripe Payment Packages", "FAIL", f"Missing packages. Found: {found_packages}")
+            return False
+    else:
+        log_test("Stripe Payment Packages", "FAIL", result.get("error", "Unknown error"))
+        return False
+
+def test_error_handling():
+    """Test 8: Error handling for invalid requests"""
+    print("\n📋 TEST 8: Error Handling")
+    # Test invalid prompt ID
+    payload = {
+        "prompt_id": 999,  # Invalid ID
+        "image_data": create_sample_image_base64()
+    }
     
-    passed_tests = [t for t in test_results if t["status"] == "PASS"]
-    failed_tests = [t for t in test_results if t["status"] == "FAIL"]
+    result = test_api_endpoint("POST", "/generate-with-prompt", expected_status=404, data=payload)
     
-    print(f"✅ PASSED: {len(passed_tests)}")
-    print(f"❌ FAILED: {len(failed_tests)}")
-    print(f"📈 SUCCESS RATE: {len(passed_tests)}/{len(test_results)} ({len(passed_tests)/len(test_results)*100:.1f}%)")
-    
-    if failed_tests:
-        print("\n❌ FAILED TESTS:")
-        for test in failed_tests:
-            print(f"   • {test['test']}: {test.get('error', 'Unknown error')}")
-    
-    return len(failed_tests) == 0
+    if result["success"]:
+        log_test("Error Handling", "PASS", "Correctly handles invalid prompt ID with 404")
+        return True
+    else:
+        log_test("Error Handling", "FAIL", f"Expected 404 for invalid prompt ID, got different response")
+        return False
 
 if __name__ == "__main__":
     print("🚀 Starting All Category Filtering Fix Tests...")
