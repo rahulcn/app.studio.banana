@@ -45,8 +45,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [subscription, setSubscription] = useState<PaymentSubscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [supabaseAvailable, setSupabaseAvailable] = useState(false);
 
   useEffect(() => {
+    // Check if Supabase is properly configured
+    const checkSupabaseConfig = async () => {
+      try {
+        const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
+        const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+        
+        if (!url || !key || url.includes('your-project') || key.includes('your-anon-key')) {
+          console.log('🔧 Supabase not configured, using fallback mode');
+          setSupabaseAvailable(false);
+          setLoading(false);
+          return;
+        }
+
+        // Test Supabase connection
+        const { data, error } = await supabase.auth.getSession();
+        console.log('✅ Supabase connection successful');
+        setSupabaseAvailable(true);
+        
+        // Continue with real Supabase setup
+        setupSupabaseAuth();
+        
+      } catch (error) {
+        console.error('❌ Supabase connection failed:', error);
+        console.log('🔧 Falling back to demo mode');
+        setSupabaseAvailable(false);
+        setLoading(false);
+      }
+    };
+
+    checkSupabaseConfig();
+  }, []);
+
+  const setupSupabaseAuth = () => {
     // Listen for auth state changes
     const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -70,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => {
       authSubscription?.unsubscribe();
     };
-  }, []);
+  };
 
   const checkCurrentSession = async () => {
     try {
@@ -101,14 +135,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Fallback functions for when Supabase is not available
   const signIn = async (email: string, password: string) => {
     try {
+      if (!supabaseAvailable) {
+        // Demo mode - simulate successful login
+        console.log('🔧 Demo mode: Simulating login');
+        setUser({ id: 'demo-user', email });
+        setProfile({ 
+          id: 'demo-user', 
+          email, 
+          username: email.split('@')[0],
+          full_name: 'Demo User',
+          is_public: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+        setSubscription({
+          id: 'demo-sub',
+          user_id: 'demo-user',
+          status: 'active',
+          generations_used: 0,
+          generations_limit: 100,
+          cancel_at_period_end: false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+        return;
+      }
+
       const { data, error } = await SupabaseHelpers.signIn(email, password);
-      
       if (error) {
         throw new Error(error.message);
       }
-      // User state will be updated via onAuthStateChange
     } catch (error) {
       console.error('Sign in error:', error);
       throw error;
@@ -117,6 +176,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, username?: string) => {
     try {
+      if (!supabaseAvailable) {
+        console.log('🔧 Demo mode: Supabase not available for signup');
+        Alert.alert(
+          'Demo Mode', 
+          'This is demo mode. To enable real authentication, please set up your Supabase database.',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
       const { data, error } = await SupabaseHelpers.signUp(email, password, {
         username: username || email.split('@')[0]
       });
@@ -138,8 +207,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
+      if (!supabaseAvailable) {
+        // Demo mode
+        setUser(null);
+        setProfile(null);
+        setSubscription(null);
+        return;
+      }
+
       await SupabaseHelpers.signOut();
-      // User state will be cleared via onAuthStateChange
     } catch (error) {
       console.error('Sign out error:', error);
       throw error;
@@ -149,6 +225,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateProfile = async (updates: Partial<Profile>) => {
     try {
       if (!user) return;
+      
+      if (!supabaseAvailable) {
+        // Demo mode - just update local state
+        setProfile(prev => ({ ...prev, ...updates } as Profile));
+        return;
+      }
       
       const { data, error } = await SupabaseHelpers.updateProfile(user.id, updates);
       if (error) {
