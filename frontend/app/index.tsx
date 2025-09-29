@@ -26,36 +26,36 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import Supabase - TEMPORARILY DISABLED FOR SSR FIX
 // import { supabase, SupabaseHelpers, Profile, Generation, PaymentSubscription } from '../lib/supabase';
 
-// Auth Context with Supabase
+// Auth Context with Supabase - TEMPORARILY DISABLED
 interface AuthContextType {
   user: any | null;
-  profile: Profile | null;
+  profile: any | null;
   loading: boolean;
-  subscription: PaymentSubscription | null;
+  subscription: any | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username?: string) => Promise<void>;
   signOut: () => Promise<void>;
-  updateProfile: (updates: Partial<Profile>) => Promise<void>;
+  updateProfile: (updates: any) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [subscription, setSubscription] = useState<PaymentSubscription | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any | null>(null);
+  const [subscription, setSubscription] = useState<any | null>({ 
+    generations_used: 0, 
+    generations_limit: 100 
+  });
+  const [loading, setLoading] = useState(false); // Start with false for demo mode
   const [supabaseAvailable, setSupabaseAvailable] = useState(false);
 
   useEffect(() => {
-    // Temporarily force demo mode to get app working
-    console.log('🔧 Forcing demo mode for debugging...');
+    // Demo mode - no Supabase for now
+    console.log('🔧 Running in demo mode...');
     setSupabaseAvailable(false);
     setLoading(false);
-    return;
-    
-    // Check if Supabase is properly configured
-    const checkSupabaseConfig = async () => {
+  }, []);
       try {
         const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
         const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
