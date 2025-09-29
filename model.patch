@@ -1103,7 +1103,7 @@ index 96680c8..e69de29 100644
 ------------------------+from datetime import datetime
 ------------------------+
 ------------------------+# Backend URL from frontend env
-------------------------+BACKEND_URL = "https://promptgen-7.preview.emergentagent.com/api"
+------------------------+BACKEND_URL = "https://piccraft-11.preview.emergentagent.com/api"
 ------------------------+
 ------------------------+def test_1_health_endpoint():
 ------------------------+    """Test 1: Health endpoint to confirm backend is running"""

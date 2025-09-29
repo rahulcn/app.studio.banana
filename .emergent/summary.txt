@@ -1,98 +1,66 @@
 <analysis>
-The AI engineer's work began by setting up an Expo React Native frontend and a FastAPI/MongoDB backend for AI image generation using NanoBanana. A significant architectural pivot occurred when the user requested a Supabase backend for freemium features, leading to extensive refactoring. However, this was later reverted to pure FastAPI to prioritize getting core AI image generation functional, which was initially using mock data. Subsequent work focused on establishing a curated prompt system, implementing image preview/save, and modernizing the UI. The UI modernization involved an attempt to integrate NativeWind, which failed due to Babel configuration issues, leading to a rollback to custom StyleSheet-based styling. Finally, bottom tab navigation, an iPhone-style gallery with full-screen viewer, horizontal prompt scrolling with haptics and snap-to-center functionality were implemented and refined, often requiring debugging and frontend restarts due to caching or configuration issues.
+The AI engineer's work primarily involved feature implementation and extensive refactoring. Initial development focused on core AI image generation with a FastAPI/MongoDB backend and Expo React Native frontend. Key features like curated prompts, image preview/save, and a modern UI (including a detailed gallery and horizontal prompt scroll with haptics) were added. Recent efforts included implementing dark mode with a toggle, addressing a persistent reference image removal bug, and a major refactor to integrate Stripe for Upgrade to Pro. The latest significant task is migrating to a Supabase backend for authentication and storage, which introduced a blank screen issue due to server-side rendering conflicts and unapplied database schema. The prompt display issue, showing only two cards, also remains partially unresolved despite backend fixes. The immediate next step is to restart the frontend with updated Supabase credentials.
 </analysis>
 
 <product_requirements>
-The application is a React Native mobile app for AI image generation, initially using NanoBanana API with pre-defined prompts and image upload. It aims for a SaaS product with:
-- **Freemium Model**: Initially 5, then increased to 100 free generations, without signup, with future paid options (currently removed).
-- **Authentication**: Planned via Supabase (currently suspended in backend).
-- **Payment Gateway**: Stripe integration (planned, but suspended).
-- **Image Storage**: Planned via Supabase Storage (currently suspended).
-- **Reference Image**: Ability to upload or take a photo for AI generation.
-- **Curated Prompts**: Selection from a predefined list of prompts instead of free-text input.
-- **Image Preview & Save**: Post-generation, users should preview and save images to their device.
-- **Modern & Minimalistic UI**: The app should have a clean, modern aesthetic, initially exploring NativeWind, then implemented with custom StyleSheet.
-- **Bottom Tab Navigation**: Three main tabs: Generate, Gallery, Profile.
-- **iPhone Photos-style Gallery**: A 3x3 grid, tap to open full-screen, swipe navigation between photos, zoom/pan.
-- **Horizontal Prompt Scroll**: Prompts presented in a horizontal carousel with haptic feedback on selection, snapping to center on click.
-- **Dark Mode**: Support for a dark theme.
-- **Clean Generate Page Layout**: Remove card backgrounds for most sections, keeping only the Free Tier section as a card.
+The application is a React Native mobile app for AI image generation using the NanoBanana API. The goal is a SaaS product featuring a freemium model (100 free generations, no signup, paid options pending). Key features include: Supabase-based authentication and image storage, Stripe for payments (all three were suspended, then resumed). Users can upload/take a photo as a reference image and select from curated prompts displayed in a horizontal, snap-to-center scrollable list with haptic feedback. Post-generation, users can preview and save images. The UI is modern and minimalistic, utilizing custom StyleSheet, with most sections integrated into the background, except for the Free Tier card. Navigation is tab-based (Generate, Gallery, Profile), and the Gallery provides an iPhone Photos-style 3x3 grid with a full-screen viewer, swipe navigation, and zoom. Dark Mode support has been implemented with a toggle in the Profile screen. The All category for prompts should list all available styles, and the Free Tier card needs proper horizontal spacing.
 </product_requirements>
 
 <key_technical_concepts>
 - **React Native / Expo**: Mobile app development, Expo Router for routing.
 - **FastAPI**: Python backend.
 - **MongoDB**: NoSQL database.
-- **NanoBanana API (Google Gemini 2.5 Flash)**: AI image generation.
-- ** & Emergent LLM Key**: AI model integration.
+- **NanoBanana API (Google Gemini 2.5 Flash)**: AI image generation via  and .
 - **TypeScript**: Frontend development.
-- **Base64 Encoding**: Image handling.
+- **Supabase**: Backend-as-a-Service for authentication, database, storage.
+- **Stripe**: Payment gateway integration.
 - ****: Haptic feedback.
-- ****: Image zooming.
-- **, **: Image selection and saving.
-- ****: Keyboard handling.
+- ****: Proper touch event handling.
 </key_technical_concepts>
 
 <code_architecture>
 
-
--   **/app/backend/server.py**:
-    -   **Summary**: FastAPI backend. Handles health checks, serves curated prompts, and interfaces with  for NanoBanana image generation.
-    -   **Changes**: Initially set up for NanoBanana, then refactored for Supabase, then reverted to pure NanoBanana. New endpoints for  to fetch curated prompts were added.
--   **/app/backend/.env**:
-    -   **Summary**: Backend environment variables.
-    -   **Changes**: Includes .
--   **/app/frontend/app/index.tsx**:
-    -   **Summary**: Main entry point, orchestrates authentication, main app logic, and houses the Generate, Gallery, and Profile screens. Contains all core UI logic, state, and styling for these screens.
-    -   **Changes**: Heavily modified for freemium flow, reference image selection, curated prompt system, image preview/save, UI modernization (NativeWind attempt, then full StyleSheet refactor), bottom tab navigation, iPhone-style gallery with full-screen viewer, horizontal prompt scroll with haptics and snap-to-center. Numerous styling updates were made using .
--   **/app/frontend/components/AuthScreen.tsx**:
-    -   **Summary**: Handles user authentication.
-    -   **Changes**: Updated with a back button for flow consistency.
--   **/app/frontend/components/GenerateScreen.tsx**:
-    -   **Summary**: The main image generation interface.
-    -   **Changes**: Originally a free-text prompt, it was updated to use curated prompts in a horizontal scrollable list. Logic for reference image selection (gallery/camera) and displaying image generation status. UI elements were refactored multiple times for modern design.
--   **/app/frontend/components/GalleryScreen.tsx**:
-    -   **Summary**: Displays generated images.
-    -   **Changes**: Evolved from a basic list to an iPhone Photos-style 3x3 grid with full-screen image viewer, including swipe navigation, zoom, and improved metadata display.
--   **/app/frontend/components/ProfileScreen.tsx**:
-    -   **Summary**: User profile and settings.
-    -   **Changes**: Designed as part of the bottom tab navigation, showing free tier usage and settings options (Upgrade, Help, About).
--   **/app/frontend/components/globalStyles.ts & authHeaderStyles.ts**:
-    -   **Summary**: Centralized styling.
-    -   **Changes**: Used for initial styling and likely removed or refactored as  became monolithic in handling styles.
--   **/app/frontend/.env**:
-    -   **Summary**: Frontend environment variables.
-    -   **Changes**: Updated during development, likely includes .
--   **/app/frontend/package.json**:
-    -   **Summary**: Lists frontend dependencies.
-    -   **Changes**: Added , , , , , , , , , , , , .
--   **/app/backend/requirements.txt**:
-    -   **Summary**: Lists backend Python dependencies.
-    -   **Changes**: Added ,  (briefly), , .
--   **/app/frontend/metro.config.js**:
-    -   **Summary**: Metro bundler configuration.
-    -   **Changes**: Temporarily modified for NativeWind, then reverted.
--   **/app/frontend/tailwind.config.js**:
-    -   **Summary**: Tailwind CSS configuration.
-    -   **Changes**: Created for NativeWind, then effectively abandoned/removed when NativeWind was rolled back.
--   **/app/frontend/global.css**:
-    -   **Summary**: Global CSS file for NativeWind.
-    -   **Changes**: Created for NativeWind, then effectively abandoned/removed.
--   **/app/frontend/babel.config.js**:
-    -   **Summary**: Babel transpiler configuration.
-    -   **Changes**: Created and modified for NativeWind, then reverted to fix  error, effectively abandoning NativeWind.
+-   ****: FastAPI backend. Important for serving curated prompts, AI image generation, and payment processing.
+    -   **Changes**: Added  endpoint logic,  for Stripe, MongoDB collections for payments, Pydantic models for payment requests/responses, Stripe payment endpoints. Modified  to handle All category.
+-   ****: Stores backend environment variables.
+    -   **Changes**: , , ,  added/updated.
+-   ****: Lists Python dependencies for the backend.
+    -   **Changes**: Added , , , .
+-   ****: A new file created to encapsulate Supabase client configuration for the backend.
+-   ****: Main entry point and core UI logic. Contains most screens and state management.
+    -   **Changes**: Implemented Dark Mode (ThemeContext, toggle, updated styles). Refactored for Stripe integration (,  function,  import). Updated prompt category filtering to use backend API, added skeleton loader, fixed dynamic category title. Significant refactor to use Supabase authentication (, removed old local auth/free tier hooks). Added error handling for initial Supabase loading and fixed  error. Fixed Free Tier card margins.
+-   ****: Part of .
+    -   **Changes**: Integrated Dark Mode toggle and Upgrade to Pro button with Stripe.
+-   ****: Frontend environment variables.
+    -   **Changes**: , ,  added/updated.
+-   ****: Lists frontend dependencies.
+    -   **Changes**: Added , , , , .
+-   ****: Frontend Supabase client.
+    -   **Changes**: Updated with comprehensive client configuration, including AsyncStorage setup for auth persistence and fixing the  error.
+-   ****: New file containing the SQL schema for Supabase tables (users, images, profiles, payment_transactions, subscriptions).
+-   ****: A Python script created to automate Supabase schema setup, but later abandoned for manual instructions.
+-   ****: New markdown file providing manual steps to set up Supabase schema via the dashboard.
 </code_architecture>
 
 <pending_tasks>
-- Implement Dark Mode support.
 - Fully resolve and verify the close button and swipe navigation in the full-screen image viewer within the gallery.
-- Re-evaluate and implement the full SaaS features (Supabase for auth/storage, Stripe for payments, freemium logic beyond just free generations).
+- Address the persistent issue where only 2 prompt cards are displayed per category despite the correct count appearing in the title and backend.
+- Manually execute the  against the Supabase database via the Supabase dashboard to create the necessary tables.
+- Integrate Supabase Storage for generated and reference images.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was working on refining the horizontal prompt selection on the Generate Image page. The user reported no change regarding the snap-to-center functionality for the horizontal prompt cards. The AI engineer restarted the frontend to clear any cache issues and then performed a systematic test, concluding that the snap-to-center functionality was indeed working, with visual evidence (blue selection border, checkmark icon) confirming card selection and movement, even if the animation was subtle. The engineer then attempted to make the snap effect more noticeable by improving the animation. The Generate Image page now has a streamlined layout with most sections (Reference Image, Category Selection, Prompt Selection) integrated directly into the background, with only the Free Tier section remaining as a distinct card. The gallery has been updated to an iPhone Photos-style layout, though the close and swipe functionality needs further verification.
+Immediately before this summary request, the AI engineer was engaged in a significant refactoring effort to migrate the application from a local authentication and free-tier system to a full Supabase integration. This involved updating both frontend (, , ) and backend (, , ) to utilize Supabase for authentication and potentially future data storage.
+
+A major challenge encountered was a blank screen on the frontend after the Supabase refactor. Debugging revealed two primary causes:
+1.  The Supabase client configuration in  was attempting to access the  object during server-side rendering, leading to a . This was addressed by modifying the  file to handle server-side rendering contexts.
+2.  The Supabase database schema (defined in ) had not yet been applied to the actual Supabase project, meaning no tables existed. A Python script () was created but failed, leading to the provision of manual SQL instructions () for the user.
+3.  Connectivity issues to the Expo tunnel () were also noted, hindering mobile testing, though web functionality was confirmed.
+
+The AI engineer also updated the frontend and backend  files with the actual Supabase URL and API key provided by the user. The  component in  was refactored to use a new  powered by Supabase, replacing the old  and  hooks. The current state is that the Supabase credentials have been updated, and the engineer is about to restart the frontend to test the effect of these changes and the previous  error fix.
 </current_work>
 
 <optional_next_step>
-Implement dark mode functionality across the application.
+Restart the frontend with the updated Supabase credentials and verify if the blank screen issue is resolved.
 </optional_next_step>
+

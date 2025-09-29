@@ -18,7 +18,7 @@ def get_backend_url():
                     return line.split('=', 1)[1].strip()
     except:
         pass
-    return "https://promptgen-7.preview.emergentagent.com"
+    return "https://piccraft-11.preview.emergentagent.com"
 
 BASE_URL = get_backend_url()
 BACKEND_URL = f"{BASE_URL}/api"
