@@ -104,10 +104,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const setupSupabaseAuth = () => {
+    console.log('🔗 Setting up Supabase authentication...');
+    
     // Listen for auth state changes
     const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('🔐 Auth state changed:', event);
+        console.log('👤 Session:', session ? 'Present' : 'None');
         
         if (session?.user) {
           setUser(session.user);
@@ -124,8 +127,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check current session
     checkCurrentSession();
 
+    // Set a fallback timeout for auth setup
+    const authTimeoutId = setTimeout(() => {
+      console.log('⏰ Auth setup timeout, completing setup');
+      setLoading(false);
+    }, 5000);
+
     return () => {
       authSubscription?.unsubscribe();
+      clearTimeout(authTimeoutId);
     };
   };
 
