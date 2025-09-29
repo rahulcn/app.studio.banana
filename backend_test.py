@@ -1,42 +1,71 @@
 #!/usr/bin/env python3
 """
-Backend API Testing Script for AI Image Generator
-Testing the "All" category filtering fix
+Backend API Testing Suite for AI Image Generation App
+Tests all core backend functionality including NanoBanana API integration
 """
 
 import requests
 import json
+import base64
+import time
 import sys
-from typing import Dict, Any
+from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-# Get backend URL from frontend .env file
-def get_backend_url():
-    try:
-        with open('/app/frontend/.env', 'r') as f:
-            for line in f:
-                if line.startswith('EXPO_PUBLIC_BACKEND_URL='):
-                    return line.split('=', 1)[1].strip()
-    except:
-        pass
-    return "https://piccraft-11.preview.emergentagent.com"
+# Load environment variables
+load_dotenv('/app/frontend/.env')
 
-BASE_URL = get_backend_url()
-BACKEND_URL = f"{BASE_URL}/api"
+# Get backend URL from frontend environment
+BACKEND_URL = os.getenv('EXPO_PUBLIC_BACKEND_URL', 'https://piccraft-11.preview.emergentagent.com')
+API_BASE = f"{BACKEND_URL}/api"
 
-print(f"🔗 Testing backend at: {BACKEND_URL}")
+print(f"🔗 Testing backend at: {API_BASE}")
 
-def test_api_endpoint(method: str, endpoint: str, expected_status: int = 200, data: Dict = None) -> Dict[str, Any]:
+# Test results tracking
+test_results = {
+    "passed": 0,
+    "failed": 0,
+    "tests": []
+}
+
+def log_test(test_name, status, details=""):
+    """Log test result"""
+    test_results["tests"].append({
+        "name": test_name,
+        "status": status,
+        "details": details,
+        "timestamp": datetime.now().isoformat()
+    })
+    
+    if status == "PASS":
+        test_results["passed"] += 1
+        print(f"✅ {test_name}: PASSED")
+    else:
+        test_results["failed"] += 1
+        print(f"❌ {test_name}: FAILED - {details}")
+    
+    if details:
+        print(f"   Details: {details}")
+
+def create_sample_image_base64():
+    """Create a small sample image in base64 format for testing"""
+    # Create a minimal 1x1 pixel PNG in base64
+    # This is a valid PNG image data
+    return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+
+def test_api_endpoint(method: str, endpoint: str, expected_status: int = 200, data: dict = None, timeout: int = 30):
     """Test an API endpoint and return results"""
-    url = f"{BACKEND_URL}{endpoint}"
+    url = f"{API_BASE}{endpoint}"
     
     try:
         print(f"\n🔍 Testing {method} {endpoint}")
         print(f"   URL: {url}")
         
         if method.upper() == "GET":
-            response = requests.get(url, timeout=30)
+            response = requests.get(url, timeout=timeout)
         elif method.upper() == "POST":
-            response = requests.post(url, json=data, timeout=30)
+            response = requests.post(url, json=data, timeout=timeout)
         else:
             return {"success": False, "error": f"Unsupported method: {method}"}
         
