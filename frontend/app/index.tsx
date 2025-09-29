@@ -1606,7 +1606,7 @@ const FreeGenerateScreen: React.FC<{
           </View>
         )}
 
-        {!freeTier.hasUsesLeft() && (
+        {!freeTier?.hasUsesLeft?.() && (
           <View style={styles.upgradePrompt}>
             <Text style={styles.upgradeTitle}>Free tier limit reached!</Text>
             <Text style={styles.upgradeText}>
