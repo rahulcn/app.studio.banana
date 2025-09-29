@@ -88,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('🔧 Falling back to demo mode');
         setSupabaseAvailable(false);
         setLoading(false);
+        clearTimeout(timeoutId); // Clear the timeout since we're handling the error immediately
       }
     };
 
