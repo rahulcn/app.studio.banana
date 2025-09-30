@@ -926,6 +926,7 @@ const FreeGenerateScreen: React.FC<{
   onSignupPrompt: () => void;
 }> = ({ onBack, freeTier, onSignupPrompt }) => {
   const { theme } = useTheme();
+  const screenHeight = Dimensions.get('window').height;
   const [selectedPromptId, setSelectedPromptId] = useState<number | null>(null);
   const [curatedPrompts, setCuratedPrompts] = useState<CuratedPrompt[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
