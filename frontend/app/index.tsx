@@ -1286,7 +1286,7 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background, height: screenHeight }]}>
+    <View style={[styles.modernContainer, { backgroundColor: theme.colors.background, height: screenHeight }]}>
       {/* Modern Header */}
       <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.modernHeaderContent}>
@@ -1308,7 +1308,8 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      {/* Tab Content */}
+      {/* Tab Content - Flex 1 to fill available space */}
+      <View style={{ flex: 1 }}>
       {activeTab === 'generate' && (
         <ScrollView 
           style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}
