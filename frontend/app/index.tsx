@@ -1991,27 +1991,38 @@ function App() {
   };
 
   const renderCurrentView = () => {
+    console.log('🔄 renderCurrentView called, appState:', appState, 'user:', user ? 'exists' : 'null');
+    
     if (user) {
+      console.log('👤 User exists, rendering HomeScreen');
       return <HomeScreen user={user} onSignOut={signOut} />;
     }
 
     switch (appState) {
       case 'welcome':
+        console.log('🏠 Rendering WelcomeScreen');
         return <WelcomeScreen onGetStarted={() => {
           console.log('🎯 Get Started button clicked - setting appState to generate');
           setAppState('generate');
         }} />;
       
       case 'generate':
-        return (
-          <FreeGenerateScreen 
-            onBack={() => setAppState('welcome')}
-            freeTier={freeTier()}
-            onSignupPrompt={handleSignupPrompt}
-          />
-        );
+        console.log('⚡ Rendering FreeGenerateScreen');
+        try {
+          return (
+            <FreeGenerateScreen 
+              onBack={() => setAppState('welcome')}
+              freeTier={freeTier()}
+              onSignupPrompt={handleSignupPrompt}
+            />
+          );
+        } catch (error) {
+          console.error('❌ Error rendering FreeGenerateScreen:', error);
+          return <WelcomeScreen onGetStarted={() => setAppState('generate')} />;
+        }
       
       case 'signup_prompt':
+        console.log('📝 Rendering SignupPromptScreen');
         return (
           <SignupPromptScreen 
             onSignup={handleSignup}
@@ -2020,9 +2031,11 @@ function App() {
         );
       
       case 'auth':
+        console.log('🔐 Rendering AuthScreen');
         return <AuthScreen onSignIn={signIn} onBack={() => setAppState('generate')} />;
       
       default:
+        console.log('❓ Default case triggered, appState:', appState);
         return <WelcomeScreen onGetStarted={() => setAppState('generate')} />;
     }
   };
