@@ -3445,6 +3445,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 10,
     zIndex: 1000, // Ensure tabs stay on top
+    maxHeight: 80, // Constrain tab height
   },
   tabButton: {
     flex: 1,
