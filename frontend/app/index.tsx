@@ -1995,7 +1995,10 @@ function App() {
 
     switch (appState) {
       case 'welcome':
-        return <WelcomeScreen onGetStarted={() => setAppState('generate')} />;
+        return <WelcomeScreen onGetStarted={() => {
+          console.log('🎯 Get Started button clicked - setting appState to generate');
+          setAppState('generate');
+        }} />;
       
       case 'generate':
         return (
