@@ -2009,10 +2009,12 @@ function App() {
       case 'generate':
         console.log('⚡ Rendering FreeGenerateScreen');
         try {
+          const freeTierData = freeTier();
+          console.log('🔧 FreeTier data:', freeTierData);
           return (
             <FreeGenerateScreen 
               onBack={() => setAppState('welcome')}
-              freeTier={freeTier()}
+              freeTier={freeTierData}
               onSignupPrompt={handleSignupPrompt}
             />
           );
