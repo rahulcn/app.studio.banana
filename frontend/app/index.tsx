@@ -3427,7 +3427,7 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
-    position: 'fixed', // Use fixed positioning relative to viewport
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
