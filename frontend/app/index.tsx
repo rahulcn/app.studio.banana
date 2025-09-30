@@ -1623,17 +1623,18 @@ const FreeGenerateScreen: React.FC<{
         </ScrollView>
       )}
       
-      {/* Gallery Tab */}
-      {activeTab === 'gallery' && (
-        <GalleryScreen freeTier={freeTier} />
-      )}
+        {/* Gallery Tab */}
+        {activeTab === 'gallery' && (
+          <GalleryScreen freeTier={freeTier} />
+        )}
+        
+        {/* Profile Tab */}
+        {activeTab === 'profile' && (
+          <ProfileScreen freeTier={freeTier} />
+        )}
+      </View>
       
-      {/* Profile Tab */}
-      {activeTab === 'profile' && (
-        <ProfileScreen freeTier={freeTier} />
-      )}
-      
-      {/* Bottom Tab Navigation */}
+      {/* Bottom Tab Navigation - Outside flex container */}
       <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
         <TouchableOpacity 
           style={[styles.tabButton, activeTab === 'generate' && styles.tabButtonActive]}
@@ -1693,7 +1694,7 @@ const FreeGenerateScreen: React.FC<{
         </TouchableOpacity>
       </View>
       
-    </SafeAreaView>
+    </View>
   );
 };
 
