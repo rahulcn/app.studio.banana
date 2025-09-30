@@ -2890,8 +2890,6 @@ const styles = StyleSheet.create({
   modernContainer: {
     flex: 1,
     backgroundColor: '#f8fafc',
-    height: '100%', // Ensure container doesn't exceed viewport
-    maxHeight: '100vh', // Fallback for web
   },
   modernWelcomeContainer: {
     flexGrow: 1,
