@@ -3427,7 +3427,7 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
-    position: 'absolute',
+    position: 'fixed', // Use fixed positioning relative to viewport
     bottom: 0,
     left: 0,
     right: 0,
@@ -3446,7 +3446,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 10,
     zIndex: 1000, // Ensure tabs stay on top
-    maxHeight: 80, // Constrain tab height
+    height: 80, // Fixed height
   },
   tabButton: {
     flex: 1,
