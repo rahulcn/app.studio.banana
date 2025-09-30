@@ -3444,6 +3444,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
+    zIndex: 1000, // Ensure tabs stay on top
   },
   tabButton: {
     flex: 1,
