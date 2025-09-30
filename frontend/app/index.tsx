@@ -1949,6 +1949,8 @@ function App() {
   const [appState, setAppState] = useState('welcome'); // welcome, generate, signup_prompt, authenticated
   const { theme, isDarkMode } = useTheme();
 
+  console.log('🔄 App component rendering, current appState:', appState);
+
   // Calculate free tier info from subscription with useCallback to ensure function persistence
   const freeTier = useCallback(() => ({
     FREE_LIMIT: subscription?.generations_limit || 100,
