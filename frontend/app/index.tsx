@@ -1946,7 +1946,7 @@ const HomeScreen: React.FC<{
 // Main App Component
 function App() {
   const { user, profile, loading, subscription, signIn, signOut } = useAuth();
-  const [appState, setAppState] = useState('welcome'); // welcome, generate, signup_prompt, authenticated
+  const [appState, setAppState] = useState('generate'); // Force generate screen for testing
   const { theme, isDarkMode } = useTheme();
 
   console.log('🔄 App component rendering, current appState:', appState);
