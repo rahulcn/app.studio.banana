@@ -1285,7 +1285,7 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background, height: '100%' }]}>
       {/* Modern Header */}
       <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.modernHeaderContent}>
