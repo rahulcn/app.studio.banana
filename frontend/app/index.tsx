@@ -3429,10 +3429,6 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
     backgroundColor: 'white',
     borderTopWidth: 1,
@@ -3447,7 +3443,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
-    zIndex: 1000, // Ensure tabs stay on top
     height: 80, // Fixed height
   },
   tabButton: {
