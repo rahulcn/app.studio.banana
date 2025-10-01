@@ -1682,7 +1682,7 @@ const FreeGenerateScreen: React.FC<{
           <Ionicons 
             name={activeTab === 'profile' ? 'person' : 'person-outline'} 
             size={24} 
-            color={activeTab === 'profile' ? theme.colors.primary : theme.colors.textSecondary} 
+            color={activeTab === 'profile' ? '#007AFF' : '#666'} 
           />
           <Text style={[
             styles.tabLabel, 
