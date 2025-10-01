@@ -1308,6 +1308,19 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
+      {/* DEBUG: This should be visible if we're in the right component */}
+      <Text style={{ 
+        position: 'absolute', 
+        top: 100, 
+        left: 20, 
+        backgroundColor: 'red', 
+        color: 'white', 
+        padding: 10,
+        zIndex: 9999 
+      }}>
+        DEBUG: FreeGenerateScreen is rendering!
+      </Text>
+
       {/* Content Area - Takes remaining space except bottom tabs */}
       <View style={{ flex: 1 }}>
         {activeTab === 'generate' && (
