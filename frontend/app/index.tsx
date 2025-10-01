@@ -1613,8 +1613,8 @@ const FreeGenerateScreen: React.FC<{
         )}
       </View>
       
-      {/* Bottom Navigation Tabs - FIXED POSITION */}
-      <View style={styles.tabBarContainer}>
+      {/* Bottom Tab Navigation - Should be visible at bottom */}
+      <View style={[styles.tabBarContainer, { backgroundColor: 'red' }]}> {/* RED to make visible */}
         <TouchableOpacity 
           style={[styles.tabButton, activeTab === 'generate' && styles.tabButtonActive]}
           onPress={() => setActiveTab('generate')}
