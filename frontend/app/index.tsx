@@ -3467,7 +3467,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: 'red', // VERY VISIBLE RED for testing
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
     paddingTop: 8,
@@ -3480,7 +3480,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
-    zIndex: 1000, // Ensure tabs stay on top
+    zIndex: 9999, // Maximum z-index to ensure visibility
+    height: 100, // Increased height for visibility
   },
   tabButton: {
     flex: 1,
