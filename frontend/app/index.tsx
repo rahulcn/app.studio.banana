@@ -3449,11 +3449,15 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 32, // Extra padding for safe area
     shadowColor: '#000',
     shadowOffset: {
@@ -3463,7 +3467,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
-    height: 84, // Slightly taller for better touch targets
+    zIndex: 1000, // Ensure tabs stay on top
   },
   tabButton: {
     flex: 1,
