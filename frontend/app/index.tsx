@@ -1694,7 +1694,7 @@ const FreeGenerateScreen: React.FC<{
         </TouchableOpacity>
       </View>
       
-    </View>
+    </SafeAreaView>
   );
 };
 
