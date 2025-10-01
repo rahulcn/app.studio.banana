@@ -157,6 +157,31 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({ onBack }) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: 'blue' }]}> {/* BLUE for GenerateScreen */}
+      
+      {/* MASSIVE TEST ELEMENT - This should be impossible to miss */}
+      <View style={{
+        position: 'absolute',
+        top: 200,
+        left: 50,
+        right: 50,
+        height: 200,
+        backgroundColor: 'red',
+        zIndex: 99999,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 10,
+        borderColor: 'black'
+      }}>
+        <Text style={{
+          fontSize: 30,
+          fontWeight: 'bold',
+          color: 'white',
+          textAlign: 'center'
+        }}>
+          GENERATESCREEN.TSX IS ACTIVE
+        </Text>
+      </View>
+
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
