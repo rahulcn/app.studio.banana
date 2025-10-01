@@ -144,7 +144,7 @@ export const HomeScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: 'red' }]}> {/* RED for HomeScreen */}
       {currentScreen === 'home' ? (
         renderScreen()
       ) : (
