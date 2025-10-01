@@ -1308,8 +1308,8 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      {/* Tab Content - Flex 1 to fill available space */}
-      <View style={{ flex: 1 }}>
+      {/* Tab Content - IMPORTANT: Take up remaining space minus tabs */}
+      <View style={{ flex: 1, paddingBottom: 80 }}>
       {activeTab === 'generate' && (
         <ScrollView 
           style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}
