@@ -1686,8 +1686,8 @@ const FreeGenerateScreen: React.FC<{
           />
           <Text style={[
             styles.tabLabel, 
-            { color: theme.colors.textSecondary },
-            activeTab === 'profile' && { color: theme.colors.primary }
+            { color: '#666' },
+            activeTab === 'profile' && { color: '#007AFF' }
           ]}>
             Profile
           </Text>
