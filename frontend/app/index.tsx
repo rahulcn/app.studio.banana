@@ -1308,18 +1308,29 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      {/* DEBUG: This should be visible if we're in the right component */}
-      <Text style={{ 
-        position: 'absolute', 
-        top: 100, 
-        left: 20, 
-        backgroundColor: 'red', 
-        color: 'white', 
-        padding: 10,
-        zIndex: 9999 
+      {/* MASSIVE TEST ELEMENT - This should be impossible to miss */}
+      <View style={{
+        position: 'absolute',
+        top: 200,
+        left: 50,
+        right: 50,
+        height: 200,
+        backgroundColor: 'red',
+        zIndex: 99999,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 10,
+        borderColor: 'black'
       }}>
-        DEBUG: FreeGenerateScreen is rendering!
-      </Text>
+        <Text style={{
+          fontSize: 30,
+          fontWeight: 'bold',
+          color: 'white',
+          textAlign: 'center'
+        }}>
+          FREEGENERATE SCREEN IS ACTIVE
+        </Text>
+      </View>
 
       {/* Content Area - Takes remaining space except bottom tabs */}
       <View style={{ flex: 1 }}>
