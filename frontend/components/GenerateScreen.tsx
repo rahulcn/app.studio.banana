@@ -113,7 +113,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({ onBack }) => {
 
   if (generatedImage) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: 'blue' }]}> {/* BLUE for GenerateScreen */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={onBack}>
             <Ionicons name="arrow-back" size={24} color="#007AFF" />
