@@ -266,7 +266,7 @@ const WelcomeScreen: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted })
   const { theme } = useTheme();
   
   return (
-    <SafeAreaView style={[styles.modernContainer, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView style={[styles.modernContainer, { backgroundColor: 'yellow' }]}> {/* YELLOW for WelcomeScreen */}
       <ScrollView contentContainerStyle={styles.modernWelcomeContainer}>
         {/* Header Section */}
         <View style={styles.modernHeaderSection}>
