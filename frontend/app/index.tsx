@@ -1644,7 +1644,7 @@ const FreeGenerateScreen: React.FC<{
           <Ionicons 
             name={activeTab === 'generate' ? 'sparkles' : 'sparkles-outline'} 
             size={24} 
-            color={activeTab === 'generate' ? theme.colors.primary : theme.colors.textSecondary} 
+            color={activeTab === 'generate' ? '#007AFF' : '#666'} 
           />
           <Text style={[
             styles.tabLabel, 
