@@ -1286,7 +1286,7 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'green' }}> {/* GREEN for FreeGenerateScreen */}
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       {/* Modern Header */}
       <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.modernHeaderContent}>
@@ -1308,31 +1308,7 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      {/* MASSIVE TEST ELEMENT - This should be impossible to miss */}
-      <View style={{
-        position: 'absolute',
-        top: 200,
-        left: 50,
-        right: 50,
-        height: 200,
-        backgroundColor: 'red',
-        zIndex: 99999,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 10,
-        borderColor: 'black'
-      }}>
-        <Text style={{
-          fontSize: 30,
-          fontWeight: 'bold',
-          color: 'white',
-          textAlign: 'center'
-        }}>
-          FREEGENERATE SCREEN IS ACTIVE
-        </Text>
-      </View>
-
-      {/* Content Area - Takes remaining space except bottom tabs */}
+      {/* Content Area - Proper flex layout */}
       <View style={{ flex: 1 }}>
         {activeTab === 'generate' && (
           <ScrollView 
