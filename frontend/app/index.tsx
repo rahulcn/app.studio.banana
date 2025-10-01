@@ -3449,15 +3449,11 @@ const styles = StyleSheet.create({
   },
   // Bottom Tab Navigation Styles
   tabBarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
-    backgroundColor: 'red', // VERY VISIBLE RED for testing
+    backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
-    paddingTop: 8,
+    paddingTop: 12,
     paddingBottom: 32, // Extra padding for safe area
     shadowColor: '#000',
     shadowOffset: {
@@ -3467,8 +3463,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
-    zIndex: 9999, // Maximum z-index to ensure visibility
-    height: 100, // Increased height for visibility
   },
   tabButton: {
     flex: 1,
