@@ -1286,7 +1286,7 @@ const FreeGenerateScreen: React.FC<{
   }
 
   return (
-    <View style={[styles.modernContainer, { backgroundColor: theme.colors.background }]}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       {/* Modern Header */}
       <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.modernHeaderContent}>
@@ -1308,14 +1308,14 @@ const FreeGenerateScreen: React.FC<{
         </View>
       </View>
 
-      {/* Tab Content - IMPORTANT: Take up remaining space minus tabs */}
-      <View style={{ flex: 1, paddingBottom: 80 }}>
-      {activeTab === 'generate' && (
-        <ScrollView 
-          style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
+      {/* Content Area - Takes remaining space except bottom tabs */}
+      <View style={{ flex: 1 }}>
+        {activeTab === 'generate' && (
+          <ScrollView 
+            style={[styles.cleanScrollView, { backgroundColor: theme.colors.background }]}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            showsVerticalScrollIndicator={false}
+          >
           {/* Free Tier Card */}
           <View style={[styles.modernCard, { backgroundColor: theme.colors.card }]}>
           <View style={styles.modernCardHeader}>
