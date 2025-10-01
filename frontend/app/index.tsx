@@ -1287,28 +1287,7 @@ const FreeGenerateScreen: React.FC<{
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      {/* Modern Header */}
-      <View style={[styles.modernHeader, { backgroundColor: theme.colors.surface }]}>
-        <View style={styles.modernHeaderContent}>
-          <TouchableOpacity 
-            style={styles.modernBackButton}
-            onPress={onBack}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="arrow-back" size={20} color={theme.colors.text} />
-          </TouchableOpacity>
-          
-          <Text style={[styles.modernHeaderTitle, { color: theme.colors.text }]}>
-            {activeTab === 'generate' ? 'Generate Image' : 
-             activeTab === 'gallery' ? 'My Gallery' : 'Profile'}
-          </Text>
-          
-          {/* Empty space for balance */}
-          <View style={styles.modernBackButton} />
-        </View>
-      </View>
-
-      {/* Content Area - Proper flex layout */}
+      {/* Content Area */}
       <View style={{ flex: 1 }}>
         {activeTab === 'generate' && (
           <ScrollView 
